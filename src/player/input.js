@@ -25,6 +25,7 @@ export class InputController {
       if (!TRACKED_KEYS.has(event.code)) return;
       if (/INPUT|TEXTAREA|SELECT/.test(event.target?.tagName ?? '')) return;
       event.preventDefault();
+      if (event.repeat && !this.keys.has(event.code)) return;
       if (!event.repeat && !this.keys.has(event.code)) {
         if (event.code === 'Space') this.jumpQueued = true;
         if (event.code === 'KeyR') this.resetQueued = true;
@@ -99,10 +100,16 @@ export class InputController {
 
   async requestPointerLock() {
     try {
-      if (!this.canvas.requestPointerLock) return false;
+      if (!this.enabled || !this.canvas.requestPointerLock) return false;
       await this.canvas.requestPointerLock();
+      if (!this.enabled) { this.releasePointerLock(); return false; }
       return this.document.pointerLockElement === this.canvas;
     } catch { return false; }
+  }
+
+  releasePointerLock() {
+    this.hadPointerLock = false;
+    if (this.document.pointerLockElement === this.canvas) this.document.exitPointerLock?.();
   }
 
   dispose() {

@@ -1,5 +1,6 @@
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import { MAP_CONFIG } from '../config.js';
+import { buildPlaceMetadata } from './places.js';
 import {project, ringBounds, ringArea, pointInRing, clipPolygons, intersectsBounds, clipLineString, bufferPaths} from './geometry.js';
 
 export {project, pointInPolygon, pointInMultiPolygon, pointToSegmentDistance} from './geometry.js';
@@ -215,6 +216,7 @@ export function buildMapData(parsed, config = MAP_CONFIG) {
   diagnostics.counts = {sourceNodes: nodes.size, sourceWays: ways.size, sourceRelations: relations.size,
     buildings: data.buildings.length, roads: data.roads.length, greens: data.greens.length, water: data.water.length,
     bridges: data.bridges.length, trees: data.trees.length, treeRows: data.treeRows.length};
+  Object.assign(data, buildPlaceMetadata(data, nodes, positions));
   return data;
 }
 

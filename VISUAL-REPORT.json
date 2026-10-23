@@ -1,0 +1,151 @@
+{
+  "rawMapSha256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
+  "modelSha256": "f1ecf729f9bd2d41e663d9779420ee5f75df41bfd6bfbbac9ba3bc6071a57d61",
+  "collision": {
+    "triangles": 3600,
+    "sha256": "b95c22529398f30fd82c60571453cfcc198080818f92b707fce8a31470aea1be"
+  },
+  "sourceNames": 55,
+  "entrances": 5,
+  "decorativeTrees": 240,
+  "decorativeShrubs": 48,
+  "entryTreatments": {
+    "surveyed": 0,
+    "illustrative": 188
+  },
+  "classifications": {
+    "civic": 7,
+    "academic": 10,
+    "unclassified": 156,
+    "residential": 10,
+    "worship": 3,
+    "construction": 3
+  },
+  "phase1Scene": {
+    "meshes": 343,
+    "triangles": 61530,
+    "kinds": {
+      "ground-chunk": 1,
+      "surface-chunk": 13,
+      "water-chunk": 5,
+      "road-chunk": 27,
+      "road-marking-chunk": 14,
+      "building-chunk": 175,
+      "facade-chunk": 104,
+      "bridge-chunk": 1,
+      "bridge-rail-chunk": 1,
+      "mapped-tree-trunks": 1,
+      "mapped-tree-canopies": 1
+    },
+    "trianglesByKind": {
+      "ground-chunk": 2,
+      "surface-chunk": 145,
+      "water-chunk": 108,
+      "road-chunk": 1631,
+      "road-marking-chunk": 354,
+      "building-chunk": 3568,
+      "facade-chunk": 54372,
+      "bridge-chunk": 30,
+      "bridge-rail-chunk": 600,
+      "mapped-tree-trunks": 288,
+      "mapped-tree-canopies": 432
+    }
+  },
+  "phase15Scene": {
+    "meshes": 211,
+    "triangles": 113842,
+    "kinds": {
+      "ground-chunk": 1,
+      "surface-chunk": 13,
+      "water-chunk": 5,
+      "road-chunk": 33,
+      "building-chunk": 52,
+      "facade-chunk": 104,
+      "bridge-chunk": 1,
+      "bridge-rail-chunk": 1,
+      "mapped-tree-canopies": 1
+    },
+    "trianglesByKind": {
+      "ground-chunk": 2,
+      "surface-chunk": 145,
+      "water-chunk": 108,
+      "road-chunk": 17951,
+      "building-chunk": 3568,
+      "facade-chunk": 73438,
+      "bridge-chunk": 30,
+      "bridge-rail-chunk": 600,
+      "mapped-tree-canopies": 18000
+    }
+  },
+  "viewpoints": [
+    {
+      "name": "Main Gate",
+      "camera": [
+        287.4746172652228,
+        3.2373993636967064,
+        -57.230555718440144
+      ],
+      "phase1": {
+        "visibleBatches": 114,
+        "triangles": 20389
+      },
+      "phase15": {
+        "visibleBatches": 78,
+        "triangles": 52891
+      },
+      "batchChangePercent": -31.6
+    },
+    {
+      "name": "Paradise Road",
+      "camera": [
+        -199.56097976441407,
+        3.2373993636967064,
+        -288.30755470712546
+      ],
+      "phase1": {
+        "visibleBatches": 14,
+        "triangles": 1001
+      },
+      "phase15": {
+        "visibleBatches": 14,
+        "triangles": 23099
+      },
+      "batchChangePercent": 0
+    },
+    {
+      "name": "Lake bridge",
+      "camera": [
+        -363.94785080396747,
+        3.2373993636967064,
+        -218.25419915092465
+      ],
+      "phase1": {
+        "visibleBatches": 11,
+        "triangles": 2275
+      },
+      "phase15": {
+        "visibleBatches": 13,
+        "triangles": 23616
+      },
+      "batchChangePercent": 18.2
+    },
+    {
+      "name": "Arts courtyard",
+      "camera": [
+        -59.94911118849445,
+        3.2373993636967064,
+        82.9613395986102
+      ],
+      "phase1": {
+        "visibleBatches": 63,
+        "triangles": 14286
+      },
+      "phase15": {
+        "visibleBatches": 51,
+        "triangles": 46924
+      },
+      "batchChangePercent": -19
+    }
+  ],
+  "performanceLimit": "CPU frustum counts at matched 1600x900-equivalent camera projections, excluding player and shadow passes. These are not measured WebGL draw calls or FPS. Browser automation was disabled, so the 60 FPS/30% GPU draw-call targets remain unverified."
+}

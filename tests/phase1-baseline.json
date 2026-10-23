@@ -1,0 +1,31 @@
+{
+  "sourceCommit": "a4efab4befcce33191b9fce9cc14c5c898309354",
+  "rawMapSha256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
+  "counts": {
+    "sourceNodes": 3260,
+    "sourceWays": 482,
+    "sourceRelations": 14,
+    "buildings": 189,
+    "roads": 42,
+    "greens": 16,
+    "water": 4,
+    "bridges": 1,
+    "trees": 1,
+    "treeRows": 1
+  },
+  "modelSha256": "f1ecf729f9bd2d41e663d9779420ee5f75df41bfd6bfbbac9ba3bc6071a57d61",
+  "collision": {
+    "triangles": 3600,
+    "sha256": "b95c22529398f30fd82c60571453cfcc198080818f92b707fce8a31470aea1be"
+  },
+  "staticScene": {
+    "meshes": 343,
+    "triangles": 61530
+  },
+  "browserObservation": {
+    "fps": 60,
+    "drawCalls": 157,
+    "triangles": 21313,
+    "note": "Prior Phase 1 Main Gate observation; viewport was not recorded."
+  }
+}

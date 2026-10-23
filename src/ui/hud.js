@@ -6,7 +6,7 @@ export class HUD {
     this.toastUntil = 0; this.debug = false;
     $('building-count').textContent = data.buildings.length;
   }
-  update(dt, player, renderer, fps) {
+  update(dt, player, renderer, fps, { inspection = false } = {}) {
     this.accumulated += dt;
     if (this.accumulated < .1) return;
     this.accumulated = 0;
@@ -14,13 +14,13 @@ export class HUD {
     this.map.draw(p, player.yaw);
     $('location-name').textContent = nearestPlace(p, this.data);
     $('coordinates').textContent = `${Math.abs(p.x).toFixed(0)} ${p.x >= 0 ? 'E' : 'W'} · ${Math.abs(p.z).toFixed(0)} ${p.z <= 0 ? 'N' : 'S'}`;
-    $('speed').textContent = player.speed.toFixed(1);
-    $('movement-state').textContent = !player.grounded ? 'IN THE AIR' : player.speed > 4.5 ? 'SPRINTING' : player.speed > .2 ? 'EXPLORING' : 'TAKING IT IN';
+    $('speed').textContent = inspection ? '0.0' : player.speed.toFixed(1);
+    $('movement-state').textContent = inspection ? 'STUDENT PAUSED · CAMPUS VIEW' : !player.grounded ? 'IN THE AIR' : player.speed > 4.5 ? 'SPRINTING' : player.speed > .2 ? 'EXPLORING' : 'TAKING IT IN';
     const scale = document.querySelector('.map-caption i');
     scale.style.width = `${$('minimap').clientWidth * 100 / this.map.span}px`;
     if (this.toastUntil && performance.now() > this.toastUntil) { $('toast').hidden = true; this.toastUntil = 0; }
     if (this.debug) $('debug-text').textContent = [
-      `GTA Islamic University · MILESTONE 01`,
+      `GTA Islamic University · PHASE 1.5 · ${inspection ? 'INSPECTION' : 'STUDENT'}`,
       `FPS ${fps.toFixed(0)} · draw calls ${renderer.info.render.calls} · triangles ${renderer.info.render.triangles.toLocaleString()}`,
       `Position ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`,
       `Grounded ${player.grounded} · speed ${player.speed.toFixed(2)} m/s`,

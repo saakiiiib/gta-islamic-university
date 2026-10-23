@@ -1,4 +1,6 @@
-const GREEN = { forest: '#7e9a68', orchard: '#99ad74', garden: '#a5ba83', park: '#a0b98a', pitch: '#b4bd8d' };
+import { buildingPalette } from '../world/appearance.js';
+import { isWalking } from '../world/roads.js';
+const GREEN = { forest: '#587b58', wood: '#587b58', orchard: '#829c63', garden: '#74985f', park: '#87a777', pitch: '#b3bc88' };
 
 export function mapToMinimap([x, z], center, span = 280, size = 256) {
   return { x: (x - center.x) / span * size + size / 2, y: (z - center.z) / span * size + size / 2 };
@@ -31,7 +33,7 @@ export class Minimap {
   paintBase() {
     const g = this.base.getContext('2d'), b = this.data.bounds;
     const sx = this.base.width / (b.maxX - b.minX), sz = this.base.height / (b.maxZ - b.minZ);
-    g.fillStyle = '#b9c49b'; g.fillRect(0, 0, this.base.width, this.base.height);
+    g.fillStyle = '#a7b28b'; g.fillRect(0, 0, this.base.width, this.base.height);
     const draw = (polygons, color, stroke) => {
       if (!polygons?.length) return;
       g.beginPath();
@@ -42,12 +44,13 @@ export class Minimap {
       g.fillStyle = color; g.fill('evenodd');
       if (stroke) { g.strokeStyle = stroke; g.lineWidth = 1.2; g.stroke(); }
     };
-    draw(this.data.campus.polygons, '#c7cea5', '#e7e7c2');
+    draw(this.data.campus.polygons, '#b2bf93', '#d9dec2');
     for (const green of this.data.greens) draw(green.polygons, GREEN[green.kind] || '#a4b980');
-    for (const water of this.data.water) draw(water.polygons, '#76afa5', '#4f8d86');
-    for (const road of this.data.roads) draw(road.polygons, road.kind === 'path' ? '#ead6a6' : '#ece8ce');
+    for (const water of this.data.water) draw(water.polygons, '#559b9f', '#377e82');
+    for (const road of this.data.roads.filter(isWalking)) draw(road.polygons, '#ddcba5');
+    for (const road of this.data.roads.filter(r => !isWalking(r))) draw(road.polygons, '#475253');
     for (const bridge of this.data.bridges) draw(bridge.polygons, '#e0c68b');
-    for (const building of this.data.buildings) draw(building.polygons, '#6a7760', '#52644e');
+    for (const building of this.data.buildings) draw(building.polygons, buildingPalette(building).map, '#596052');
     g.fillStyle = '#547447';
     for (const tree of this.data.trees) { g.beginPath(); g.arc((tree.x - b.minX) * sx, (tree.z - b.minZ) * sz, 4, 0, Math.PI * 2); g.fill(); }
   }

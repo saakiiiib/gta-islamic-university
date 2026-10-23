@@ -10,7 +10,7 @@
 </head>
 <body>
   <main id="app">
-    <canvas id="game" tabindex="0" aria-label="3D campus game. WASD moves, Shift sprints, Space jumps. Mouse or arrow keys look; hold right mouse to look if pointer lock is unavailable. Escape pauses."></canvas>
+    <canvas id="game" tabindex="0" aria-label="3D campus game. WASD moves, Shift sprints, Space jumps. Mouse or arrows look. I inspects campus, L toggles labels, G shows map alignment. Escape pauses or leaves inspection."></canvas>
     <div class="vignette" aria-hidden="true"></div>
 
     <header class="game-header">
@@ -20,7 +20,7 @@
 
     <section id="start-screen" class="screen start-screen" aria-labelledby="game-title">
       <div class="intro">
-        <div class="edition"><span>GTA / ISLAMIC UNIVERSITY</span><span>VOL. 01</span></div>
+        <div class="edition"><span>GTA / ISLAMIC UNIVERSITY</span><span>PHASE 1.5</span></div>
         <p class="eyebrow">23°43′ N &nbsp; 89°09′ E &nbsp; / &nbsp; THE CAMPUS EDITION</p>
         <h1 id="game-title">Small campus.<br><em>Big stories.</em></h1>
         <p class="intro-copy">The lake road. The halls. The long way home.<br>Step into Islamic University, one street at a time.</p>
@@ -30,11 +30,11 @@
         <div class="intro-facts"><span><b id="building-count">—</b> MAPPED BUILDINGS</span><span><b>1 : 1</b> METRE SCALE</span><span><b>100%</b> FREE TO EXPLORE</span></div>
       </div>
       <aside class="map-note"><span class="small-cross">✦</span><div><b>A familiar place.<br>A new perspective.</b><p>Real routes & footprints from your OSM map.<br>Building heights and ground appearance estimated.</p></div></aside>
-      <span class="start-footer">FIRST PLAYABLE MILESTONE &nbsp; / &nbsp; ON FOOT, AT YOUR OWN PACE</span>
+      <span class="start-footer">CAMPUS RECOGNITION &nbsp; / &nbsp; ON FOOT, AT YOUR OWN PACE</span>
     </section>
 
     <section id="pause-screen" class="screen pause-screen" hidden aria-labelledby="pause-title">
-      <div class="pause-card"><p class="eyebrow">TAKE A MOMENT.</p><h2 id="pause-title">Right where<br>you left off.</h2><p id="pause-reason">Your campus is waiting.</p><button class="primary-button" id="resume-button">BACK TO CAMPUS <span>↗</span></button><button class="text-button" id="reset-button">Return to Main Gate <span>↺</span></button><p class="pause-hint">WASD move · Shift sprint · Space jump<br>Mouse / arrow keys look · R reset · Escape pause</p></div>
+      <div class="pause-card"><p class="eyebrow">TAKE A MOMENT.</p><h2 id="pause-title">Right where<br>you left off.</h2><p id="pause-reason">Your campus is waiting.</p><button class="primary-button" id="resume-button">BACK TO CAMPUS <span>↗</span></button><button class="text-button" id="reset-button">Return to Main Gate <span>↺</span></button><p class="pause-hint">WASD move · Shift sprint · Space jump<br>Mouse / arrows look · R reset · Escape pause<br>I inspect campus · L labels · G map alignment</p></div>
     </section>
 
     <section id="play-hud" hidden aria-label="Game status">
@@ -44,6 +44,14 @@
       <div class="controls-strip"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> MOVE</span><span><kbd>SHIFT</kbd> SPRINT</span><span><kbd>SPACE</kbd> JUMP</span><span><kbd>ESC</kbd> PAUSE</span></div>
       <div id="toast" class="toast" role="status" hidden></div>
     </section>
+
+    <div id="place-labels" aria-hidden="true"></div>
+    <nav id="view-toolbar" class="view-toolbar" aria-label="Campus view options" hidden>
+      <button id="labels-button" type="button" aria-pressed="true" title="Toggle nearby place labels (L)"><kbd>L</kbd><span>Place labels</span></button>
+      <button id="inspection-button" type="button" aria-pressed="false" title="Pause the student and inspect campus (I)"><kbd>I</kbd><span>Inspect campus</span></button>
+      <button id="alignment-button" type="button" aria-pressed="false" title="Toggle original OSM road and footprint outlines (G)"><kbd>G</kbd><span>Map alignment</span></button>
+    </nav>
+    <aside id="inspection-banner" class="inspection-banner" hidden><b>CAMPUS VIEW <span>STUDENT PAUSED</span></b><p>Drag / arrows orbit · Right drag / WASD pan · Scroll zoom</p><span>Press <kbd>I</kbd> or <kbd>ESC</kbd> to return</span></aside>
 
     <aside id="debug-panel" hidden><pre id="debug-text"></pre></aside>
     <footer class="attribution"><span>MAP DATA</span> <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a><span class="attribution-detail"> · ODbL 1.0</span></footer>

@@ -1,39 +1,73 @@
-# Milestone 01 validation
+# Phase 1.5 validation
 
-Verified on 2026-10-23 using Node.js 24.17.0, npm 11.13.0, Three.js 0.186.1 and Vite 8.3.5.
+Verified on 2026-10-23 with Node.js 24.17.0, npm 11.13.0, Three.js 0.186.1 and Vite 8.3.5.
 
 ## Automated checks
 
-`npm test`: **42 tests passed, zero failed**.
+`npm test`: **62 tests passed, zero failed**, including all 42 Phase 1 tests and 20 added checks.
 
-- OSM string IDs, node references and tags; exact expected source and selected-feature counts.
-- Metre projection, east/north orientation, 100 m context and preservation of the northern campus boundary.
-- Concave footprints, building relation deduplication, auditorium inclusion and the two documented courtyard repairs.
-- Long road/canal clipping, joined road buffers, building-height estimates and the bridge without a highway tag.
-- Camera-relative movement, normalized diagonals, sprint speed, grounded jumping, gravity and fixed-step consistency.
-- Wall sliding, corner containment, rooftop landing, open courtyards, shoreline blocking, water holes, bridge ramps, boundaries and reset.
-- Camera obstruction, student proportions and animation, input enabling, one-shot actions, pause clearing, pointer-lock fallback and arrow-key orbit.
-- North-up minimap scale and location lookup.
-- Actual map integration: Main Gate spawn and movement, crossing the mapped lake bridge from shore to shore, adjacent lake blocking and ground-level access to the repaired courtyard.
+- Unchanged map bytes, source/selected counts, projection, bounds, footprints, courtyard holes, heights and `heightSource`.
+- Canonical collision positions and triangle winding match the pre-change baseline: **3,600 triangles**. Decorative façades, road edges and planting add no colliders.
+- Movement, normalized diagonal speed, sprint, jump/landing, gravity, fixed stepping, wall/corner containment, rooftop landing, courtyard access, shoreline blocking, real bridge traversal, reset and camera obstruction remain passing.
+- Road unions retain junction connectivity; walking and vehicle pavement no longer overlap. Curbs open at junctions, walking links and bridge approaches, exclude buildings/water, and avoid walking pavement. Paint belongs only to trunk/tertiary roads, skips vehicle junctions and sits above pavement.
+- Bridge pavement cuts match its square deck ends, preventing artificial gaps from round buffer caps.
+- Façade normals face outward for both outer-ring winding directions and both courtyard-ring directions.
+- Material classification respects source tags, with worship before “Hall.” Heights are independent and unchanged.
+- Labels use actual source names/entrance refs, deduplicate nearby identical names while retaining source IDs, and anchor inside buildings rather than courtyard holes. Synthetic “Lake footbridge” is excluded.
+- Surveyed entrance coordinates/tags survive normalization; renderer prefers building entries and otherwise chooses a road-facing outer wall.
+- Decorative planting is deterministic, observes exclusion zones and stays within its caps.
+- Inspection clears input, releases pointer lock without pausing, preserves student capsule/velocity and the separate chase view, fits campus after resize, and supports bounded pan/orbit/zoom. Focus loss clears controls; suspend/resume retains the inspection camera. Held-key repeats cannot restart student movement after exit.
+- Label range, six/eighteen caps, occlusion filtering, overlap rejection and HUD avoidance are tested.
 
-`npm run build`: **passed**. Vite reports its normal size advisory for the approximately 716 kB minified application/Three.js bundle (approximately 193 kB gzip). This is an advisory, not a build error. No external runtime CDN or paid service is needed.
+`npm run build`: **passed**. `npm run build:pages`: **passed**. The output includes 734,738 bytes of JavaScript (about 199 kB gzip) and 12,065 bytes of CSS. Generated Pages output uses relative asset paths and includes the unchanged map, notices and `.nojekyll`. Vite's >500 kB bundle advisory is expected for the bundled Three.js application; it is not a build failure.
 
-## Browser checks
+## Source and collision integrity
 
-The local development build was rendered in the app's browser. Verified loading/start, character visibility, walking, sprinting, jumping, pause, location/coordinate HUD, and the north-up minimap. A walking check moved from the Main Gate position to approximately (278.48, 0, -67.11) m. A separate sprint reached approximately (273.58, 0, -72.50) m. The jump reported Y=0.48 m and grounded=false. Escape opened the pause screen.
+Baseline source commit: `a4efab4befcce33191b9fce9cc14c5c898309354`. The baseline was captured before editing the renderer and is stored in `tests/phase1-baseline.json`.
 
-The observed view reported approximately 60 FPS, 157 draw calls and 21,313 visible triangles; this is a single local observation, not a cross-device performance guarantee. No console warnings or errors appeared during that check. Pointer lock was unavailable in the app browser; the game displayed its alternative look controls.
-
-Browser controls were subsequently disabled in Work settings. Final interactive production-preview, resume/reset, right-drag/arrow orbit and resize checks could not be completed after that change. The corresponding input/physics/camera functions are covered by automated tests. No physical phone or other hardware/browser matrix was tested.
-
-## Production files and source integrity
-
-The local production server returned HTTP 200 for the HTML, JavaScript, CSS, favicon and `data/map.osm`. The map response contains 770,269 bytes. The original, bundled source and production map copies share SHA-256:
+Raw map SHA-256 (770,269 bytes):
 
 ```text
 8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9
 ```
 
-`MAP-REPORT.json` records bounds, origin, spawn, feature counts, height sources, warnings and repairs. The source ZIP includes source files, lockfile, unchanged map, notices, tests and `dist/`, and excludes `node_modules`. No public deployment was performed.
+Canonical geographic model SHA-256:
 
-Temporary local QA servers were stopped after validation. Follow README.md to start the game locally.
+```text
+f1ecf729f9bd2d41e663d9779420ee5f75df41bfd6bfbbac9ba3bc6071a57d61
+```
+
+Canonical collision SHA-256 (cyclic vertex order and batch order normalized; winding retained):
+
+```text
+b95c22529398f30fd82c60571453cfcc198080818f92b707fce8a31470aea1be
+```
+
+`MAP-REPORT.json` retains bounds/counts/height sources/repairs. `VISUAL-REPORT.json` records 55 source-name anchors, five entrance nodes, 240 added trees, 48 shrubs and 188 illustrative entry treatments. No surveyed entrance in this extract lies on a building wall.
+
+## Performance checks and limits
+
+Vertex-coloured building batches reduce the scene from 343 mesh objects to 211. Curbs, façade detail and planting increase total geometry from 61,530 to 113,842 triangles. Window density was reduced and vegetation combined into one instanced mesh to bound overhead. No per-window objects or external textures were added.
+
+CPU frustum checks used the same camera positions and 16:9 projection for both renderers:
+
+| View | Phase 1 visible batches | Phase 1.5 visible batches | Change |
+| --- | ---: | ---: | ---: |
+| Main Gate | 114 | 78 | −31.6% |
+| Paradise Road | 14 | 14 | 0% |
+| Lake bridge | 11 | 13 | +18.2% |
+| Arts courtyard | 63 | 51 | −19.0% |
+
+Counts exclude the student and shadow passes. They are **not** measured WebGL draw calls or FPS and do not prove the 60 FPS / ≤30% draw-call target. The older Phase 1 browser observation was about 60 FPS and 157 draw calls at Main Gate, but its viewport was not recorded, so it is not a controlled GPU comparison.
+
+## Browser verification limits
+
+Browser control reports **“Local browser use is disabled in Work settings.”** No browser workaround was used. Current-release graphical play checks, console checks and screenshots could not be obtained. Main Gate junctions, Paradise Road, Lake road/bridge, academic buildings, halls, playing fields and the repaired Arts courtyard still need interactive visual review. Automated checks cover source geometry and the existing real-map movement regressions.
+
+Actual FPS/draw calls, perceived daylight/label readability, real mouse drag/wheel behavior, visual z-fighting and hosted gameplay remain unverified. Unit tests and static checks cannot establish those visual results.
+
+## Build and hosting verification
+
+Development HTTP checks returned **200** for the HTML, main module, new inspection/label/road modules and unchanged map. Production preview returned **200** for HTML, JavaScript, CSS, favicon and map; their bytes match the generated build. `dist/` and `docs/` contain the same map checksum. Generated `docs/` was reviewed before commit, including removal of obsolete hashed assets.
+
+The release process also checks the GitHub Pages workflow and hosted HTML/assets/map over HTTPS. These confirm delivery and file integrity, not interactive gameplay. The actual commit and workflow result are reported with the delivered update. See `HOSTING.md` for publishing commands.

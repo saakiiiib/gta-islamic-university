@@ -9,7 +9,7 @@
 
 The OSM database is available under ODbL 1.0. The generated map model derives from that data; these data rights and attribution are retained. Application code, character geometry and illustrative materials are separate from the OSM data license. No Google Maps imagery or paid map API is used. The game does not request map tiles at runtime.
 
-Source snapshot: 3,260 nodes, 482 ways, 14 relations. The selected context contains 189 building footprints, 42 road/path ways, 16 green features, four water features, one footbridge, one tree point and one tree row. Heights, widths, façades and flat terrain are documented approximations in README.md.
+Source snapshot: 3,260 nodes, 482 ways, 14 relations. The selected context contains 189 building footprints, 42 road/path ways, 16 green features, four water features, one footbridge, one tree point and one tree row. Heights, widths, façades, road edging, entry treatments, decorative planting and flat terrain are documented approximations in README.md. Labels use source names and named entrance refs; they do not introduce new landmark names. Five mapped entrance nodes are preserved as metadata.
 
 Geometry repair: the two orphan inner rings of source relation `18079383` are associated with their unique enclosing existing building relation `18079382` during import. This does not add a new geographic footprint and does not alter the raw export. Incomplete administrative boundaries are excluded from gameplay.
 

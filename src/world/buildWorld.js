@@ -1,49 +1,15 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { buildingGeometry, surfaceGeometry, geometryMaterialPart, polygonCenter, ringArea, geometryFromTriangles, pushQuad, lineSegmentsGeometry } from './geometry.js';
+import { buildingGeometry, surfaceGeometry, geometryMaterialPart, polygonCenter, lineSegmentsGeometry } from './geometry.js';
 import { makeBridgeGeometries, measurePath, samplePath } from './bridge.js';
+import { buildRoadAppearance, ROAD_LEVELS } from './roads.js';
+import { buildingPalette, hashId, LAND_COLORS } from './appearance.js';
+import { facadeGeometry, tintGeometry, chooseEntries } from './facades.js';
+import { planVegetation } from './vegetation.js';
 
 export { bridgeHeightAt } from './bridge.js';
 
 const CHUNK_SIZE = 150;
-const hashId = id => [...String(id)].reduce((a, c) => ((a * 31 + c.charCodeAt(0)) >>> 0), 7);
-
-function facadeGeometry(polygon, height) {
-  const windows = [], bands = [];
-  const floors = Math.max(1, Math.floor(height / 3.2));
-  for (let ringIndex = 0; ringIndex < polygon.length; ringIndex++) {
-    const ring = polygon[ringIndex];
-    const orientation = Math.sign(ringArea(ring)) || 1;
-    const outward = orientation * (ringIndex === 0 ? 1 : -1);
-    for (let i = 1; i < ring.length; i++) {
-      const [ax, az] = ring[i - 1], [bx, bz] = ring[i];
-      const dx = bx - ax, dz = bz - az, length = Math.hypot(dx, dz);
-      if (length < 0.3) continue;
-      const ux = dx / length, uz = dz / length;
-      const nx = uz * outward, nz = -ux * outward;
-      const at = (distance, y, offset = 0.032) => [ax + ux * distance + nx * offset, y, az + uz * distance + nz * offset];
-      for (let floor = 0; floor < floors; floor++) {
-        const y0 = floor * 3.2 + 1.05, y1 = Math.min(height - 0.55, y0 + 1.35);
-        if (y1 <= y0 || length < 2.1) continue;
-        const count = Math.max(1, Math.floor((length - 1.0) / 2.65));
-        const spacing = length / count;
-        for (let w = 0; w < count; w++) {
-          const centre = (w + 0.5) * spacing;
-          const half = Math.min(0.62, spacing * 0.25);
-          pushQuad(windows, at(centre - half, y0), at(centre + half, y0), at(centre + half, y1), at(centre - half, y1));
-          // Narrow pale lintels read at human scale without textures or decals.
-          pushQuad(bands, at(centre - half - 0.08, y1, 0.04), at(centre + half + 0.08, y1, 0.04), at(centre + half + 0.08, y1 + 0.1, 0.04), at(centre - half - 0.08, y1 + 0.1, 0.04));
-        }
-      }
-      for (let floor = 1; floor < floors; floor++) {
-        const y = floor * 3.2;
-        pushQuad(bands, at(0, y - 0.08, 0.04), at(length, y - 0.08, 0.04), at(length, y + 0.1, 0.04), at(0, y + 0.1, 0.04));
-      }
-      pushQuad(bands, at(0, height - 0.22, 0.045), at(length, height - 0.22, 0.045), at(length, height + 0.04, 0.045), at(0, height + 0.04, 0.045));
-    }
-  }
-  return { windows: geometryFromTriangles(windows), bands: geometryFromTriangles(bands) };
-}
 
 class SpatialBatches {
   constructor(group, collisionGroup) {
@@ -76,6 +42,7 @@ class SpatialBatches {
       mesh.name = `${kind}-chunk`;
       mesh.receiveShadow = true;
       mesh.castShadow = kind === 'building' || kind === 'bridge';
+      if (kind === 'road') mesh.renderOrder = 1;
       this.group.add(mesh);
       if (kind === 'building') this.buildingMeshes.push(mesh);
       if (kind === 'bridge') this.bridgeMeshes.push(mesh);
@@ -89,7 +56,7 @@ class SpatialBatches {
   }
 }
 
-function addTrees(mapData, group, materials) {
+function addTrees(mapData, group, materials, decoration) {
   const points = [...(mapData.trees ?? [])].map(p => ({ x: p.x, z: p.z, id: p.id }));
   for (const row of mapData.treeRows ?? []) {
     for (const path of row.paths ?? []) {
@@ -101,19 +68,30 @@ function addTrees(mapData, group, materials) {
       }
     }
   }
-  if (!points.length) return;
-  const trunk = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.17, 0.28, 2.8, 6), materials.trunk, points.length);
-  const canopy = new THREE.InstancedMesh(new THREE.DodecahedronGeometry(1, 0), materials.foliage, points.length);
+  points.push(...decoration.trees);
+  if (!points.length && !decoration.shrubs.length) return;
+  // A single coloured unit tree permits trunks, crowns and low shrubs to share
+  // one instanced draw, rather than adding draw calls for each planting family.
+  const trunkGeometry = new THREE.CylinderGeometry(.17, .28, 2.8, 6).translate(0, 1.4, 0);
+  const crownGeometry = new THREE.DodecahedronGeometry(1, 0).scale(2.1, 2.15, 2.1).translate(0, 3.5, 0);
+  tintGeometry(trunkGeometry, 0x745e48); tintGeometry(crownGeometry, 0x61805a);
+  trunkGeometry.deleteAttribute('uv'); crownGeometry.deleteAttribute('uv');
+  const sourceTrunk = trunkGeometry.index ? trunkGeometry.toNonIndexed() : trunkGeometry;
+  const geometry = mergeGeometries([sourceTrunk, crownGeometry], false);
+  if (sourceTrunk !== trunkGeometry) sourceTrunk.dispose(); trunkGeometry.dispose(); crownGeometry.dispose();
+  const canopy = new THREE.InstancedMesh(geometry, materials.foliage, points.length + decoration.shrubs.length);
   const transform = new THREE.Object3D();
   points.forEach((point, i) => {
     const variation = (hashId(point.id) % 100) / 100;
-    transform.position.set(point.x, 1.4, point.z); transform.scale.set(1, 1, 1); transform.rotation.set(0, 0, 0); transform.updateMatrix(); trunk.setMatrixAt(i, transform.matrix);
-    transform.position.set(point.x, 3.5 + variation * 0.5, point.z); transform.scale.set(2.1 + variation * 0.7, 2.15 + variation * 0.65, 2.1 + variation * 0.7); transform.rotation.y = variation * Math.PI; transform.updateMatrix(); canopy.setMatrixAt(i, transform.matrix);
-    canopy.setColorAt(i, new THREE.Color().setHSL(0.27 + variation * 0.045, 0.25, 0.29 + variation * 0.075));
+    transform.position.set(point.x, 0, point.z); transform.scale.setScalar(1 + variation * .28); transform.rotation.set(0, variation * Math.PI, 0); transform.updateMatrix(); canopy.setMatrixAt(i, transform.matrix);
+    canopy.setColorAt(i, new THREE.Color().setScalar(.9 + variation * .1));
   });
-  trunk.name = 'mapped-tree-trunks'; canopy.name = 'mapped-tree-canopies';
-  trunk.castShadow = canopy.castShadow = true; trunk.receiveShadow = canopy.receiveShadow = true;
-  group.add(trunk, canopy);
+  decoration.shrubs.forEach((point, i) => {
+    transform.position.set(point.x, 0, point.z); transform.scale.set(.44, .22, .44); transform.rotation.y = hashId(point.id) % 6; transform.updateMatrix(); canopy.setMatrixAt(points.length + i, transform.matrix);
+    canopy.setColorAt(points.length + i, new THREE.Color(.95, 1, .9));
+  });
+  canopy.name = 'mapped-tree-canopies'; canopy.userData.includesTrunksAndShrubs = true;
+  canopy.castShadow = canopy.receiveShadow = true; group.add(canopy);
 }
 
 export function buildWorld(mapData, { onProgress = () => {} } = {}) {
@@ -121,16 +99,16 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
   const collisionGroup = new THREE.Group(); collisionGroup.name = 'campus-colliders'; collisionGroup.visible = false;
   const standard = (color, options = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.94, ...options });
   const materials = {
-    ground: standard(0x8f9b72), asphalt: standard(0x53575a), path: standard(0xc9bd96),
-    roof: standard(0xb7b7aa), windows: standard(0x536a70, { roughness: 0.52, metalness: 0.08, side: THREE.DoubleSide }),
-    trim: standard(0xe2dcc4, { side: THREE.DoubleSide }), water: standard(0x4d8792, { roughness: 0.28, metalness: 0.13 }),
-    garden: standard(0x698655), park: standard(0x79976c), grass: standard(0x7e9966),
-    forest: standard(0x4d745b), orchard: standard(0x6d885b), pitch: standard(0x9ba477),
+    ground: standard(LAND_COLORS.ground), pavement: standard(0xffffff, { vertexColors: true, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }),
+    building: standard(0xffffff, { vertexColors: true }), windows: standard(0x476369, { roughness: 0.48, metalness: 0.12 }),
+    decor: standard(0xffffff, { vertexColors: true }), water: standard(LAND_COLORS.water, { roughness: 0.3, metalness: 0.15 }),
+    garden: standard(LAND_COLORS.garden), park: standard(LAND_COLORS.park), grass: standard(LAND_COLORS.grass),
+    forest: standard(LAND_COLORS.forest), orchard: standard(LAND_COLORS.orchard), pitch: standard(LAND_COLORS.pitch),
     bridge: standard(0xc0bca6), rail: standard(0x525e61, { metalness: 0.3 }),
-    trunk: standard(0x745e48), foliage: standard(0x61805a),
-    roadLine: new THREE.MeshBasicMaterial({ color: 0xddd8b4 }),
+    foliage: standard(0xffffff, { vertexColors: true }),
     pitchLine: new THREE.LineBasicMaterial({ color: 0xd8dcc1, transparent: true, opacity: 0.7 }),
-    walls: [0xd5cfb8, 0xc7bf9f, 0xd5d2c1, 0xc3c4b0, 0xcbb69a].map(color => standard(color)),
+    debugRoad: new THREE.LineBasicMaterial({ color: 0x49e7f0, transparent: true, opacity: .8, depthTest: false }),
+    debugBuilding: new THREE.LineBasicMaterial({ color: 0xffbd54, transparent: true, opacity: .9, depthTest: false }),
   };
   const batches = new SpatialBatches(group, collisionGroup);
   const bounds = mapData.bounds;
@@ -156,36 +134,33 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
       batches.add(surfaceGeometry(polygon, 0.021), materials.water, x, z, { kind: 'water' });
     }
   }
-  for (const road of mapData.roads ?? []) {
-    const path = /path|footway|cycleway|pedestrian|steps|track/.test(road.kind);
-    for (const polygon of road.polygons) {
+  onProgress('Joining roads and opening walking connections');
+  const roadAppearance = buildRoadAppearance(mapData);
+  for (const [key, level, color] of [['asphalt', ROAD_LEVELS.asphalt, 0x363c3f], ['paths', ROAD_LEVELS.path, 0xc4b697], ['edges', ROAD_LEVELS.edge, 0xaeb4a8], ['markings', ROAD_LEVELS.marking, 0xd4d4b9]]) {
+    for (const polygon of roadAppearance[key]) {
       const [x, z] = polygonCenter(polygon);
-      batches.add(surfaceGeometry(polygon, path ? 0.047 : 0.04), path ? materials.path : materials.asphalt, x, z, { kind: 'road' });
-    }
-    if (/^(trunk|tertiary)$/.test(road.kind)) {
-      for (const path of road.paths ?? []) {
-        const { distances, length } = measurePath(path);
-        for (let distance = 0; distance + 3 < length; distance += 9) {
-          const a = samplePath(path, distances, distance), b = samplePath(path, distances, distance + 3);
-          const vertices = [];
-          pushQuad(vertices, [a.x + a.nx * 0.06, 0.045, a.z + a.nz * 0.06], [b.x + b.nx * 0.06, 0.045, b.z + b.nz * 0.06], [b.x - b.nx * 0.06, 0.045, b.z - b.nz * 0.06], [a.x - a.nx * 0.06, 0.045, a.z - a.nz * 0.06]);
-          batches.add(geometryFromTriangles(vertices), materials.roadLine, a.x, a.z, { kind: 'road-marking' });
-        }
-      }
+      batches.add(tintGeometry(surfaceGeometry(polygon, level), color), materials.pavement, x, z, { kind: 'road' });
     }
   }
+  for (const polygon of roadAppearance.curbs) {
+    const [x, z] = polygonCenter(polygon), geometry = buildingGeometry(polygon, ROAD_LEVELS.curbTop - ROAD_LEVELS.curbBase);
+    geometry.translate(0, ROAD_LEVELS.curbBase, 0);
+    batches.add(tintGeometry(geometry, 0x9daba1), materials.pavement, x, z, { kind: 'road' });
+  }
   onProgress('Extruding campus buildings');
+  const entryTreatments = [];
   for (const building of mapData.buildings ?? []) {
-    const wallMaterial = materials.walls[hashId(building.id) % materials.walls.length];
+    const palette = buildingPalette(building), entries = chooseEntries(building, mapData.roads, mapData.entrances);
+    entryTreatments.push(...entries.map(e => ({ buildingId: building.id, source: e.source, nodeId: e.nodeId, position: e.edge.at(e.distance, 0, 0) })));
     for (const polygon of building.polygons) {
       const [x, z] = polygonCenter(polygon);
       const geometry = buildingGeometry(polygon, building.height);
-      batches.add(geometryMaterialPart(geometry, 0), materials.roof, x, z, { collision: true, kind: 'building' });
-      batches.add(geometryMaterialPart(geometry, 1), wallMaterial, x, z, { collision: true, kind: 'building' });
+      batches.add(tintGeometry(geometryMaterialPart(geometry, 0), palette.roof), materials.building, x, z, { collision: true, kind: 'building' });
+      batches.add(tintGeometry(geometryMaterialPart(geometry, 1), palette.wall), materials.building, x, z, { collision: true, kind: 'building' });
       geometry.dispose();
-      const facade = facadeGeometry(polygon, building.height);
+      const facade = facadeGeometry(polygon, building.height, palette, entries);
       batches.add(facade.windows, materials.windows, x, z, { kind: 'facade' });
-      batches.add(facade.bands, materials.trim, x, z, { kind: 'facade' });
+      batches.add(facade.details, materials.decor, x, z, { kind: 'facade' });
     }
   }
   for (const bridge of mapData.bridges ?? []) {
@@ -195,18 +170,28 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
     for (const rail of geometries.rails) batches.add(rail, materials.rail, ...centre, { kind: 'bridge-rail' });
   }
   batches.finish();
-  addTrees(mapData, group, materials);
+  const vegetation = planVegetation(mapData);
+  addTrees(mapData, group, materials, vegetation);
+  const footprintDebug = new THREE.Group(); footprintDebug.name = 'osm-alignment-debug'; footprintDebug.visible = false;
+  const debugLines = (rings, elevation, material) => {
+    if (!rings.length) return;
+    const line = new THREE.LineSegments(lineSegmentsGeometry(rings, elevation), material); line.renderOrder = 20; line.frustumCulled = false; footprintDebug.add(line);
+  };
+  debugLines((mapData.roads ?? []).flatMap(r => [...r.polygons.flatMap(p => p), ...r.paths]), .17, materials.debugRoad);
+  debugLines((mapData.buildings ?? []).flatMap(b => b.polygons.flatMap(p => p)), .17, materials.debugBuilding);
+  group.add(footprintDebug);
   group.updateMatrixWorld(true); collisionGroup.updateMatrixWorld(true);
   onProgress('Campus geometry ready');
   let elapsed = 0;
   return {
     group, collisionGroup, bridgeMeshes: batches.bridgeMeshes, buildingMeshes: batches.buildingMeshes,
+    decoration: { roads: roadAppearance, vegetation, entryTreatments }, footprintDebug, labelAnchors: mapData.places ?? [],
     update(dt) {
       elapsed += Math.max(0, dt);
       // Restrained tonal movement suggests a breeze on the water, with no
       // per-vertex work and no animated world geometry in the collision tree.
       const lightness = 1 + Math.sin(elapsed * 0.55) * 0.018;
-      materials.water.color.setHex(0x4d8792).multiplyScalar(lightness);
+      materials.water.color.setHex(LAND_COLORS.water).multiplyScalar(lightness);
     },
     dispose() {
       const geometries = new Set();

@@ -4,10 +4,13 @@ import { loadMap } from './map/index.js';
 import { buildWorld } from './world/index.js';
 import { PlayerController, InputController, ThirdPersonCamera } from './player/index.js';
 import { HUD } from './ui/hud.js';
+import { InspectionCamera, InspectionSession } from './player/inspection.js';
+import { PlaceLabels } from './ui/labels.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('game');
 let state = 'loading', renderer, scene, camera, world, mapData, player, input, chase, hud, sun;
+let inspection, inspectionSession, labels, gameplayFog;
 let accumulator = 0, lastTime = performance.now(), fps = 60;
 const STEP = 1 / 60;
 const sunOffset = new THREE.Vector3(-55, 110, -40);
@@ -23,11 +26,12 @@ function resize() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.setSize(width, height, false);
   camera.aspect = width / Math.max(1, height); camera.updateProjectionMatrix();
+  inspection?.resize(width / Math.max(1, height));
 }
 function pause(reason = 'escape') {
-  if (state !== 'playing') return;
+  if (!['playing', 'inspection'].includes(state)) return;
   state = 'paused'; accumulator = 0;
-  input.setEnabled(false);
+  input.setEnabled(false); inspectionSession.suspend();
   if (document.pointerLockElement === canvas) document.exitPointerLock();
   $('pause-reason').textContent = reason === 'focus' ? 'The game paused while you stepped away.' : 'Your campus is waiting.';
   $('pause-screen').hidden = false;
@@ -37,24 +41,61 @@ function pause(reason = 'escape') {
 async function play() {
   if (!['ready', 'paused'].includes(state) || document.hidden) return;
   const firstStart = state === 'ready';
-  state = 'playing'; accumulator = 0; lastTime = performance.now();
-  input.setEnabled(true);
+  state = inspectionSession.active ? 'inspection' : 'playing'; accumulator = 0; lastTime = performance.now();
+  inspectionSession.resume();
   if (firstStart) { player.reset(mapData.spawn); chase.reset(mapData.spawn); }
   $('start-screen').hidden = true; $('pause-screen').hidden = true; $('play-hud').hidden = false;
   $('pause-button').disabled = false;
+  $('view-toolbar').hidden = false;
   canvas.focus({ preventScroll: true });
   $('announcer').textContent = 'Explore Islamic University. WASD moves, Shift sprints, Space jumps. Escape pauses.';
+  if (inspectionSession.active) { syncView(); return; }
   const locked = await input.requestPointerLock();
   if (!locked && state === 'playing') hud.toast('WASD to move. Hold right mouse and drag to look around.');
 }
 function resetPlayer() {
+  if (inspectionSession.active) { inspectionSession.exit(); syncView(); }
   player.reset(mapData.spawn); chase.reset(mapData.spawn); accumulator = 0;
   hud.toast('Back at Main Gate. The campus is yours.');
 }
 
+function syncView() {
+  const active = inspectionSession.active;
+  scene.fog = active ? null : gameplayFog;
+  document.body.classList.toggle('inspecting', active);
+  $('inspection-button').setAttribute('aria-pressed', String(active));
+  $('inspection-button').querySelector('span').textContent = active ? 'Back to student' : 'Inspect campus';
+  $('inspection-banner').hidden = !active;
+  $('announcer').textContent = active ? 'Inspection camera. Student paused. Mouse drag or arrows orbit, right drag or WASD pan, wheel zoom. I or Escape returns.' : 'Back to the student.';
+  labels.elapsed = 1;
+}
+function toggleInspection() {
+  if (!['playing', 'inspection'].includes(state)) return;
+  accumulator = 0; lastTime = performance.now();
+  if (inspectionSession.active) {
+    inspectionSession.exit(); state = 'playing'; syncView();
+    canvas.focus({ preventScroll: true }); input.requestPointerLock();
+  } else {
+    state = 'inspection'; inspectionSession.enter(); syncView();
+    canvas.focus({ preventScroll: true });
+  }
+}
+function toggleLabels() {
+  if (!labels) return;
+  labels.setEnabled(!labels.enabled);
+  $('labels-button').setAttribute('aria-pressed', String(labels.enabled));
+  hud.toast(`Place labels ${labels.enabled ? 'on' : 'off'}.`, 1800);
+}
+function toggleAlignment() {
+  if (!world) return;
+  world.footprintDebug.visible = !world.footprintDebug.visible;
+  $('alignment-button').setAttribute('aria-pressed', String(world.footprintDebug.visible));
+  hud.toast(world.footprintDebug.visible ? 'Map alignment: cyan roads · amber building outlines.' : 'Map alignment hidden.', 2400);
+}
+
 function lighting() {
-  scene.add(new THREE.HemisphereLight(0xe4f2dc, 0x7e8261, 2));
-  sun = new THREE.DirectionalLight(0xffebcb, 2.3);
+  scene.add(new THREE.HemisphereLight(0xd9e6ec, 0x797c65, 1.4));
+  sun = new THREE.DirectionalLight(0xffebcb, 2.0);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   Object.assign(sun.shadow.camera, { left: -58, right: 58, top: 58, bottom: -58, near: 1, far: 210 });
@@ -81,10 +122,18 @@ function tick(t) {
     sun.target.position.set(Math.round(player.position.x * 8) / 8, 0, Math.round(player.position.z * 8) / 8);
     sun.position.copy(sun.target.position).add(sunOffset);
     hud.update(elapsed, player, renderer, fps);
+  } else if (state === 'inspection') {
+    // No physics, character animation or catch-up accumulation in inspection.
+    inspection.update(elapsed);
+    hud.update(elapsed, player, renderer, fps, { inspection: true });
   } else if (state === 'ready') {
     world.update(elapsed, player.position);
   }
-  if (renderer && scene && camera) renderer.render(scene, camera);
+  if (renderer && scene && camera) {
+    const activeCamera = inspectionSession.active ? inspection.camera : camera;
+    renderer.render(scene, activeCamera);
+    labels.update(elapsed, activeCamera, player.position, { inspection: inspectionSession.active, visible: ['playing', 'inspection'].includes(state), width: window.innerWidth, height: window.innerHeight });
+  }
   requestAnimationFrame(tick);
 }
 
@@ -100,18 +149,23 @@ async function initialize() {
     player = new PlayerController({ collisionGroup: world.collisionGroup, mapData });
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = .95;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
-    scene = new THREE.Scene(); scene.background = new THREE.Color(0xbacabb);
-    scene.fog = new THREE.Fog(0xbacabb, 130, 580);
+    scene = new THREE.Scene(); scene.background = new THREE.Color(0xb8cbd6);
+    gameplayFog = new THREE.Fog(0xb8cbd6, 350, 1600); scene.fog = gameplayFog;
     scene.add(world.group, player.group);
-    camera = new THREE.PerspectiveCamera(60, 1, .08, 1100);
+    camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
     chase = new ThirdPersonCamera(camera, world.collisionGroup, { distance: 6 });
     chase.reset(mapData.spawn);
     input = new InputController(canvas, { onPause: reason => {
-      if (reason === 'escape' && state === 'paused') play();
+      if (reason === 'escape' && state === 'inspection') toggleInspection();
+      else if (reason === 'escape' && state === 'paused') play();
       else pause(reason);
     } });
+    inspection = new InspectionCamera(new THREE.PerspectiveCamera(52, 1, .5, 3500), mapData.bounds);
+    inspection.attach(canvas, pause);
+    inspectionSession = new InspectionSession(input, inspection, document);
+    labels = new PlaceLabels($('place-labels'), world.labelAnchors, world.buildingMeshes);
     lighting(); resize();
     hud = new HUD(mapData);
     // The opening view looks inward from the actual Main Gate spawn.
@@ -130,6 +184,7 @@ async function initialize() {
       document.body.dataset.gameState = state;
       canvas.dataset.position = `${player.position.x.toFixed(2)},${player.position.y.toFixed(2)},${player.position.z.toFixed(2)}`;
       canvas.dataset.grounded = String(player.grounded);
+      canvas.dataset.cameraMode = inspectionSession.active ? 'inspection' : 'student';
     }, 250);
     lastTime = performance.now(); requestAnimationFrame(tick);
   } catch (error) {
@@ -149,11 +204,20 @@ $('start-button').addEventListener('click', play);
 $('resume-button').addEventListener('click', play);
 $('pause-button').addEventListener('click', () => pause());
 $('reset-button').addEventListener('click', () => { resetPlayer(); play(); });
+$('inspection-button').addEventListener('click', toggleInspection);
+$('labels-button').addEventListener('click', toggleLabels);
+$('alignment-button').addEventListener('click', toggleAlignment);
 document.querySelector('.wordmark').addEventListener('click', event => { event.preventDefault(); pause(); });
 window.addEventListener('resize', resize);
 window.addEventListener('keydown', event => {
+  if (event.repeat || /INPUT|TEXTAREA|SELECT/.test(event.target?.tagName ?? '')) return;
   if (event.code === 'F3') { event.preventDefault(); hud?.toggleDebug(); }
   if (event.code === 'Enter' && state === 'ready') { event.preventDefault(); play(); }
+  if (['playing', 'inspection'].includes(state)) {
+    if (event.code === 'KeyI') { event.preventDefault(); toggleInspection(); }
+    if (event.code === 'KeyL') { event.preventDefault(); toggleLabels(); }
+    if (event.code === 'KeyG') { event.preventDefault(); toggleAlignment(); }
+  }
 });
 canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); pause('focus'); $('pause-reason').textContent = 'The graphics context was lost. Reload the page to restore the campus.'; });
 initialize();
