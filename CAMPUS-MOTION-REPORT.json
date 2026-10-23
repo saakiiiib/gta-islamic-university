@@ -1,0 +1,198 @@
+{
+  "milestone": "Campus in motion — eight occupied vans, thirty students, damage and Bangla reactions",
+  "upgradeBaseCommit": "ddf0896cc308cb1f1888badfdaf0638bfd13828f",
+  "map": {
+    "sha256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
+    "bytes": 770269,
+    "counts": {
+      "sourceNodes": 3260,
+      "sourceWays": 482,
+      "sourceRelations": 14,
+      "buildings": 189,
+      "roads": 42,
+      "greens": 16,
+      "water": 4,
+      "bridges": 1,
+      "trees": 1,
+      "treeRows": 1
+    },
+    "modelSha256": "f1ecf729f9bd2d41e663d9779420ee5f75df41bfd6bfbbac9ba3bc6071a57d61",
+    "staticCollision": {
+      "triangles": 3600,
+      "sha256": "b95c22529398f30fd82c60571453cfcc198080818f92b707fce8a31470aea1be"
+    }
+  },
+  "actors": {
+    "electricVans": 8,
+    "wheels": 24,
+    "permanentDrivers": 8,
+    "pedestrians": 30,
+    "playerVisibleWhileRiding": true
+  },
+  "spawns": [
+    {
+      "id": 0,
+      "x": 279.2181873078744,
+      "z": -68.23444994445087,
+      "yaw": 0.738343918474469,
+      "validPavement": true
+    },
+    {
+      "id": 1,
+      "x": -224.65877549482886,
+      "z": 381.789765103556,
+      "yaw": -1.5715147030273515,
+      "validPavement": true
+    },
+    {
+      "id": 2,
+      "x": -331.7575113288435,
+      "z": -296.8432138672048,
+      "yaw": 1.4076032468239905,
+      "validPavement": true
+    },
+    {
+      "id": 3,
+      "x": 31.072385454445794,
+      "z": -475.83499825150136,
+      "yaw": 0.004847118890551445,
+      "validPavement": true
+    },
+    {
+      "id": 4,
+      "x": 415.73250862883,
+      "z": 307.1241638502187,
+      "yaw": -1.6182378030647693,
+      "validPavement": true
+    },
+    {
+      "id": 5,
+      "x": -119.0063824907375,
+      "z": 17.623955056796696,
+      "yaw": -0.016202241381780884,
+      "validPavement": true
+    },
+    {
+      "id": 6,
+      "x": 73.16875710221903,
+      "z": 536.6265908501933,
+      "yaw": -2.1660699304491673,
+      "validPavement": true
+    },
+    {
+      "id": 7,
+      "x": 77.29197984368194,
+      "z": 240.836176131,
+      "yaw": 3.1387621307644085,
+      "validPavement": true
+    }
+  ],
+  "navigation": {
+    "nodes": 1057,
+    "edges": 1072,
+    "sourceSegments": 226,
+    "intersections": 297,
+    "rejectedEdges": 186,
+    "duplicateEdges": 0,
+    "components": 2
+  },
+  "rendering": {
+    "staticWorld": {
+      "meshes": 211,
+      "instancedBatches": 1,
+      "triangles": 113842
+    },
+    "student": {
+      "meshes": 23,
+      "instancedBatches": 0,
+      "triangles": 502
+    },
+    "fleet": {
+      "meshes": 40,
+      "instancedBatches": 0,
+      "triangles": 34176
+    },
+    "pedestrians": {
+      "meshes": 3,
+      "instancedBatches": 3,
+      "triangles": 12600
+    },
+    "drivers": {
+      "meshes": 3,
+      "instancedBatches": 3,
+      "triangles": 3360
+    },
+    "additionalActorMeshBatches": 46
+  },
+  "audio": {
+    "clips": [
+      {
+        "filename": "hit_drive.wav",
+        "bytes": 83368,
+        "sha256": "36e6bc35bfff9400ecc4628d27ff44fade2d299d08cde2e66aaa8030670da425"
+      },
+      {
+        "filename": "hit_pain.wav",
+        "bytes": 68228,
+        "sha256": "044ce8afaf64c5328142472d8eae136af98fde990923ffaedb64163cc9ae4724"
+      },
+      {
+        "filename": "hit_stop.wav",
+        "bytes": 63820,
+        "sha256": "c6a0a12009c0f5588a9f693ce7d786328cd098a921f6f4d25d0286de30d18995"
+      },
+      {
+        "filename": "hit_watch.wav",
+        "bytes": 72194,
+        "sha256": "fbe69db1b356a63c88c5d68afa9abf2a362379393600d7225ebce1267c11a5e9"
+      },
+      {
+        "filename": "near_angry.wav",
+        "bytes": 42412,
+        "sha256": "0ecd51f572702cd64e7351d2dc7e6a9c94b52e90d87c33ac0688c0265de2ba15"
+      },
+      {
+        "filename": "near_careful.wav",
+        "bytes": 77194,
+        "sha256": "42ccfb2efebccec2edd6547f255a5d91500c6908947e354c36d2897c78909b4e"
+      },
+      {
+        "filename": "near_drive.wav",
+        "bytes": 65518,
+        "sha256": "22927a587e736d8cb68827163873bdb81cde9f1dd2cf147d7ac747ad3c93ce72"
+      },
+      {
+        "filename": "near_watch.wav",
+        "bytes": 72188,
+        "sha256": "ad40f6a31ad804f06632f08554f9d34eeda33d0cbdb7b305e791d2655d98da9c"
+      },
+      {
+        "filename": "strong_concern.wav",
+        "bytes": 112070,
+        "sha256": "317d7468938959906b476a30d118c20b9d8d223db8740fbf09a5ae355b131030"
+      },
+      {
+        "filename": "strong_help.wav",
+        "bytes": 113914,
+        "sha256": "494bc8ddda44e46e342adb564a34248d4eea6695eee4ed96dae071a9d094a97c"
+      },
+      {
+        "filename": "strong_pain.wav",
+        "bytes": 139826,
+        "sha256": "d1cdf15202028c7503f98cbaa177b989d6387b534c60e4ab30f8dcb3db862be4"
+      }
+    ],
+    "gameServiceRequests": 0,
+    "deviceVoiceMayUseOSServices": true,
+    "speech": "Bengali device voice preferred; local synthetic eSpeak NG Bengali WAV fallback; subtitles remain available muted."
+  },
+  "cpuSample": {
+    "frames": 600,
+    "simulatedSeconds": 10,
+    "totalMilliseconds": 491.55,
+    "meanMilliseconds": 0.819,
+    "includes": "Idle player physics, thirty wandering pedestrians, eight parked vans, visible occupants and all actor animation/matrix updates. Excludes WebGL rendering, camera, labels, audio and HUD. Not an FPS measurement."
+  },
+  "estimates": "All actors are illustrative game props. Upright vehicle kinematics and constrained nonlethal knockback replace full rigid-body/ragdoll simulation. All eight vans are parked until selected by the player.",
+  "verificationLimits": "Browser control is disabled in Work settings. Interactive visual/audio quality, pointer-lock behavior and actual GPU FPS/draw calls remain unverified."
+}

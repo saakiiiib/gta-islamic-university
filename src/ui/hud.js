@@ -12,13 +12,13 @@ export class HUD {
     this.accumulated = 0;
     const p = player.position;
     const driving = !!player.driving;
-    this.map.draw(p, player.yaw, { van: simulation?.van, pedestrians: simulation?.crowd.agents, driving });
+    this.map.draw(p, player.yaw, { vans: simulation?.vans, van: simulation?.van, pedestrians: simulation?.crowd.agents, driving });
     $('location-name').textContent = nearestPlace(p, this.data);
     $('coordinates').textContent = `${Math.abs(p.x).toFixed(0)} ${p.x >= 0 ? 'E' : 'W'} · ${Math.abs(p.z).toFixed(0)} ${p.z <= 0 ? 'N' : 'S'}`;
     $('speed').textContent = inspection ? '0' : driving ? (player.speed * 3.6).toFixed(0) : player.speed.toFixed(1);
     $('travel-mode').textContent = driving ? 'ELECTRIC VAN' : 'ON FOOT';
     $('speed-unit').textContent = driving ? 'KM / H' : 'METRES / SECOND';
-    $('movement-state').textContent = inspection ? 'CAMPUS VIEW · SIMULATION PAUSED' : driving ? simulation?.yieldingForPedestrian ? 'GIVING WAY TO PEDESTRIANS' : player.reversing ? 'REVERSING' : player.speed > .1 ? 'ELECTRIC DRIVE' : 'PARKED' : !player.grounded ? 'IN THE AIR' : player.state?.motionState === 'land' ? 'LANDING' : player.speed > 4.5 ? 'SPRINTING' : player.speed > .2 ? 'EXPLORING' : 'TAKING IT IN';
+    $('movement-state').textContent = inspection ? 'CAMPUS VIEW · SIMULATION PAUSED' : driving ? player.disabled ? 'VAN DISABLED · E TO STEP OFF' : player.reversing ? 'REVERSING · PASSENGER' : player.speed > .1 ? 'RIDING BEHIND THE DRIVER' : 'PARKED · PASSENGER' : !player.grounded ? 'IN THE AIR' : player.state?.motionState === 'land' ? 'LANDING' : player.speed > 4.5 ? 'SPRINTING' : player.speed > .2 ? 'EXPLORING' : 'TAKING IT IN';
     $('foot-controls').hidden = driving; $('van-controls').hidden = !driving;
     const hint = simulation?.session.hint ?? '';
     $('interaction-prompt').hidden = inspection || !hint;
@@ -26,17 +26,31 @@ export class HUD {
     const van = simulation?.van;
     $('vehicle-guide').hidden = inspection || driving || !van;
     if (van) $('vehicle-guide').textContent = `⚡ ELECTRIC VAN · ${Math.round(Math.hypot(van.position.x - p.x, van.position.z - p.z))} m`;
+    const nearVan = van && Math.hypot(van.position.x - p.x, van.position.z - p.z) < 7;
+    $('durability-card').hidden = inspection || !(driving || nearVan);
+    if (van) {
+      $('durability').value = van.durability;
+      $('durability-label').textContent = `VAN ${(van.id ?? 0) + 1} · ${van.disabled ? 'DISABLED' : `${Math.round(van.durability)}% DURABILITY`}`;
+      $('durability-card').classList.toggle('damaged', van.durability < 35);
+    }
+    const collision = simulation?.lastCollision;
+    const injured = collision && simulation.impacts.time - collision.time < 8 ? simulation.crowd.agents.find(a => a.id === collision.npcId) : null;
+    $('pedestrian-health').hidden = inspection || !injured;
+    if (injured) {
+      $('health').value = injured.health;
+      $('pedestrian-status').textContent = `STUDENT ${String(injured.id + 1).padStart(2, '0')} · ${Math.round(injured.health)} HP · ${injured.reactionState.toUpperCase()}`;
+    }
     const scale = document.querySelector('.map-caption i');
     scale.style.width = `${$('minimap').clientWidth * 100 / this.map.span}px`;
     if (this.toastUntil && performance.now() > this.toastUntil) { $('toast').hidden = true; this.toastUntil = 0; }
     if (this.debug) $('debug-text').textContent = [
-      `GTA Islamic University · PHASE 2 · ${inspection ? 'INSPECTION' : driving ? 'ELECTRIC VAN' : 'STUDENT'}`,
+      `GTA Islamic University · CAMPUS IN MOTION · ${inspection ? 'INSPECTION' : driving ? 'ELECTRIC VAN' : 'STUDENT'}`,
       `FPS ${fps.toFixed(0)} · draw calls ${renderer.info.render.calls} · triangles ${renderer.info.render.triangles.toLocaleString()}`,
       `Position ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`,
       `Grounded ${player.grounded} · speed ${player.speed.toFixed(2)} m/s`,
       `Buildings ${this.data.buildings.length} · roads ${this.data.roads.length} · bridge ${this.data.bridges.length}`,
       `Map warnings ${this.data.diagnostics.warnings.length} · repairs ${this.data.diagnostics.repairs.length}`,
-      `Van ${(simulation?.van.speed ?? 0).toFixed(2)} m/s · pedestrians ${simulation?.crowd.agents.length ?? 0}`,
+      `Vans ${simulation?.vans.length ?? 0} · pedestrians ${simulation?.crowd.agents.length ?? 0} · durability ${Math.round(van?.durability ?? 100)}%`,
       `Water blocks movement; the mapped bridge remains walkable.`,
       `F3 hides this panel.`,
     ].join('\n');

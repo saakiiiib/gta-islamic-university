@@ -35,7 +35,7 @@ test('actual campus graph excludes highways and every accepted edge is safe and 
 });
 
 test('twelve deterministic pedestrians wander safely along real edges for a minute', () => {
-  const a = new PedestrianSystem(map, queries, graph, { render: false }), b = new PedestrianSystem(map, queries, graph, { render: false });
+  const a = new PedestrianSystem(map, queries, graph, { render: false, count: 12 }), b = new PedestrianSystem(map, queries, graph, { render: false, count: 12 });
   assert.equal(a.agents.length, 12); assert.deepEqual(a.agents.map(p => p.position.toArray()), b.agents.map(p => p.position.toArray()));
   for (let tick = 0; tick < 3600; tick++) {
     a.update(1 / 60);
@@ -43,7 +43,8 @@ test('twelve deterministic pedestrians wander safely along real edges for a minu
     for (const p of a.agents) {
       assert.ok(queries.discClear(p.position.x, p.position.z, .28)); assert.ok(queries.onRoad(p.position.x, p.position.z));
       const from = graph.nodes[p.current], to = graph.nodes[p.target];
-      assert.ok(pointToSegmentDistance([p.position.x, p.position.z], [from.x, from.z], [to.x, to.z]) < 1e-5);
+      assert.ok(Math.hypot(p.offset.x, p.offset.z) <= .8);
+      assert.ok(pointToSegmentDistance([p.position.x, p.position.z], [from.x, from.z], [to.x, to.z]) <= .8, 'bounded pavement sidesteps allow walkers to pass');
     }
   }
   assert.ok(a.agents.every(p => p.visited.size > 3)); a.dispose(); b.dispose();
@@ -51,7 +52,7 @@ test('twelve deterministic pedestrians wander safely along real edges for a minu
 
 test('pedestrians reverse at a dead end and yield away from an approaching van on their route', () => {
   const m = { bounds: { minX: -100, maxX: 100, minZ: -30, maxZ: 30 }, spawn: { x: -85, z: 0, yaw: -Math.PI / 2 }, roads: [road('long', [[-80, 0], [80, 0]])] };
-  const q = new CampusQueries(m), g = buildPedestrianGraph(m, q), crowd = new PedestrianSystem(m, q, g, { render: false });
+  const q = new CampusQueries(m), g = buildPedestrianGraph(m, q), crowd = new PedestrianSystem(m, q, g, { render: false, count: 12 });
   const p = crowd.agents[0], dead = g.nodes.find(n => n.neighbors.length === 1), from = g.nodes[dead.neighbors[0].to];
   p.current = from.id; p.target = dead.id; p.progress = .99; p.edge = from.neighbors.find(n => n.to === dead.id); p.idleTime = 0; p.speed = 1.3;
   p.position.set(from.x + (dead.x - from.x) * .99, 0, from.z + (dead.z - from.z) * .99);
@@ -64,7 +65,7 @@ test('pedestrians reverse at a dead end and yield away from an approaching van o
 });
 
 test('pedestrian visuals use three coloured instance batches with finite animated matrices', () => {
-  const crowd = new PedestrianSystem(map, queries, graph);
+  const crowd = new PedestrianSystem(map, queries, graph, { count: 12 });
   assert.equal(crowd.group.children.length, 3); assert.ok(crowd.group.children.every(m => m.isInstancedMesh));
   const skinColors = new Set(crowd.agents.map(p => p.rig.head.material.color.getHex())); assert.ok(skinColors.size >= 4);
   for (let i = 0; i < 120; i++) { crowd.update(1 / 60); crowd.animate(1 / 60); }

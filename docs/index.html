@@ -7,8 +7,8 @@
   <meta name="description" content="Explore a playable, map-derived 3D Islamic University campus in Kushtia, Bangladesh.">
   <title>GTA Islamic University — Campus Stories</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <script type="module" crossorigin src="./assets/index-oWEJ6gaH.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CZYvJa0i.css">
+  <script type="module" crossorigin src="./assets/index-BMG6qfor.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Dr_wyePp.css">
 </head>
 <body>
   <main id="app">
@@ -22,10 +22,10 @@
 
     <section id="start-screen" class="screen start-screen" aria-labelledby="game-title">
       <div class="intro">
-        <div class="edition"><span>GTA / ISLAMIC UNIVERSITY</span><span>PHASE 2</span></div>
+        <div class="edition"><span>GTA / ISLAMIC UNIVERSITY</span><span>CAMPUS IN MOTION</span></div>
         <p class="eyebrow">23°43′ N &nbsp; 89°09′ E &nbsp; / &nbsp; THE CAMPUS EDITION</p>
         <h1 id="game-title">Small campus.<br><em>Big stories.</em></h1>
-        <p class="intro-copy">The lake road. Familiar faces. A different way home.<br>Walk the campus, or take the electric van for a spin.</p>
+        <p class="intro-copy">Eight vans. Thirty students. A campus with a voice.<br>Ride behind the driver, explore the routes, and mind the crowd.</p>
         <div class="intro-actions"><button class="primary-button" id="start-button" disabled><span id="start-label">BUILDING YOUR CAMPUS</span><span>↗</span></button><span class="desktop-note">DESKTOP PROTOTYPE<br>KEYBOARD + MOUSE</span></div>
         <div class="loading"><span id="loading-message">Opening the supplied OpenStreetMap file…</span><span id="loading-percent">0%</span><div class="loading-track"><i id="loading-fill"></i></div></div>
         <p id="error-message" class="error" role="alert" hidden></p>
@@ -42,11 +42,13 @@
     <section id="play-hud" hidden aria-label="Game status">
       <div class="location"><span class="eyebrow">YOU ARE HERE</span><h2 id="location-name">Main Gate</h2><span id="movement-state">ON FOOT</span><span id="vehicle-guide">⚡ ELECTRIC VAN NEARBY</span></div>
       <div class="minimap-card"><div class="map-heading"><span>ISLAMIC UNIVERSITY</span><span>N ↑</span></div><canvas id="minimap" width="256" height="256" aria-label="North-up minimap showing nearby campus routes, buildings, water, and your position"></canvas><div class="map-caption"><span id="coordinates">283.6 E · 61.4 N</span><span>100 m <i></i></span></div></div>
-      <div class="speed-card"><span id="travel-mode">ON FOOT</span><strong id="speed">0.0</strong><span id="speed-unit">METRES / SECOND</span></div>
+      <div class="speed-card"><span id="travel-mode">ON FOOT</span><strong id="speed">0.0</strong><span id="speed-unit">METRES / SECOND</span><div id="durability-card" hidden><span id="durability-label">VAN DURABILITY · 100%</span><progress id="durability" max="100" value="100" aria-label="Van durability"></progress></div></div>
+      <aside id="pedestrian-health" class="pedestrian-health" hidden><span id="pedestrian-status"></span><progress id="health" max="100" value="100" aria-label="Pedestrian health"></progress></aside>
       <div class="controls-strip" id="foot-controls"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> MOVE</span><span><kbd>SHIFT</kbd> SPRINT</span><span><kbd>SPACE</kbd> JUMP</span><span><kbd>E</kbd> VAN</span><span><kbd>ESC</kbd> PAUSE</span></div>
       <div class="controls-strip" id="van-controls" hidden><span><kbd>W</kbd><kbd>S</kbd> DRIVE / REVERSE</span><span><kbd>A</kbd><kbd>D</kbd> STEER</span><span><kbd>SPACE</kbd> BRAKE</span><span><kbd>E</kbd> EXIT</span><span><kbd>ESC</kbd> PAUSE</span></div>
       <div id="interaction-prompt" class="interaction-prompt" hidden><kbd>E</kbd><span id="interaction-text">Press E to enter electric van</span></div>
       <div id="toast" class="toast" role="status" hidden></div>
+      <aside id="dialogue" class="dialogue" role="status" aria-live="polite" hidden><span data-speaker></span><b data-bangla lang="bn"></b><small data-english></small></aside>
     </section>
 
     <div id="place-labels" aria-hidden="true"></div>
@@ -54,6 +56,7 @@
       <button id="labels-button" type="button" aria-pressed="true" title="Toggle nearby place labels (L)"><kbd>L</kbd><span>Place labels</span></button>
       <button id="inspection-button" type="button" aria-pressed="false" title="Pause the student and inspect campus (I)"><kbd>I</kbd><span>Inspect campus</span></button>
       <button id="alignment-button" type="button" aria-pressed="false" title="Toggle original OSM road and footprint outlines (G)"><kbd>G</kbd><span>Map alignment</span></button>
+      <div class="sound-controls"><button id="sound-button" type="button" aria-pressed="false" title="Mute or unmute reactions (M)"><kbd>M</kbd><span id="sound-label">Sound on</span></button><label for="sound-volume" class="sr-only">Reaction volume</label><input id="sound-volume" type="range" min="0" max="100" value="55" aria-label="Reaction volume"><small id="sound-status">Bangla reactions</small></div>
     </nav>
     <aside id="inspection-banner" class="inspection-banner" hidden><b>CAMPUS VIEW <span>SIMULATION PAUSED</span></b><p>Drag / arrows orbit · Right drag / WASD pan · Scroll zoom</p><span>Press <kbd>I</kbd> or <kbd>ESC</kbd> to return</span></aside>
 

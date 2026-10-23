@@ -1,4 +1,5 @@
 import './style.css';
+import './ui/reactions.css';
 import * as THREE from 'three';
 import { loadMap } from './map/index.js';
 import { buildWorld } from './world/index.js';
@@ -8,12 +9,15 @@ import { InspectionCamera, InspectionSession } from './player/inspection.js';
 import { PlaceLabels } from './ui/labels.js';
 import { CampusSimulation } from './game/simulation.js';
 import { TravelCamera } from './vehicle/camera.js';
+import { ReactionAudio } from './audio/reactions.js';
+import { Subtitles } from './ui/subtitles.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('game');
 let state = 'loading', renderer, scene, camera, world, mapData, player, input, chase, hud, sun;
 let inspection, inspectionSession, labels, gameplayFog;
 let simulation;
+let reactions, subtitles;
 let accumulator = 0, lastTime = performance.now(), fps = 60;
 const STEP = 1 / 60;
 const sunOffset = new THREE.Vector3(-55, 110, -40);
@@ -35,6 +39,7 @@ function pause(reason = 'escape') {
   if (!['playing', 'inspection'].includes(state)) return;
   state = 'paused'; accumulator = 0;
   input.setEnabled(false); inspectionSession.suspend(); simulation.setSuspended(true);
+  reactions?.setSuspended(true); subtitles?.hide();
   if (document.pointerLockElement === canvas) document.exitPointerLock();
   $('pause-reason').textContent = reason === 'focus' ? 'The game paused while you stepped away.' : 'Your campus is waiting.';
   $('pause-screen').hidden = false;
@@ -47,6 +52,8 @@ async function play() {
   state = inspectionSession.active ? 'inspection' : 'playing'; accumulator = 0; lastTime = performance.now();
   inspectionSession.resume();
   simulation.setSuspended(inspectionSession.active);
+  reactions?.setSuspended(inspectionSession.active);
+  if (!inspectionSession.active) reactions?.unlock();
   if (firstStart) { simulation.reset(); chase.setDriving(false); chase.reset(mapData.spawn); }
   $('start-screen').hidden = true; $('pause-screen').hidden = true; $('play-hud').hidden = false;
   $('pause-button').disabled = false;
@@ -61,13 +68,16 @@ async function play() {
 function resetPlayer() {
   if (inspectionSession.active) { inspectionSession.exit(); syncView(); }
   simulation.reset(); simulation.setSuspended(false); chase.setDriving(false); chase.reset(mapData.spawn); accumulator = 0;
-  hud.toast('Back at Main Gate. Your electric van is parked nearby.');
+  reactions?.reset(); subtitles?.hide();
+  hud.toast('Back at Main Gate. All eight vans repaired and parked.');
 }
 
 function syncView() {
   const active = inspectionSession.active;
   scene.fog = active ? null : gameplayFog;
   simulation.setSuspended(active);
+  reactions?.setSuspended(active); subtitles?.hide();
+  if (!active && state === 'playing') reactions?.unlock();
   document.body.classList.toggle('inspecting', active);
   $('inspection-button').setAttribute('aria-pressed', String(active));
   $('inspection-button').querySelector('span').textContent = active ? simulation.session.driving ? 'Back to van' : 'Back to student' : 'Inspect campus';
@@ -126,6 +136,7 @@ function tick(t) {
       accumulator -= STEP;
     }
     simulation.animate(elapsed);
+    reactions.consume(simulation.drainEvents(), simulation.entity.position); reactions.update(elapsed); subtitles.update(elapsed);
     chase.updateTravel(0, simulation.entity);
     world.update(elapsed, simulation.entity.position);
     sun.target.position.set(Math.round(simulation.entity.position.x * 8) / 8, 0, Math.round(simulation.entity.position.z * 8) / 8);
@@ -155,7 +166,7 @@ async function initialize() {
     await new Promise(resolve => requestAnimationFrame(resolve));
     world = buildWorld(mapData, { onProgress: message => progress(62, message) });
     progress(76, 'Preparing movement and collision geometry…');
-    progress(82, 'Preparing an electric van and campus walking routes…');
+    progress(82, 'Parking eight vans and preparing thirty campus pedestrians…');
     simulation = new CampusSimulation(mapData, world.collisionGroup); player = simulation.player;
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -163,7 +174,7 @@ async function initialize() {
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
     scene = new THREE.Scene(); scene.background = new THREE.Color(0xb0d0df);
     gameplayFog = new THREE.Fog(0xb0d0df, 350, 1600); scene.fog = gameplayFog;
-    scene.add(world.group, player.group, simulation.van.group, simulation.crowd.group);
+    scene.add(world.group, player.group, simulation.fleetGroup, simulation.occupants.group, simulation.crowd.group);
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
     chase = new TravelCamera(camera, world.collisionGroup);
     chase.reset(mapData.spawn);
@@ -178,6 +189,17 @@ async function initialize() {
     labels = new PlaceLabels($('place-labels'), world.labelAnchors, world.buildingMeshes);
     lighting(); resize();
     hud = new HUD(mapData);
+    subtitles = new Subtitles($('dialogue'));
+    reactions = new ReactionAudio({ baseURL: `${import.meta.env.BASE_URL}audio/`, onSubtitle: line => subtitles.show(line), onStatus: status => {
+      $('sound-button').setAttribute('aria-pressed', String(status.muted));
+      $('sound-label').textContent = status.muted ? 'Sound off' : 'Sound on';
+      $('sound-status').textContent = status.mode === 'bengali-speech' ? 'Bengali voice' : status.mode === 'recorded-clips' ? 'Bangla clips' : 'Subtitles';
+    } });
+    try {
+      const preferences = JSON.parse(localStorage.getItem('iu-reaction-audio') ?? '{}');
+      reactions.setVolume(Number.isFinite(preferences.volume) ? preferences.volume : .55); reactions.setMuted(preferences.muted === true);
+    } catch { reactions.setVolume(.55); }
+    $('sound-volume').value = Math.round(reactions.volume * 100);
     // The opening view looks inward from the actual Main Gate spawn.
     const facing = new THREE.Vector3(-Math.sin(mapData.spawn.yaw), 0, -Math.cos(mapData.spawn.yaw));
     const focus = player.position.clone().addScaledVector(facing, 20);
@@ -197,6 +219,7 @@ async function initialize() {
       canvas.dataset.grounded = String(entity.grounded);
       canvas.dataset.cameraMode = inspectionSession.active ? 'inspection' : simulation.session.driving ? 'vehicle' : 'student';
       canvas.dataset.vehicleSpeed = simulation.van.speed.toFixed(2); canvas.dataset.pedestrians = simulation.crowd.agents.length;
+      canvas.dataset.vans = simulation.vans.length; canvas.dataset.durability = simulation.van.durability.toFixed(1);
     }, 250);
     lastTime = performance.now(); requestAnimationFrame(tick);
   } catch (error) {
@@ -219,6 +242,10 @@ $('reset-button').addEventListener('click', () => { resetPlayer(); play(); });
 $('inspection-button').addEventListener('click', toggleInspection);
 $('labels-button').addEventListener('click', toggleLabels);
 $('alignment-button').addEventListener('click', toggleAlignment);
+function saveAudioPreferences() { try { localStorage.setItem('iu-reaction-audio', JSON.stringify({ muted: reactions.muted, volume: reactions.volume })); } catch { /* Storage is optional. */ } }
+function toggleSound() { if (!reactions) return; reactions.setMuted(!reactions.muted); if (!reactions.muted) reactions.unlock(); saveAudioPreferences(); }
+$('sound-button').addEventListener('click', toggleSound);
+$('sound-volume').addEventListener('input', event => { if (!reactions) return; reactions.setVolume(Number(event.target.value) / 100); reactions.unlock(); saveAudioPreferences(); });
 document.querySelector('.wordmark').addEventListener('click', event => { event.preventDefault(); pause(); });
 window.addEventListener('resize', resize);
 window.addEventListener('keydown', event => {
@@ -229,6 +256,7 @@ window.addEventListener('keydown', event => {
     if (event.code === 'KeyI') { event.preventDefault(); toggleInspection(); }
     if (event.code === 'KeyL') { event.preventDefault(); toggleLabels(); }
     if (event.code === 'KeyG') { event.preventDefault(); toggleAlignment(); }
+    if (event.code === 'KeyM') { event.preventDefault(); toggleSound(); }
   }
 });
 canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); pause('focus'); $('pause-reason').textContent = 'The graphics context was lost. Reload the page to restore the campus.'; });

@@ -95,9 +95,9 @@ function walkingSession(extra = {}) {
   return { player, v, session, dispose() { player.dispose(); v.dispose(); ground.geometry.dispose(); material.dispose(); } };
 }
 
-test('E entry requires proximity, hides the student, and stopped exit restores beside the van', () => {
+test('E entry requires proximity, keeps the student visible, and stopped exit restores beside the van', () => {
   const s = walkingSession(); assert.ok(s.session.canEnter());
-  assert.equal(s.session.interact().changed, true); assert.ok(s.session.driving && s.v.occupied); assert.equal(s.player.group.visible, false);
+  assert.equal(s.session.interact().changed, true); assert.ok(s.session.driving && s.v.occupied); assert.equal(s.player.group.visible, true);
   s.v.speed = 2; assert.equal(s.session.interact().changed, false); assert.ok(s.session.driving);
   s.v.speed = 0; assert.equal(s.session.interact().changed, true); assert.equal(s.player.group.visible, true); assert.equal(s.v.occupied, false);
   assert.ok(s.v.distanceFrom(s.player.position.x, s.player.position.z) > s.player.config.radius);

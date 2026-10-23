@@ -47,7 +47,7 @@ export class PlayerController {
     this.rig.pose = null;
     this.syncCapsule();
     this.group.position.copy(this.position);
-    this.group.rotation.y = this.yaw;
+    this.group.rotation.set(0, this.yaw, 0);
     this.animate(0);
   }
 
@@ -70,7 +70,7 @@ export class PlayerController {
     const ticks = Math.ceil(duration / (1 / 60));
     for (let tick = 0; tick < ticks; tick++) this.step(duration / ticks, { ...input, jump: tick === 0 && input.jump }, cameraYaw);
     this.group.position.copy(this.position);
-    this.group.rotation.y = this.yaw;
+    this.group.rotation.set(0, this.yaw, 0);
   }
 
   step(dt, input, cameraYaw) {

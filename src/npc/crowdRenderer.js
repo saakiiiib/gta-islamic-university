@@ -4,7 +4,7 @@ import { createStudent, animateStudent } from '../player/character.js';
 const SHIRTS = [0xeab85e, 0x498f99, 0xb45e63, 0xe0dbc7, 0x638e69, 0x6986b8, 0xc18a55, 0x826b9c];
 const SKINS = [0x9c633d, 0xb97b50, 0x835337, 0xc08c63];
 
-/** Twelve animated rigs are drawn as three instanced primitive batches. */
+/** Animated rigs are drawn as three instanced primitive batches. */
 export class CrowdRenderer {
   constructor(agents) {
     this.agents = agents; this.time = 0; this.group = new THREE.Group(); this.group.name = 'campus-pedestrians';
@@ -34,8 +34,35 @@ export class CrowdRenderer {
     this.time += Math.max(0, Math.min(dt, .1));
     for (const agent of this.agents) {
       const rig = agent.rig;
-      rig.group.position.copy(agent.position); rig.group.rotation.y = agent.yaw;
-      animateStudent(rig, { speed: agent.speed, grounded: true, turnRate: agent.turnRate ?? 0, motionState: agent.speed > .08 ? 'walk' : 'idle' }, this.time + agent.id * .47, dt);
+      rig.group.position.copy(agent.position);
+      const turnTowardVan = agent.lookYaw != null && (agent.reactionState === 'startled' || agent.yielding);
+      const facing = turnTowardVan ? agent.lookYaw : agent.yaw;
+      const current = rig.renderYaw ?? agent.yaw;
+      rig.renderYaw = current + Math.atan2(Math.sin(facing - current), Math.cos(facing - current))
+        * (dt > 0 ? 1 - Math.exp(-7 * Math.min(dt, .1)) : 1);
+      rig.group.rotation.y = rig.renderYaw;
+      const visualSpeed = Math.max(agent.speed, agent.avoidSpeed ?? 0);
+      animateStudent(rig, { speed: visualSpeed, grounded: true, turnRate: agent.turnRate ?? 0, motionState: visualSpeed > .08 ? 'walk' : 'idle' }, this.time + agent.id * .47, dt);
+      const state = agent.reactionState;
+      const target = state === 'fallen' ? 1 : state === 'recover' ? Math.min(1, agent.reactionTime / Math.max(.01, agent.reactionDuration)) : 0;
+      rig.reactionBlend = THREE.MathUtils.lerp(rig.reactionBlend ?? 0, target, dt > 0 ? 1 - Math.exp(-12 * Math.min(dt, .1)) : 1);
+      const fallen = rig.reactionBlend;
+      const startle = state === 'startled' ? Math.min(1, agent.reactionTime / .3) * (agent.reactionStrength ?? 1) : 0;
+      const stumble = state === 'stumble' ? Math.sin((1 - agent.reactionTime / Math.max(.01, agent.reactionDuration)) * Math.PI) * (agent.reactionStrength ?? 1) : 0;
+      rig.body.position.y += fallen * .23 - stumble * .045;
+      rig.body.rotation.x += stumble * .36;
+      rig.body.rotation.z += fallen * 1.28 + stumble * .18;
+      rig.arms[0].rotation.x -= startle * .8 + stumble * .55;
+      rig.arms[1].rotation.x -= startle * .9 + stumble * .35;
+      rig.arms[0].rotation.z = -.045 - startle * .55 - fallen * .6;
+      rig.arms[1].rotation.z = .045 + startle * .55 + fallen * .4;
+      rig.legs[0].rotation.x += stumble * .4 - fallen * .35;
+      rig.legs[1].rotation.x -= stumble * .35 - fallen * .25;
+      rig.knees[0].rotation.x += fallen * .6;
+      rig.knees[1].rotation.x += fallen * .5;
+      const look = agent.lookYaw == null ? 0 : Math.atan2(Math.sin(agent.lookYaw - rig.renderYaw), Math.cos(agent.lookYaw - rig.renderYaw));
+      rig.lookAngle = THREE.MathUtils.lerp(rig.lookAngle ?? 0, THREE.MathUtils.clamp(look, -.7, .7), dt > 0 ? 1 - Math.exp(-8 * Math.min(dt, .1)) : 1);
+      rig.head.rotation.y = rig.hair.rotation.y = rig.lookAngle;
       rig.group.updateMatrixWorld(true);
     }
     for (const [type, slots] of Object.entries(this.slots)) {

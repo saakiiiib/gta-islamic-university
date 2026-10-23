@@ -16,18 +16,18 @@ function approach(sim) {
   assert.ok(sim.session.canEnter());
 }
 
-test('real campus starts with one safe parked electric van and twelve separated students', () => {
-  const sim = create(); assert.equal(sim.van.group.name, 'electricCargoTricycle'); assert.equal(sim.crowd.agents.length, 12);
+test('real campus starts with eight safe parked electric vans and thirty separated students', () => {
+  const sim = create(); assert.equal(sim.vans.length, 8); assert.equal(sim.van.group.name, 'electricCargoTricycle-1'); assert.equal(sim.crowd.agents.length, 30);
   assert.equal(sim.session.driving, false); assert.ok(sim.queries.rectangleClear(sim.van.position, sim.van.yaw, sim.van.config));
   assert.ok(sim.queries.onRoad(sim.van.position.x, sim.van.position.z));
-  for (const a of sim.crowd.agents) { assert.ok(sim.van.distanceFrom(a.position.x, a.position.z) > 2); for (const b of sim.crowd.agents) if (a !== b) assert.ok(a.position.distanceTo(b.position) > 4); }
+  for (const a of sim.crowd.agents) { assert.ok(sim.vans.every(v => v.distanceFrom(a.position.x, a.position.z) > 2)); for (const b of sim.crowd.agents) if (a !== b) assert.ok(a.position.distanceTo(b.position) > 4); }
   sim.dispose();
 });
 
 test('real-campus enter, drive, reverse, brake and safe exit keep the player on valid land', () => {
   const sim = create(); approach(sim); assert.ok(sim.update(1 / 60, { interact: true }).changed);
   const origin = sim.van.position.clone(); for (let i = 0; i < 90; i++) sim.update(1 / 60, { forward: true }, sim.van.yaw);
-  assert.ok(sim.van.position.distanceTo(origin) > 1); assert.equal(sim.player.group.visible, false);
+  assert.ok(sim.van.position.distanceTo(origin) > 1); assert.equal(sim.player.group.visible, true);
   assert.equal(sim.update(1 / 60, { interact: true }).changed, false);
   for (let i = 0; i < 90; i++) sim.update(1 / 60, { back: true }); assert.ok(sim.van.speed < 0);
   for (let i = 0; i < 60; i++) sim.update(1 / 60, { brake: true }); assert.equal(sim.van.speed, 0);
@@ -68,7 +68,7 @@ test('pause/inspection suspend every moving entity and resume without a catch-up
   sim.setSuspended(false); sim.update(1 / 60); assert.ok(sim.van.position.distanceTo({ x: before.van[0][0], y: before.van[0][1], z: before.van[0][2] }) < .15); sim.dispose();
 });
 
-test('reset while driving restores on-foot Main Gate controls and parks the same single van', () => {
+test('reset while driving restores on-foot Main Gate controls and parks the same van', () => {
   const sim = create(), vehicle = sim.van; approach(sim); sim.update(1 / 60, { interact: true });
   for (let i = 0; i < 60; i++) sim.update(1 / 60, { forward: true });
   sim.crowd.agents[0].position.set(sim.van.spawn.x, 0, sim.van.spawn.z);

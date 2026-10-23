@@ -16,3 +16,5 @@ Geometry repair: the two orphan inner rings of source relation `18079383` are as
 The production build includes `data/map.osm` and this notice as `data/NOTICE.txt`.
 
 The electric cargo tricycle and pedestrian characters are original procedural Three.js geometry. The van's shape/paint is inspired by the user's supplied visual reference; no reference bitmap, watermark or third-party game model is included. These game actors and their spawn/route choices are illustrative additions, not surveyed OSM objects. Campus geographic data and attribution remain unchanged.
+
+The eleven Bengali WAV reaction clips are original dialogue synthesized locally with eSpeak NG 1.52.0, not human performances. See `public/audio/README.txt` for provenance and replacement instructions. No synthesizer binary, voice database, paid service or remote audio asset is bundled or required at runtime for those clips. Drivers, passengers, health and damage are fictional gameplay behavior.
