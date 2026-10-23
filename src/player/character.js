@@ -76,19 +76,42 @@ export function animateStudent(rig, state, time, dt = .01667) {
   const landing = Math.sin(Math.max(0, Math.min(1, state.landingBlend ?? 0)) * Math.PI) * .065;
   const target = {
     bob: state.grounded ? (moving ? Math.abs(Math.sin(cycle)) * (running ? .042 : .021) : Math.sin(time * 2) * .006) - landing : 0,
+    bodyZ: 0,
     lean: state.grounded && running ? -.105 : !state.grounded ? -.035 : 0,
     roll: THREE.MathUtils.clamp((state.turnRate ?? 0) * state.speed * .007, -.13, .13),
     a0: state.grounded ? -swing * .85 : -.55, a1: state.grounded ? swing * .85 : -.55,
+    az0: -.045, az1: .045,
     l0: state.grounded ? swing : -.28, l1: state.grounded ? -swing : .23,
     k0: state.grounded ? Math.max(0, -Math.sin(cycle)) * stride * .85 + landing * 4 : .5,
     k1: state.grounded ? Math.max(0, Math.sin(cycle)) * stride * .85 + landing * 4 : .35,
   };
+  if (state.motionState === 'jumpOff') {
+    const t = state.motionTime ?? 0;
+    Object.assign(target, { bob: 0, bodyZ: 0, lean: -.28, roll: Math.sin(t * 13) * .09,
+      a0: -1.12 + Math.sin(t * 17) * .25, a1: -.82 - Math.sin(t * 17) * .28,
+      az0: -.32, az1: .32, l0: -.54, l1: .48, k0: .9, k1: .72 });
+  } else if (state.motionState === 'stumble') {
+    const t = state.motionTime ?? 0;
+    Object.assign(target, { bob: -.14 * Math.exp(-t * 4), lean: -.48 * Math.exp(-t * 3),
+      roll: Math.sin(t * 16) * .17 * Math.exp(-t * 4), a0: -.9, a1: .7,
+      az0: -.27, az1: .28, l0: .6, l1: -.58, k0: .8, k1: .65 });
+  } else if (state.motionState === 'fallen') {
+    Object.assign(target, { bob: -.3, lean: -.95, roll: .22, a0: -1.2, a1: -.8,
+      az0: -.45, az1: .45, l0: 1.0, l1: .55, k0: 1.2, k1: 1.15 });
+  } else if (state.motionState === 'recover') {
+    const weight = Math.max(0, 1 - (state.motionTime ?? 0) / .6);
+    Object.assign(target, { bob: -.22 * weight, lean: -.7 * weight, roll: .15 * weight,
+      a0: -.5 * weight, a1: .65 * weight, l0: .65 * weight, l1: -.4 * weight,
+      k0: 1.0 * weight, k1: .85 * weight });
+  }
   if (!rig.pose) { rig.pose = { ...target }; rig.phase = 0; }
-  else for (const key of Object.keys(target)) rig.pose[key] = THREE.MathUtils.lerp(rig.pose[key], target[key], 1 - Math.exp(-16 * delta));
+  else for (const key of Object.keys(target)) rig.pose[key] = THREE.MathUtils.lerp(
+    Number.isFinite(rig.pose[key]) ? rig.pose[key] : target[key], target[key],
+    1 - Math.exp(-(state.motionState === 'jumpOff' ? 9 : 16) * delta));
   const pose = rig.pose;
-  rig.body.position.y = pose.bob; rig.body.rotation.x = pose.lean; rig.body.rotation.z = pose.roll;
+  rig.body.position.y = pose.bob; rig.body.position.z = pose.bodyZ; rig.body.rotation.x = pose.lean; rig.body.rotation.z = pose.roll;
   rig.arms[0].rotation.x = pose.a0; rig.arms[1].rotation.x = pose.a1;
-  rig.arms[0].rotation.z = -.045; rig.arms[1].rotation.z = .045;
+  rig.arms[0].rotation.z = pose.az0; rig.arms[1].rotation.z = pose.az1;
   rig.legs[0].rotation.x = pose.l0; rig.legs[1].rotation.x = pose.l1;
   rig.knees[0].rotation.x = pose.k0; rig.knees[1].rotation.x = pose.k1;
 }

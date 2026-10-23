@@ -7,6 +7,14 @@ const DRIVER_ROOT = new THREE.Vector3(0, .67, -.43);
 // The student's hip is .77 m above the rig origin. Both thighs and shoes stay on the deck.
 const PASSENGER_ROOT = new THREE.Vector3(0, .065, .9);
 
+export function passengerWorldPosition(van, target = new THREE.Vector3()) {
+  // Physics can advance between rendered frames; keep the seat transform current.
+  if (van.position) van.group.position.copy(van.position);
+  if (Number.isFinite(van.yaw)) van.group.rotation.set(0, van.yaw, 0);
+  const body = van.model?.body ?? van.group; body.updateWorldMatrix(true, false);
+  return body.localToWorld(target.copy(PASSENGER_ROOT));
+}
+
 /** Pose the existing student rig as a seated occupant, without changing its geometry. */
 export function poseSeatedStudent(rig, { driver = false, steering = 0 } = {}) {
   rig.pose = null;
@@ -102,17 +110,19 @@ export class VanOccupants {
     if (session?.driving && session.van) {
       const body = session.van.model?.body ?? session.van.group;
       body.updateWorldMatrix(true, false);
-      body.localToWorld(this.player.group.position.copy(PASSENGER_ROOT));
+      passengerWorldPosition(session.van, this.player.group.position);
       body.getWorldQuaternion(this.player.group.quaternion);
       this.player.group.visible = true;
       poseSeatedStudent(this.player.rig);
       this.wasDriving = true;
-    } else if (this.wasDriving) {
+    } else if (this.wasDriving && !this.player.dismount) {
       // On-foot animation owns the rig again after the first dismounted frame.
       this.player.rig.pose = null;
       this.player.rig.body.position.set(0, 0, 0);
       this.player.rig.body.rotation.set(0, 0, 0);
       for (const limb of [...this.player.rig.arms, ...this.player.rig.legs, ...this.player.rig.knees]) limb.rotation.set(0, 0, 0);
+      this.wasDriving = false;
+    } else if (!session?.driving) {
       this.wasDriving = false;
     }
   }

@@ -1,5 +1,6 @@
 import { pointInMultiPolygon } from '../map/geometry.js';
 import { bridgeElevation, measurePath } from '../world/bridge.js';
+import { walkingRoutes } from './walkingRoutes.js';
 
 const JOIN = .1;
 const MAX_EDGE = 8;
@@ -26,17 +27,18 @@ function parameter(point, segment) {
   return Math.hypot(x - point[0], z - point[1]) <= JOIN ? Math.max(0, Math.min(1, t)) : null;
 }
 
-/** Build a pedestrian network strictly along mapped transport centerlines. */
+/** Build mapped footpaths plus conservative, explicitly estimated roadside walks. */
 export function buildPedestrianGraph(map, queries) {
-  const bridgeIds = new Set((map.bridges ?? []).map(b => b.id));
-  const sources = [...(map.roads ?? []).filter(r => !bridgeIds.has(r.id) && !['motorway', 'motorway_link', 'trunk', 'trunk_link'].includes(r.kind)), ...(map.bridges ?? [])];
+  const sources = walkingRoutes(map);
   const segments = [];
-  for (const road of sources) for (const path of road.paths ?? []) {
+  for (const road of sources) {
+    const path = road.path;
     const measured = measurePath(path);
     for (let i = 1; i < path.length; i++) {
       const a = path[i - 1], b = path[i], length = Math.hypot(b[0] - a[0], b[1] - a[1]);
-      if (length > EPS) segments.push({a, b, roadId: road.id, kind: road.kind ?? 'bridge', width: road.width, cuts: [0, 1],
-        height: t => bridgeIds.has(road.id) ? bridgeElevation(measured.distances[i - 1] + length * t, measured.length, road) : 0 });
+      if (length > EPS) segments.push({a, b, roadId: road.roadId, kind: road.kind, walkingKind: road.walkingKind,
+        source: road.source, width: road.width, cuts: [0, 1],
+        height: t => road.bridge ? bridgeElevation(measured.distances[i - 1] + length * t, measured.length, road.bridge) : 0 });
     }
   }
 
@@ -46,11 +48,15 @@ export function buildPedestrianGraph(map, queries) {
     if (Math.max(s.a[0], s.b[0]) + JOIN < Math.min(t.a[0], t.b[0]) || Math.max(t.a[0], t.b[0]) + JOIN < Math.min(s.a[0], s.b[0]) ||
       Math.max(s.a[1], s.b[1]) + JOIN < Math.min(t.a[1], t.b[1]) || Math.max(t.a[1], t.b[1]) + JOIN < Math.min(s.a[1], s.b[1])) continue;
     const hit = crossing(s.a, s.b, t.a, t.b);
-    if (hit && Math.abs(s.height(hit[0]) - t.height(hit[1])) <= .16) { s.cuts.push(hit[0]); t.cuts.push(hit[1]); intersections++; }
+    if (hit && Math.abs(s.height(hit[0]) - t.height(hit[1])) <= .16 &&
+      s.walkingKind === 'footpath' && t.walkingKind === 'footpath') { s.cuts.push(hit[0]); t.cuts.push(hit[1]); intersections++; }
     // Collinear overlaps and near-coincident T junctions need their endpoints split too.
     for (const [point, own, other, value] of [[s.a, s, t, 0], [s.b, s, t, 1], [t.a, t, s, 0], [t.b, t, s, 1]]) {
       const at = parameter(point, [other.a, other.b]);
-      if (at !== null && Math.abs(own.height(value) - other.height(at)) <= .16) { own.cuts.push(value); other.cuts.push(at); }
+      if (at !== null && Math.abs(own.height(value) - other.height(at)) <= .16) {
+        // An estimated line meeting another line at a generated endpoint is a planned junction.
+        own.cuts.push(value); other.cuts.push(at);
+      }
     }
   }
 
@@ -69,7 +75,7 @@ export function buildPedestrianGraph(map, queries) {
     return id;
   }
   const campus = map.campus?.polygons;
-  const validPoint = p => (!campus?.length || pointInMultiPolygon(p, campus)) && queries.onRoad(...p) && queries.discClear(...p, .28);
+  const validPoint = p => (!campus?.length || pointInMultiPolygon(p, campus)) && queries.discClear(...p, .28);
   let rejected = 0, duplicates = 0;
   for (const s of segments) {
     const dx = s.b[0] - s.a[0], dz = s.b[1] - s.a[1];
@@ -87,13 +93,14 @@ export function buildPedestrianGraph(map, queries) {
         if (na === nb) continue;
         const joinedA = [nodes[na].x, nodes[na].z], joinedB = [nodes[nb].x, nodes[nb].z];
         if (!queries.segmentClear(joinedA, joinedB, .28)) { rejected++; continue; }
-        const checks = Math.max(1, Math.ceil(Math.hypot(joinedA[0] - joinedB[0], joinedA[1] - joinedB[1]) / 1.5));
+        const checks = Math.max(1, Math.ceil(Math.hypot(joinedA[0] - joinedB[0], joinedA[1] - joinedB[1]) / .5));
         if (Array.from({ length: checks + 1 }, (_, i) => [joinedA[0] + (joinedB[0] - joinedA[0]) * i / checks, joinedA[1] + (joinedB[1] - joinedA[1]) * i / checks]).some(p => !validPoint(p))) { rejected++; continue; }
         const key = `${Math.min(na, nb)}:${Math.max(na, nb)}`;
         if (edgeKeys.has(key)) { duplicates++; continue; }
         edgeKeys.add(key);
         const length = Math.hypot(nodes[na].x - nodes[nb].x, nodes[na].z - nodes[nb].z);
-        const detail = {length, roadId: s.roadId, kind: s.kind, width: s.width};
+        const detail = {length, roadId: s.roadId, kind: s.kind, walkingKind: s.walkingKind,
+          source: s.source, estimated: s.source === 'estimated', width: s.width};
         edges.push({a: na, b: nb, ...detail});
         nodes[na].neighbors.push({to: nb, ...detail});
         nodes[nb].neighbors.push({to: na, ...detail});
@@ -107,5 +114,35 @@ export function buildPedestrianGraph(map, queries) {
     const stack = [node.id]; seen.add(node.id);
     while (stack.length) for (const neighbor of nodes[stack.pop()].neighbors) if (!seen.has(neighbor.to)) { seen.add(neighbor.to); stack.push(neighbor.to); }
   }
-  return {nodes, edges, diagnostics: {sourceSegments: segments.length, intersections, rejectedEdges: rejected, duplicateEdges: duplicates, components}};
+  const corridor = edge => Math.min(.8, Math.max(.42, (edge.width ?? 1.6) / 2 - .28));
+  const routeCells = new Map(), cellSize = 8;
+  for (const edge of edges) {
+    const a = nodes[edge.a], b = nodes[edge.b], pad = corridor(edge);
+    for (let ix = Math.floor((Math.min(a.x, b.x) - pad) / cellSize); ix <= Math.floor((Math.max(a.x, b.x) + pad) / cellSize); ix++)
+      for (let iz = Math.floor((Math.min(a.z, b.z) - pad) / cellSize); iz <= Math.floor((Math.max(a.z, b.z) + pad) / cellSize); iz++) {
+        const key = `${ix},${iz}`;
+        if (!routeCells.has(key)) routeCells.set(key, []);
+        routeCells.get(key).push(edge);
+      }
+  }
+  function isWalkable(x, z, radius = .28) {
+    if (!validPoint([x, z]) || !queries.discClear(x, z, radius)) return false;
+    return (routeCells.get(`${Math.floor(x / cellSize)},${Math.floor(z / cellSize)}`) ?? [])
+      .some(edge => pointToEdge(x, z, nodes[edge.a], nodes[edge.b]) <= corridor(edge) + EPS);
+  }
+  function segmentWalkable(a, b, radius = .28) {
+    if (!queries.segmentClear(a, b, radius)) return false;
+    const count = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / .3));
+    for (let i = 0; i <= count; i++) if (!isWalkable(a[0] + (b[0] - a[0]) * i / count, a[1] + (b[1] - a[1]) * i / count, radius)) return false;
+    return true;
+  }
+  return {nodes, edges, isWalkable, segmentWalkable, diagnostics: {sourceSegments: segments.length, intersections,
+    rejectedEdges: rejected, duplicateEdges: duplicates, components,
+    byType: Object.fromEntries(['footpath', 'roadside', 'crossing'].map(type => [type, edges.filter(e => e.walkingKind === type).length]))}};
+}
+
+function pointToEdge(x, z, a, b) {
+  const dx = b.x - a.x, dz = b.z - a.z;
+  const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (z - a.z) * dz) / (dx * dx + dz * dz)));
+  return Math.hypot(x - a.x - dx * t, z - a.z - dz * t);
 }

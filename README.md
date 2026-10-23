@@ -1,6 +1,6 @@
 # GTA Islamic University — Campus in Motion
 
-A playable third-person browser prototype of Islamic University, Kushtia, Bangladesh. The existing campus layout is preserved from the supplied `map.osm`, using Three.js, JavaScript ES modules and Vite. Eight electric cargo vans, visible drivers/passengers and thirty reacting students bring activity to the existing routes. Map data and fallback speech clips are bundled locally; no paid API or backend is required. Device SpeechSynthesis may use the browser/OS voice service; local clips work without a speech service.
+A playable third-person browser prototype of Islamic University, Kushtia, Bangladesh. The existing campus layout is preserved from the supplied `map.osm`, using Three.js, JavaScript ES modules and Vite. Eight electric cargo vans, visible drivers/passengers and thirty reacting students bring activity to the existing routes. Map data and the four supplied human voice recordings are bundled locally. No speech synthesis, remote voice service, paid API or backend is used.
 
 ## Run locally
 
@@ -30,13 +30,13 @@ Preview normally runs at `http://127.0.0.1:4173/`. JavaScript modules and the ma
 | W / A / S / D | Move relative to the camera |
 | Shift + movement | Sprint |
 | Space | Jump while grounded |
-| E | Enter the nearby electric van / exit when stopped |
+| E | Enter a nearby stopped van / jump off at any speed |
 | Mouse | Orbit camera when pointer lock is available |
 | Right mouse + drag | Orbit without pointer lock |
 | Arrow keys | Alternative camera orbit |
 | Escape | Pause / resume |
 | R | Return to Main Gate; repair and park the same eight vans |
-| M | Mute / unmute reactions (subtitles stay on) |
+| M | Mute / unmute recorded reactions |
 | L | Toggle nearby place labels (on by default) |
 | I | Enter / leave the paused campus inspection camera |
 | G | Toggle cyan OSM roads / amber building footprints |
@@ -52,9 +52,11 @@ The nearest electric cargo van is parked about **8 m ahead**, on the mapped Main
 | S | Brake forward momentum, then reverse |
 | A / D | Steer the front wheel / handlebar |
 | Hold Space | Brake to a complete stop |
-| E | Step off safely when stopped; remains mounted if no clear exit exists |
+| E | Jump off immediately, inheriting the van's momentum; fast exits can cause injury |
 
-The speedometer switches to **km/h** while riding and back to metres/second on foot. Durability appears near a van or while riding. A recent impact displays that student's health and reaction state. At zero durability the engine stops; E still provides a safe exit. R repairs the fleet. The camera eases between walking and vehicle distances, keeps mouse orbit, and follows the moving van's heading after a short period without manual orbit.
+The speedometer switches to **km/h** while riding and back to metres/second on foot. Durability appears near a van or while riding; your health and landing state are displayed separately. A recent impact displays that student's health/reaction. At zero durability the engine stops, and E still jumps off. R repairs the fleet and restores your health. The camera eases between riding and walking without snapping to an exit location.
+
+Exiting starts at the visible passenger's actual seat position, without teleporting to a safe point. You inherit the van's horizontal velocity plus an outward jump. Gravity and collision determine where you land; fast exits cause stumbling or a fall and speed-based injury. The driver remains visible and continues along connected mapped vehicle roads, slowing for people/obstacles and parking if a route ends or cannot be followed safely. Other vans wait until ridden and exited.
 
 The visible **Place labels**, **Inspect campus** and **Map alignment** buttons provide the same actions as L, I and G. Labels use actual OSM names or named entrance refs. At most six nearby labels appear within 300 m, with distance fading, building occlusion checks and overlap rejection.
 
@@ -70,7 +72,8 @@ The visible **Place labels**, **Inspect campus** and **Map alignment** buttons p
 - Eight instances of the existing electric cargo tricycle, each with one front/two rear wheels, a painted open rear platform and a permanent visible driver. No other vehicle type is added.
 - Thirty student pedestrians with varied clothes, skin tones, height differences, turning, idle/walk animations, passing and safe wandering on the mapped path network.
 - Speed-scaled van/pedestrian damage, nonlethal stumble/fall/recovery, bounded knockback, visual vehicle wear, suspension/impact recoil and collision sounds.
-- Bengali-script speech and subtitles, eleven local synthetic Bengali fallback clips, per-person/global voice cooldowns, immediate mute and volume controls.
+- Four supplied human voice MP3s: separate near-miss and collision categories, spatial playback, randomized selection, cooldowns, mute and volume. Dialogue subtitles are removed as requested.
+- Momentum-preserving moving exits with jump-off, landing, injury and recovery; the visible driver continues after the passenger leaves.
 - Capsule-versus-triangle collision, wall sliding, roofs, courtyard access, shoreline blocking, bridge ramps and bounded map movement.
 - Six-metre chase camera with obstruction checks, sunlight, nearby shadows, fog, a north-up minimap, location HUD, loading screen and pause screen.
 - Dark asphalt joined across ways; warm walking surfaces, interrupted visual curbs, pale edge bands and restrained trunk/tertiary dashes.
@@ -78,7 +81,7 @@ The visible **Place labels**, **Inspect campus** and **Map alignment** buttons p
 - Source-name labels, an elevated inspection camera and an optional map-alignment overlay including courtyard outlines.
 - Deterministic planting inside mapped green polygons: 240 added trees and 48 low shrubs in this extract, without collision volumes.
 
-This milestone has one vehicle type and eight instances. Vans remain parked until selected; there is no autonomous vehicle traffic. Cars, motorcycles, combat, police, missions, interiors, multiplayer and mobile touch controls are outside its scope. It is an original prototype inspired by the era of third-person open-world games; it contains no GTA game assets, music, logos or code. It is not affiliated with Rockstar Games or the university.
+This milestone has one vehicle type and eight instances. Only vans the player has exited continue under their driver; this is a small continuation controller, not a full traffic simulation. Cars, motorcycles, combat, police, missions, interiors, multiplayer and mobile touch controls are outside its scope. It is an original prototype inspired by the era of third-person open-world games; it contains no GTA game assets, music, logos or code. It is not affiliated with Rockstar Games or the university.
 
 ## Vehicle and pedestrian behavior
 
@@ -88,15 +91,19 @@ Upright semi-arcade driving uses smooth acceleration, bounded steering, momentum
 
 The complete oriented cart footprint is checked against real buildings, water, bounds, other vans and pedestrian capsules using short translation/rotation substeps. Contact stops the van and transfers a speed-scaled impact to both durability and pedestrian health. A contact must physically separate and pass its cooldown before it can damage that pair again; holding throttle against someone does not cause frame-by-frame damage. Wall/van contacts also damage vehicles. Wear darkens paint and deforms the chassis slightly; damage response and mild suspension are visual, bounded motions rather than a full rigid-body engine.
 
-Entry and exit require clear short paths, clear terrain and separation from other vans/students. All parked chassis/platforms provide separate on-foot collision proxies; static campus triangles are unchanged. Off-road grass remains drivable where clear. Trees and curbs retain their existing visual-only behavior.
+Entry requires a stopped van, grounded feet and a clear short path to its seat. Exit has no stopped-vehicle requirement: it launches from that seat with the current momentum. A preferred outward impulse direction is selected when possible; no safe endpoint is searched or used for relocation. Live van collision proxies follow moving positions/headings using a shared local triangle structure. The source van is ignored only until the jumping capsule clears it. Static campus triangles remain unchanged. Off-road grass remains drivable where clear. Trees and curbs retain their existing visual-only behavior.
 
-Pedestrian routes retain 1,057 nodes and 1,072 edges in two components, built from eligible mapped roads/paths and the bridge. Students choose adjacent edges, pause at junctions, turn smoothly, pass one another with bounded pavement sidesteps and reverse when blocked. Approaching vans cause students to step back, face the van and shout. Avoidance does not make students immune to collisions. Low impacts cause a stumble, harder impacts cause a fall and get-up; health regenerates during recovery. Knockback is constrained to safe mapped pavement, with no gore, death or ragdoll simulation. R relocates a walker only if returning vans would overlap them.
+The walking graph prioritizes actual OSM footway/pedestrian/path ways and the bridge. Where sidewalks are absent, navigation lines are estimated parallel to the road, roughly one metre beyond its pavement edge. These are invisible walking corridors, not new map surfaces or claims of surveyed sidewalks. Every route is checked against campus bounds, buildings and water. Short crossing links are allowed at mapped road junctions and connected footpath ends. Ordinary walking no longer follows vehicle-road centre lines.
 
-## Bangla voice and subtitles
+The graph has 2,066 nodes and 2,195 edges across six components in this extract. Students prefer footpath links, pause at junctions, turn smoothly, pass with bounded sidesteps and reverse when blocked. Normal walking, sidesteps and impact displacement check walking corridors and van clearance. Approaching vans cause stepping away, facing the vehicle and a recorded shout. Actual contacts still cause damage and stumble/fall/recovery. There is no gore, death or ragdoll simulation. R relocates a walker only if returning vans would overlap them.
 
-Reactions use Bengali-script lines, including the requested angry phrases, with Bengali subtitles and an English translation. SpeechSynthesis selects an installed `bn-BD`, `bn-IN` or other `bn` voice. If none is available or speech fails, eleven bundled WAV clips play instead. These are robotic synthetic Bengali speech generated locally with eSpeak NG, not human voice recordings; see `public/audio/README.txt` for provenance and replacement instructions. No runtime TTS API key or download is needed for those clips.
+## Recorded Bangla voices
 
-Only nearby events within about 35 m are heard. Each NPC has an eight-second voice cooldown; global speech spacing is at least 2.4 seconds with one line playing at a time. Distant/stale lines are dropped. **M** or the sound button mutes immediately, the slider changes volume, and preferences save locally when storage is available. Subtitles remain visible when muted. Pause/inspection cancels audio and dialogue; stale voices do not replay on resume. If browser audio is blocked entirely, dialogue continues as subtitles.
+`public/audio/npc/near_01.mp3` and `near_02.mp3` are used for near misses; `hit_01.mp3` and `hit_02.mp3` are used for collisions. They are unchanged copies of the recordings supplied by the project owner. Each category randomly selects a recording while avoiding immediate repeats. Paths are based on `import.meta.env.BASE_URL` so the project works under its GitHub Pages subdirectory. All eleven old robotic clips and the speech synthesis implementation are removed. Missing or undecodable recordings stay silent; there is no TTS fallback and no dialogue subtitle display.
+
+Web Audio decodes and caches each clip, then spatializes playback at the reacting NPC with HRTF and distance rolloff. Listener position/heading and the shouting student's current position are updated while playing. Only nearby events within about 35 m are heard. Each NPC has an eight-second cooldown, with 2.4-second global spacing and one voice at a time. A collision may stop and replace a preceding near-miss warning once, rather than losing its hit sound to that cooldown. It never overlaps two shouts or repeatedly bypasses the collision cooldown.
+
+**M** or the sound button mutes immediately, the slider changes volume, and preferences save locally when available. Pause/inspection cancels active recordings; stale lines do not replay. If browser audio is blocked or the files are unavailable, gameplay continues silently. Recordings and the category manifest are documented in `public/audio/README.txt`.
 
 ## Map accuracy and estimates
 
@@ -120,12 +127,12 @@ One malformed source relation contains only two courtyard inner rings. The impor
 
 - `src/map/`: XML parsing, projection, relation assembly, clipping, buffers and normalized feature data.
 - `src/world/`: surfaces, footprint extrusion, road unions/curbs, use palettes, façades, vegetation, spatial batches and bridge decks.
-- `src/player/`: student, capsule collisions, movement, input, chase camera and separate inspection camera/session.
-- `src/vehicle/`: original tricycle, distributed fleet parking, contacts, seated occupants, driving, safe enter/exit and camera profile.
-- `src/navigation/`: indexed campus safety queries and the OSM pedestrian graph.
+- `src/player/`: student, capsule/live-van collisions, movement, moving-dismount injury, input, chase and inspection camera.
+- `src/vehicle/`: original tricycle, fleet parking, contacts, occupants, moving exits, driver continuation and camera profile.
+- `src/navigation/`: indexed campus safety queries, mapped footpaths, estimated roadside walking corridors and crossing links.
 - `src/npc/`: route wandering, avoidance, health/reactions and three instanced student render batches.
 - `src/game/`: shared fixed-step simulation, contact damage/cooldowns and suspension.
-- `src/audio/`: Bengali voice selection, local clip fallback, cooldowns, collision effects and audio lifecycle.
+- `src/audio/`: recorded reaction selection, spatial playback, priority/cooldowns, collision effects and audio lifecycle.
 - `src/ui/`: Canvas minimap, source-name label layout, location lookup and HUD.
 - `src/main.js`: loading, scene setup, state transitions and fixed 60 Hz loop.
 - `src/config.js`: origin, context extent and movement constants.
@@ -149,6 +156,6 @@ See [DATA-CREDITS.md](./DATA-CREDITS.md) for OpenStreetMap attribution and [THIR
 
 ## Validation
 
-Run `npm test` for the full suite; `VALIDATION.md` records the final result. Earlier single-van/count/hidden-player assertions now match the requested eight vans, thirty pedestrians and visible seating. All map, projection, footprint, height and 3,600 static collision triangle checks remain. New tests cover occupancy, actual impacts, damage scaling/contact rearming, disabled exits, visible wear, health/recovery, peer passing, voice/fallback/subtitles, mute/pause and fleet reset. Scripted tests cannot establish visual quality or measured GPU frame rate.
+Run `npm test` for the full suite; `VALIDATION.md` records the final result. Tests now expect moving exits at the actual seat and roadside/footpath walking. Map, projection, footprint, height and 3,600 static collision triangle checks remain. New checks cover the exact supplied recordings, spatial voice/cooldowns, safe corridors/crossings, low/high-speed dismounts, driver continuation, live van collision, recovery, camera and pause/reset behavior.
 
-Browser automation is disabled in the current Work settings. Current-release visual play checks and actual 60 FPS / WebGL draw-call measurements could not be performed. Matched CPU frustum comparisons are recorded separately and are not GPU benchmarks. The ZIP includes source, lockfile, map, tests, notices, `dist/` and generated `docs/`, excluding `node_modules`.
+Browser smoke checks cover loading, the grounded student/visible driver, recorded-voice decoding, inspection and runtime error logs. Scripted tests provide the detailed dismount/collision coverage; the limited browser smoke check is not a complete visual or audio-quality assessment. The ZIP includes source, lockfile, map, recordings, tests, notices, `dist/` and generated `docs/`, excluding `node_modules`.

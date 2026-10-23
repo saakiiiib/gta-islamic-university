@@ -25,12 +25,13 @@ test('bridge deck crossings do not falsely connect to a road below the known dec
   assert.equal(g.nodes.filter(n => n.neighbors.some(e => e.roadId === 'ground') && n.neighbors.some(e => e.roadId === 'bridge')).length, 0);
 });
 
-test('actual campus graph excludes highways and every accepted edge is safe and on mapped pavement', () => {
+test('actual campus graph excludes highways and every accepted edge is safe', () => {
   assert.ok(graph.nodes.length > 500 && graph.edges.length > 500);
   for (const edge of graph.edges) {
     const a = graph.nodes[edge.a], b = graph.nodes[edge.b]; assert.ok(!/trunk|motorway/.test(edge.kind));
     assert.ok(queries.segmentClear([a.x, a.z], [b.x, b.z], .28));
-    assert.ok(pointInMultiPolygon([a.x, a.z], map.campus.polygons)); assert.ok(queries.onRoad((a.x + b.x) / 2, (a.z + b.z) / 2));
+    assert.ok(pointInMultiPolygon([a.x, a.z], map.campus.polygons));
+    assert.ok(graph.segmentWalkable([a.x, a.z], [b.x, b.z]));
   }
 });
 
@@ -41,7 +42,7 @@ test('twelve deterministic pedestrians wander safely along real edges for a minu
     a.update(1 / 60);
     if (tick % 20) continue;
     for (const p of a.agents) {
-      assert.ok(queries.discClear(p.position.x, p.position.z, .28)); assert.ok(queries.onRoad(p.position.x, p.position.z));
+      assert.ok(queries.discClear(p.position.x, p.position.z, .28)); assert.ok(graph.isWalkable(p.position.x, p.position.z));
       const from = graph.nodes[p.current], to = graph.nodes[p.target];
       assert.ok(Math.hypot(p.offset.x, p.offset.z) <= .8);
       assert.ok(pointToSegmentDistance([p.position.x, p.position.z], [from.x, from.z], [to.x, to.z]) <= .8, 'bounded pavement sidesteps allow walkers to pass');

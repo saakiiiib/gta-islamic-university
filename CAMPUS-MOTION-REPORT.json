@@ -1,6 +1,6 @@
 {
-  "milestone": "Campus in motion — eight occupied vans, thirty students, damage and Bangla reactions",
-  "upgradeBaseCommit": "ddf0896cc308cb1f1888badfdaf0638bfd13828f",
+  "milestone": "Recorded NPC voices, footpath/roadside walking and moving passenger exits",
+  "upgradeBaseCommit": "dca1412ecf10439f64cbfe2b99618500d0a014a7",
   "map": {
     "sha256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
     "bytes": 770269,
@@ -88,13 +88,23 @@
     }
   ],
   "navigation": {
-    "nodes": 1057,
-    "edges": 1072,
-    "sourceSegments": 226,
-    "intersections": 297,
-    "rejectedEdges": 186,
-    "duplicateEdges": 0,
-    "components": 2
+    "nodes": 2066,
+    "edges": 2195,
+    "sourceSegments": 630,
+    "intersections": 41,
+    "rejectedEdges": 397,
+    "duplicateEdges": 27,
+    "components": 6,
+    "byType": {
+      "footpath": 146,
+      "roadside": 1851,
+      "crossing": 198
+    },
+    "routeMetres": {
+      "footpath": 987.41,
+      "roadside": 13455.89,
+      "crossing": 1085.9
+    }
   },
   "rendering": {
     "staticWorld": {
@@ -127,72 +137,57 @@
   "audio": {
     "clips": [
       {
-        "filename": "hit_drive.wav",
-        "bytes": 83368,
-        "sha256": "36e6bc35bfff9400ecc4628d27ff44fade2d299d08cde2e66aaa8030670da425"
+        "id": "near_01",
+        "filename": "npc/near_01.mp3",
+        "bytes": 16028,
+        "sha256": "b4cf500847148466f1f3e68909a14359c38a39e121de09f40c905a72467a3289"
       },
       {
-        "filename": "hit_pain.wav",
-        "bytes": 68228,
-        "sha256": "044ce8afaf64c5328142472d8eae136af98fde990923ffaedb64163cc9ae4724"
+        "id": "near_02",
+        "filename": "npc/near_02.mp3",
+        "bytes": 11924,
+        "sha256": "309affd562c0b2992d9b8f63df3f0f4ea1373918a145211a081272a4bb50d43d"
       },
       {
-        "filename": "hit_stop.wav",
-        "bytes": 63820,
-        "sha256": "c6a0a12009c0f5588a9f693ce7d786328cd098a921f6f4d25d0286de30d18995"
+        "id": "hit_01",
+        "filename": "npc/hit_01.mp3",
+        "bytes": 10736,
+        "sha256": "de0a7b7074efb3fad9819bd955ec048c6e561d17ddacf85fb19677571bce5592"
       },
       {
-        "filename": "hit_watch.wav",
-        "bytes": 72194,
-        "sha256": "fbe69db1b356a63c88c5d68afa9abf2a362379393600d7225ebce1267c11a5e9"
-      },
-      {
-        "filename": "near_angry.wav",
-        "bytes": 42412,
-        "sha256": "0ecd51f572702cd64e7351d2dc7e6a9c94b52e90d87c33ac0688c0265de2ba15"
-      },
-      {
-        "filename": "near_careful.wav",
-        "bytes": 77194,
-        "sha256": "42ccfb2efebccec2edd6547f255a5d91500c6908947e354c36d2897c78909b4e"
-      },
-      {
-        "filename": "near_drive.wav",
-        "bytes": 65518,
-        "sha256": "22927a587e736d8cb68827163873bdb81cde9f1dd2cf147d7ac747ad3c93ce72"
-      },
-      {
-        "filename": "near_watch.wav",
-        "bytes": 72188,
-        "sha256": "ad40f6a31ad804f06632f08554f9d34eeda33d0cbdb7b305e791d2655d98da9c"
-      },
-      {
-        "filename": "strong_concern.wav",
-        "bytes": 112070,
-        "sha256": "317d7468938959906b476a30d118c20b9d8d223db8740fbf09a5ae355b131030"
-      },
-      {
-        "filename": "strong_help.wav",
-        "bytes": 113914,
-        "sha256": "494bc8ddda44e46e342adb564a34248d4eea6695eee4ed96dae071a9d094a97c"
-      },
-      {
-        "filename": "strong_pain.wav",
-        "bytes": 139826,
-        "sha256": "d1cdf15202028c7503f98cbaa177b989d6387b534c60e4ab30f8dcb3db862be4"
+        "id": "hit_02",
+        "filename": "npc/hit_02.mp3",
+        "bytes": 10844,
+        "sha256": "6075719770fe8611024fc973093d540145ac14dc693257f26587ea3b2e5a6def"
       }
     ],
-    "gameServiceRequests": 0,
-    "deviceVoiceMayUseOSServices": true,
-    "speech": "Bengali device voice preferred; local synthetic eSpeak NG Bengali WAV fallback; subtitles remain available muted."
+    "categories": {
+      "nearMiss": [
+        "near_01",
+        "near_02"
+      ],
+      "collision": [
+        "hit_01",
+        "hit_02"
+      ]
+    },
+    "remoteServiceRequests": 0,
+    "synthesis": false,
+    "dialogueSubtitles": false,
+    "spatial": "HRTF panner follows NPC position; listener follows camera heading; collision clips can replace preceding near misses without overlap."
   },
   "cpuSample": {
     "frames": 600,
     "simulatedSeconds": 10,
-    "totalMilliseconds": 491.55,
-    "meanMilliseconds": 0.819,
+    "totalMilliseconds": 1681.54,
+    "meanMilliseconds": 2.803,
     "includes": "Idle player physics, thirty wandering pedestrians, eight parked vans, visible occupants and all actor animation/matrix updates. Excludes WebGL rendering, camera, labels, audio and HUD. Not an FPS measurement."
   },
-  "estimates": "All actors are illustrative game props. Upright vehicle kinematics and constrained nonlethal knockback replace full rigid-body/ragdoll simulation. All eight vans are parked until selected by the player.",
-  "verificationLimits": "Browser control is disabled in Work settings. Interactive visual/audio quality, pointer-lock behavior and actual GPU FPS/draw calls remain unverified."
+  "exits": {
+    "launch": "Actual visible passenger root, inherited planar van momentum plus outward/upward impulse; no safe-point teleport.",
+    "injury": "Speed-scaled nonlethal landing/wall impact injury, stumble/fall/recovery.",
+    "driver": "Visible driver continues on connected mapped vehicle roads; brakes or parks at obstructions or dead ends."
+  },
+  "estimates": "Roadside walking corridors are unrendered navigation estimates, not surveyed sidewalks. All map geometry stays unchanged. Vehicle continuation and dismounts use bounded kinematics/capsule collision rather than a full rigid-body/ragdoll engine.",
+  "verificationLimits": "Browser smoke checks cover loading, visible student/driver, recorded-voice readiness, inspection and error logs. Automated tests cover detailed dismount/collision behavior. Actual audible recording clarity and full gameplay visual review remain limited."
 }

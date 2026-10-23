@@ -19,7 +19,7 @@ export class ElectricVan {
     this.position.set(spawn.x, this.queries.groundHeight(spawn.x, spawn.z), spawn.z); this.yaw = spawn.yaw ?? 0;
     this.speed = this.steering = this.wheelAngle = this.acceleration = this.visualLean = this.visualPitch = 0;
     this.driveAcceleration = this.impactAge = this.impactStrength = this.impactRoll = 0;
-    this.durability = 100; this.occupied = false; this.hitObstacle = this.yieldingToPedestrian = false;
+    this.durability = 100; this.occupied = this.autonomous = false; this.hitObstacle = this.yieldingToPedestrian = false;
     this.updateDamageVisuals(); this.syncVisuals(0);
   }
   get disabled() { return this.durability <= 0; }
@@ -47,7 +47,7 @@ export class ElectricVan {
     if (!Number.isFinite(dt) || dt <= 0) return;
     const duration = Math.min(dt, .1), ticks = Math.ceil(duration * 60);
     this.hitObstacle = this.yieldingToPedestrian = false;
-    for (let i = 0; i < ticks; i++) this.step(duration / ticks, this.occupied && !this.disabled ? input : {}, emergencyBrake || this.disabled, pedestrians, vans, onImpact);
+    for (let i = 0; i < ticks; i++) this.step(duration / ticks, (this.occupied || this.autonomous) && !this.disabled ? input : {}, emergencyBrake || this.disabled, pedestrians, vans, onImpact);
   }
   step(dt, input, emergencyBrake, pedestrians, vans, onImpact) {
     const cfg = this.config, before = this.speed;

@@ -24,14 +24,15 @@ test('real campus starts with eight safe parked electric vans and thirty separat
   sim.dispose();
 });
 
-test('real-campus enter, drive, reverse, brake and safe exit keep the player on valid land', () => {
+test('real-campus enter, drive, reverse, brake and jump-off land on valid ground', () => {
   const sim = create(); approach(sim); assert.ok(sim.update(1 / 60, { interact: true }).changed);
   const origin = sim.van.position.clone(); for (let i = 0; i < 90; i++) sim.update(1 / 60, { forward: true }, sim.van.yaw);
   assert.ok(sim.van.position.distanceTo(origin) > 1); assert.equal(sim.player.group.visible, true);
-  assert.equal(sim.update(1 / 60, { interact: true }).changed, false);
   for (let i = 0; i < 90; i++) sim.update(1 / 60, { back: true }); assert.ok(sim.van.speed < 0);
   for (let i = 0; i < 60; i++) sim.update(1 / 60, { brake: true }); assert.equal(sim.van.speed, 0);
   assert.ok(sim.update(1 / 60, { interact: true }).changed); assert.equal(sim.player.group.visible, true);
+  for (let i = 0; i < 90; i++) sim.update(1 / 60);
+  assert.ok(sim.player.grounded); assert.ok(sim.driverController.isActive(sim.session.van) || !sim.session.van.autonomous);
   assert.ok(sim.queries.discClear(sim.player.position.x, sim.player.position.z, .32)); sim.dispose();
 });
 

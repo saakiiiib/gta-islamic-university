@@ -1,15 +1,12 @@
 {
+  "categories": {
+    "nearMiss": ["near_01", "near_02"],
+    "collision": ["hit_01", "hit_02"]
+  },
   "clips": {
-    "near_watch": "near_watch.wav",
-    "near_drive": "near_drive.wav",
-    "near_angry": "near_angry.wav",
-    "near_careful": "near_careful.wav",
-    "hit_drive": "hit_drive.wav",
-    "hit_watch": "hit_watch.wav",
-    "hit_stop": "hit_stop.wav",
-    "hit_pain": "hit_pain.wav",
-    "strong_pain": "strong_pain.wav",
-    "strong_help": "strong_help.wav",
-    "strong_concern": "strong_concern.wav"
+    "near_01": { "file": "npc/near_01.mp3", "transcriptVerified": false },
+    "near_02": { "file": "npc/near_02.mp3", "transcriptVerified": false },
+    "hit_01": { "file": "npc/hit_01.mp3", "transcriptVerified": false },
+    "hit_02": { "file": "npc/hit_02.mp3", "transcriptVerified": false }
   }
 }

@@ -3,6 +3,7 @@ import { Capsule } from 'three/addons/math/Capsule.js';
 import { PLAYER_CONFIG } from '../config.js';
 import { CollisionWorld, isWaterBlocked } from './collision.js';
 import { createStudent, animateStudent } from './character.js';
+import { resolveVanCapsule } from './vanCollisions.js';
 
 export function movementDirection(input = {}, cameraYaw = 0) {
   const x = Number(Boolean(input.right)) - Number(Boolean(input.left));
@@ -27,12 +28,18 @@ export class PlayerController {
     this.landingTime = 0;
     this.turnRate = 0;
     this.dynamicWorld = null;
+    this.vanObstacles = [];
+    this.dismount = null;
+    this.health = 100;
+    this.injury = { lastDamage: 0, lastCause: null };
     this.spawn = { x: 0, y: 0, z: 0, yaw: 0 };
     this.reset(this.mapData.spawn ?? this.spawn);
   }
 
   reset(spawn = this.spawn) {
     this.spawn = { ...spawn };
+    this.health = 100;
+    this.injury = { lastDamage: 0, lastCause: null };
     this.teleport(spawn, spawn.yaw ?? 0);
   }
 
@@ -45,6 +52,7 @@ export class PlayerController {
     this.animationTime = 0;
     this.landingTime = this.turnRate = 0;
     this.rig.pose = null;
+    this.dismount = null;
     this.syncCapsule();
     this.group.position.copy(this.position);
     this.group.rotation.set(0, this.yaw, 0);
@@ -58,10 +66,58 @@ export class PlayerController {
 
   get state() {
     return { position: this.position, yaw: this.yaw, speed: this.speed, grounded: this.grounded, verticalSpeed: this.velocity.y, sprinting: this.speed > this.config.walkSpeed + 0.2,
-      motionState: !this.grounded ? 'jump' : this.landingTime > 0 ? 'land' : this.speed > 4.5 ? 'run' : this.speed > .12 ? 'walk' : 'idle', landingBlend: this.landingTime / .2, turnRate: this.turnRate };
+      motionState: this.dismount?.phase ?? (!this.grounded ? 'jump' : this.landingTime > 0 ? 'land' : this.speed > 4.5 ? 'run' : this.speed > .12 ? 'walk' : 'idle'),
+      motionTime: this.dismount?.phaseTime ?? 0, landingBlend: this.landingTime / .2, turnRate: this.turnRate, health: this.health, injury: this.injury };
   }
 
   setDynamicObstacles(group) { this.dynamicWorld = group ? new CollisionWorld(group) : null; }
+
+  /** Store live references so traffic collision follows vans without rebuilding an octree. */
+  setVanObstacles(vans, { ignore = null } = {}) {
+    this.vanObstacles = Array.from(vans ?? []);
+    this.dynamicWorld = null;
+    if (this.dismount && ignore) {
+      this.dismount.sourceVan = ignore;
+      this.dismount.ignoreSource = true;
+    }
+  }
+
+  /** Launch from the passenger rig's actual world-space sole/root position. */
+  beginDismount({ position, yaw = this.yaw, velocity = { x: 0, z: 0 }, side, speed = 0, van = null }) {
+    if (!position || ![position.x, position.y, position.z].every(Number.isFinite)) return false;
+    const outward = side && Number.isFinite(side.x) && Number.isFinite(side.z) ? { x: side.x, z: side.z } :
+      { x: Math.cos(yaw), z: -Math.sin(yaw) };
+    const length = Math.hypot(outward.x, outward.z) || 1;
+    this.position.set(position.x, position.y, position.z);
+    this.velocity.set((Number.isFinite(velocity.x) ? velocity.x : 0) + outward.x / length * 3.3,
+      3.8, (Number.isFinite(velocity.z) ? velocity.z : 0) + outward.z / length * 3.3);
+    this.yaw = yaw;
+    this.speed = Math.hypot(this.velocity.x, this.velocity.z);
+    this.grounded = false;
+    this.landingTime = 0;
+    this.turnRate = 0;
+    this.dismount = { sourceVan: van, ignoreSource: !!van, launchSpeed: Math.abs(speed), phase: 'jumpOff', phaseTime: 0, impactCooldown: 0 };
+    this.rig.pose = {
+      bob: this.rig.body.position.y, bodyZ: this.rig.body.position.z,
+      lean: this.rig.body.rotation.x, roll: this.rig.body.rotation.z,
+      a0: this.rig.arms[0].rotation.x, a1: this.rig.arms[1].rotation.x,
+      az0: this.rig.arms[0].rotation.z, az1: this.rig.arms[1].rotation.z,
+      l0: this.rig.legs[0].rotation.x, l1: this.rig.legs[1].rotation.x,
+      k0: this.rig.knees[0].rotation.x, k1: this.rig.knees[1].rotation.x,
+    };
+    this.syncCapsule();
+    this.group.position.copy(this.position);
+    this.group.rotation.set(0, yaw, 0);
+    this.group.visible = true;
+    return true;
+  }
+
+  applyInjury(amount, cause) {
+    if (!(amount > 0)) return;
+    const damage = Math.max(0, Math.min(this.health - 25, amount));
+    this.health -= damage;
+    this.injury = { lastDamage: damage, lastCause: cause };
+  }
 
   update(dt, input = {}, cameraYaw = 0) {
     if (!Number.isFinite(dt) || dt <= 0) return;
@@ -76,16 +132,27 @@ export class PlayerController {
   step(dt, input, cameraYaw) {
     const cfg = this.config;
     const wasGrounded = this.grounded;
+    if (this.dismount) {
+      this.dismount.phaseTime += dt;
+      this.dismount.impactCooldown = Math.max(0, this.dismount.impactCooldown - dt);
+      if (this.dismount.phase === 'stumble' && this.dismount.phaseTime >= .55 ||
+          this.dismount.phase === 'fallen' && this.dismount.phaseTime >= 1.05) {
+        this.dismount.phase = 'recover'; this.dismount.phaseTime = 0;
+      } else if (this.dismount.phase === 'recover' && this.dismount.phaseTime >= .6) this.dismount = null;
+    }
     this.landingTime = Math.max(0, this.landingTime - dt);
-    const direction = movementDirection(input, cameraYaw);
+    const recovering = ['fallen', 'recover'].includes(this.dismount?.phase);
+    const direction = movementDirection(recovering ? {} : input, cameraYaw);
     const desiredSpeed = input.sprint ? cfg.sprintSpeed : cfg.walkSpeed;
     const targetVelocity = direction.multiplyScalar(desiredSpeed);
     const difference = new Vector3(targetVelocity.x - this.velocity.x, 0, targetVelocity.z - this.velocity.z);
     const turning = this.velocity.x * targetVelocity.x + this.velocity.z * targetVelocity.z < 0;
-    const acceleration = targetVelocity.lengthSq() < .01 ? cfg.deceleration : turning ? cfg.turnAcceleration : cfg.acceleration;
+    const launchAir = this.dismount?.phase === 'jumpOff' && !this.grounded;
+    const acceleration = launchAir ? (targetVelocity.lengthSq() < .01 ? .45 : 3.2) :
+      targetVelocity.lengthSq() < .01 ? cfg.deceleration : turning ? cfg.turnAcceleration : cfg.acceleration;
     if (difference.length() > acceleration * dt) difference.setLength(acceleration * dt);
     this.velocity.add(difference);
-    if (input.jump && this.grounded) {
+    if (input.jump && this.grounded && !this.dismount) {
       this.velocity.y = cfg.jumpSpeed;
       this.grounded = false;
     }
@@ -109,15 +176,50 @@ export class PlayerController {
         else { nextX = priorX; nextZ = priorZ; }
       }
       this.capsule.translate(new Vector3(nextX - priorX, this.velocity.y * subDt, nextZ - priorZ));
+      const beforeWall = Math.hypot(this.velocity.x, this.velocity.z);
       grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
       if (this.dynamicWorld) {
         grounded = this.dynamicWorld.resolve(this.capsule, this.velocity) || grounded;
         grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
       }
+      for (const van of this.vanObstacles) {
+        if (this.dismount?.ignoreSource && van === this.dismount.sourceVan) {
+          const x = this.capsule.start.x, z = this.capsule.start.z;
+          const clearance = typeof van.distanceFrom === 'function' ? van.distanceFrom(x, z) :
+            Math.hypot(x - van.position.x, z - van.position.z) - (van.config?.halfWidth ?? .82);
+          if (clearance <= cfg.radius + .12) continue;
+          this.dismount.ignoreSource = false;
+        }
+        const hit = resolveVanCapsule(this.capsule, this.velocity, van);
+        grounded = hit.grounded || grounded;
+      }
+      if (this.vanObstacles.length) {
+        // A vehicle's separation must still respect surveyed walls, water and map edges.
+        grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
+        const x = this.capsule.start.x, z = this.capsule.start.z;
+        const bounds = this.mapData.bounds;
+        const blockedX = bounds && (x < bounds.minX + cfg.radius || x > bounds.maxX - cfg.radius);
+        const blockedZ = bounds && (z < bounds.minZ + cfg.radius || z > bounds.maxZ - cfg.radius);
+        if (blockedX || blockedZ || isWaterBlocked(x, z, this.mapData, cfg.radius)) {
+          this.capsule.translate(new Vector3(priorX - x, 0, priorZ - z));
+          this.velocity.x = this.velocity.z = 0;
+        }
+      }
+      const lostSpeed = beforeWall - Math.hypot(this.velocity.x, this.velocity.z);
+      if (this.dismount?.phase === 'jumpOff' && this.dismount.impactCooldown <= 0 && lostSpeed > 2.5) {
+        this.applyInjury((lostSpeed - 2.5) * 2.8, 'impact');
+        this.dismount.impactCooldown = .4;
+      }
       this.position.copy(this.capsule.start).y -= cfg.radius;
     }
     this.grounded = grounded;
     if (!wasGrounded && grounded && fallSpeed < -1.4) this.landingTime = .2;
+    if (!wasGrounded && grounded && this.dismount?.phase === 'jumpOff') {
+      const severity = Math.max(0, this.dismount.launchSpeed - 2.5) * 2.7 + Math.max(0, -fallSpeed - 7) * 3;
+      this.applyInjury(severity, 'dismount');
+      this.dismount.phase = severity >= 12 ? 'fallen' : 'stumble';
+      this.dismount.phaseTime = 0;
+    }
     this.speed = Math.hypot(this.velocity.x, this.velocity.z);
     if (this.speed > 0.08) {
       const targetYaw = Math.atan2(-this.velocity.x, -this.velocity.z);

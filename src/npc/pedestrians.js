@@ -61,7 +61,7 @@ export class PedestrianSystem {
       const node = ranked[0]; selected.push(node);
       const next = node.neighbors[(i * 3) % node.neighbors.length];
       this.agents.push({ id: i, _crowd: this, seed: 77321 + i * 7919, current: node.id, target: next.to, previous: -1, progress: 0, edge: next,
-        position: new Vector3(node.x, queries.groundHeight(node.x, node.z), node.z), yaw: 0, speed: 0, idleTime: .25 + (i % 4) * .45,
+        position: new Vector3(node.x, queries.groundHeight(node.x, node.z), node.z), yaw: 0, speed: 0, idleTime: 0,
         walkSpeed: 1.12 + (i % 5) * .065, turnRate: 0, rig: null, yielding: false, visited: new Set([node.id]),
         health: 100, reactionState: 'idle', reactionTime: 0, reactionDuration: 0, reactionStrength: 0,
         lastImpactAt: -Infinity, lastNearMissAt: -Infinity, impulse: { x: 0, z: 0 }, offset: { x: 0, z: 0 }, lookYaw: null,
@@ -77,8 +77,10 @@ export class PedestrianSystem {
   nextEdge(agent) {
     const node = this.graph.nodes[agent.current], options = node.neighbors.filter(n => n.to !== agent.previous);
     const choices = options.length ? options : node.neighbors;
-    agent.edge = choices[Math.floor(random(agent) * choices.length)]; agent.target = agent.edge.to; agent.progress = 0;
-    if (node.neighbors.length !== 2 && random(agent) < .45) agent.idleTime = .7 + random(agent) * 1.8;
+    const weight = edge => edge.walkingKind === 'footpath' ? 5 : edge.walkingKind === 'crossing' ? .3 : 1;
+    let pick = random(agent) * choices.reduce((sum, edge) => sum + weight(edge), 0);
+    agent.edge = choices.find(edge => (pick -= weight(edge)) < 0) ?? choices.at(-1);
+    agent.target = agent.edge.to; agent.progress = 0;
   }
   applyImpact(agent, impact) { return applyImpact(agent, impact); }
   queueEvent(event) { this.events.push(event); if (this.events.length > 128) this.events.shift(); }
@@ -91,9 +93,11 @@ export class PedestrianSystem {
       for (const agent of this.agents) this.step(agent, subDt, fleet);
     }
   }
-  safeMove(agent, x, z) {
-    if (!this.queries.onRoad(x, z) || !this.queries.segmentClear([agent.position.x, agent.position.z], [x, z], .28)) return false;
+  safeMove(agent, x, z, fleet = []) {
+    if (!this.graph.segmentWalkable([agent.position.x, agent.position.z], [x, z], .28)) return false;
     if (this.agents.some(other => other !== agent && Math.hypot(other.position.x - x, other.position.z - z) < .52)) return false;
+    if (fleet.some(van => vanDistance(van, x, z) < .55 &&
+      vanDistance(van, x, z) <= vanDistance(van, agent.position.x, agent.position.z) + 1e-5)) return false;
     agent.position.set(x, this.queries.groundHeight(x, z), z);
     return true;
   }
@@ -137,13 +141,13 @@ export class PedestrianSystem {
       if (!legacy && proximity < 2.1) {
         const dx = agent.position.x - van.position.x, dz = agent.position.z - van.position.z, d = Math.hypot(dx, dz) || 1;
         const sx = dx / d * .35 * dt, sz = dz / d * .35 * dt;
-        if (offsetFits(agent, sx, sz) && this.safeMove(agent, agent.position.x + sx, agent.position.z + sz)) { agent.offset.x += sx; agent.offset.z += sz; }
+        if (offsetFits(agent, sx, sz) && this.safeMove(agent, agent.position.x + sx, agent.position.z + sz, fleet)) { agent.offset.x += sx; agent.offset.z += sz; }
       }
     }
     const impulseLength = Math.hypot(agent.impulse.x, agent.impulse.z);
     if (impulseLength > .002) {
       const dx = agent.impulse.x * Math.min(1, dt * 7), dz = agent.impulse.z * Math.min(1, dt * 7);
-      if (offsetFits(agent, dx, dz) && this.safeMove(agent, agent.position.x + dx, agent.position.z + dz)) {
+      if (offsetFits(agent, dx, dz) && this.safeMove(agent, agent.position.x + dx, agent.position.z + dz, fleet)) {
         agent.offset.x += dx; agent.offset.z += dz; agent.impulse.x -= dx; agent.impulse.z -= dz;
       } else { agent.impulse.x = 0; agent.impulse.z = 0; }
     }
@@ -158,7 +162,7 @@ export class PedestrianSystem {
     const x = MathUtils.lerp(a.x, b.x, progress) + ox, z = MathUtils.lerp(a.z, b.z, progress) + oz;
     const blockingPeer = this.agents.find(other => other !== agent && Math.hypot(other.position.x - x, other.position.z - z) < .52);
     const blockingVan = fleet.find(van => vanDistance(van, x, z) < .55);
-    if (blockingPeer || blockingVan || !this.safeMove(agent, x, z)) {
+    if (blockingPeer || blockingVan || !this.safeMove(agent, x, z, fleet)) {
       const reason = blockingPeer ? 'peer' : blockingVan ? 'van' : 'geometry';
       if (agent.blockedReason !== reason) { agent.blockedReason = reason; agent.blockedTime = 0; }
       if (blockingPeer) {
@@ -168,7 +172,7 @@ export class PedestrianSystem {
         const side = agent.offset.x * rightX + agent.offset.z * rightZ;
         let shift = Math.min(1.2 * dt, Math.max(0, .48 - side));
         while (shift > .01 && !offsetFits(agent, rightX * shift, rightZ * shift)) shift *= .5;
-        if (shift > .01 && this.safeMove(agent, agent.position.x + rightX * shift, agent.position.z + rightZ * shift)) {
+        if (shift > .01 && this.safeMove(agent, agent.position.x + rightX * shift, agent.position.z + rightZ * shift, fleet)) {
           agent.offset.x += rightX * shift; agent.offset.z += rightZ * shift;
           agent.passTime = 1.7; agent.blockedTime = 0; agent.blockedReason = null; agent.idleTime = 0; agent.speed = 0;
           agent.avoidSpeed = shift / dt;
@@ -183,7 +187,7 @@ export class PedestrianSystem {
       // already checked impact path before trying to advance again.
       const rx = MathUtils.lerp(a.x, b.x, agent.progress) + ox;
       const rz = MathUtils.lerp(a.z, b.z, agent.progress) + oz;
-      if (fleet.every(van => vanDistance(van, rx, rz) >= .55) && this.safeMove(agent, rx, rz)) {
+      if (fleet.every(van => vanDistance(van, rx, rz) >= .55) && this.safeMove(agent, rx, rz, fleet)) {
         agent.offset.x = ox; agent.offset.z = oz;
       }
       agent.speed = 0; agent.idleTime = .3;

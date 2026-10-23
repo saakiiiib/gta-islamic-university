@@ -10,14 +10,13 @@ import { PlaceLabels } from './ui/labels.js';
 import { CampusSimulation } from './game/simulation.js';
 import { TravelCamera } from './vehicle/camera.js';
 import { ReactionAudio } from './audio/reactions.js';
-import { Subtitles } from './ui/subtitles.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('game');
 let state = 'loading', renderer, scene, camera, world, mapData, player, input, chase, hud, sun;
 let inspection, inspectionSession, labels, gameplayFog;
 let simulation;
-let reactions, subtitles;
+let reactions;
 let accumulator = 0, lastTime = performance.now(), fps = 60;
 const STEP = 1 / 60;
 const sunOffset = new THREE.Vector3(-55, 110, -40);
@@ -39,7 +38,7 @@ function pause(reason = 'escape') {
   if (!['playing', 'inspection'].includes(state)) return;
   state = 'paused'; accumulator = 0;
   input.setEnabled(false); inspectionSession.suspend(); simulation.setSuspended(true);
-  reactions?.setSuspended(true); subtitles?.hide();
+  reactions?.setSuspended(true);
   if (document.pointerLockElement === canvas) document.exitPointerLock();
   $('pause-reason').textContent = reason === 'focus' ? 'The game paused while you stepped away.' : 'Your campus is waiting.';
   $('pause-screen').hidden = false;
@@ -68,7 +67,7 @@ async function play() {
 function resetPlayer() {
   if (inspectionSession.active) { inspectionSession.exit(); syncView(); }
   simulation.reset(); simulation.setSuspended(false); chase.setDriving(false); chase.reset(mapData.spawn); accumulator = 0;
-  reactions?.reset(); subtitles?.hide();
+  reactions?.reset();
   hud.toast('Back at Main Gate. All eight vans repaired and parked.');
 }
 
@@ -76,7 +75,7 @@ function syncView() {
   const active = inspectionSession.active;
   scene.fog = active ? null : gameplayFog;
   simulation.setSuspended(active);
-  reactions?.setSuspended(active); subtitles?.hide();
+  reactions?.setSuspended(active);
   if (!active && state === 'playing') reactions?.unlock();
   document.body.classList.toggle('inspecting', active);
   $('inspection-button').setAttribute('aria-pressed', String(active));
@@ -136,7 +135,8 @@ function tick(t) {
       accumulator -= STEP;
     }
     simulation.animate(elapsed);
-    reactions.consume(simulation.drainEvents(), simulation.entity.position); reactions.update(elapsed); subtitles.update(elapsed);
+    reactions.consume(simulation.drainEvents(), simulation.entity.position, chase.yaw);
+    reactions.update(elapsed, simulation.entity.position, chase.yaw, simulation.crowd.agents);
     chase.updateTravel(0, simulation.entity);
     world.update(elapsed, simulation.entity.position);
     sun.target.position.set(Math.round(simulation.entity.position.x * 8) / 8, 0, Math.round(simulation.entity.position.z * 8) / 8);
@@ -189,11 +189,10 @@ async function initialize() {
     labels = new PlaceLabels($('place-labels'), world.labelAnchors, world.buildingMeshes);
     lighting(); resize();
     hud = new HUD(mapData);
-    subtitles = new Subtitles($('dialogue'));
-    reactions = new ReactionAudio({ baseURL: `${import.meta.env.BASE_URL}audio/`, onSubtitle: line => subtitles.show(line), onStatus: status => {
+    reactions = new ReactionAudio({ baseURL: `${import.meta.env.BASE_URL}audio/`, onStatus: status => {
       $('sound-button').setAttribute('aria-pressed', String(status.muted));
       $('sound-label').textContent = status.muted ? 'Sound off' : 'Sound on';
-      $('sound-status').textContent = status.mode === 'bengali-speech' ? 'Bengali voice' : status.mode === 'recorded-clips' ? 'Bangla clips' : 'Subtitles';
+      $('sound-status').textContent = status.mode === 'recorded-clips' ? 'Recorded voices' : 'Voice unavailable';
     } });
     try {
       const preferences = JSON.parse(localStorage.getItem('iu-reaction-audio') ?? '{}');

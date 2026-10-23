@@ -13,8 +13,8 @@ npm install
 npm test
 npm run build
 npm run build:pages
-git add src tests scripts public index.html README.md VALIDATION.md CAMPUS-MOTION-REPORT.json docs
-git commit -m "Add eight occupied vans, pedestrian damage and Bangla reactions"
+git add --all
+git commit -m "Use recorded NPC voices, roadside walking and moving dismounts"
 git push origin main
 ```
 
@@ -26,8 +26,8 @@ Confirm the **pages build and deployment** workflow for the pushed commit succee
 8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9
 ```
 
-Eight vans appear as yellow minimap markers; disabled vans turn red. Approach any usable van and press **E** to ride visibly behind its driver. **W/S** drive/brake/reverse, **A/D** steer, **Space** brakes, **E** exits when stopped. **R** returns to the gate and repairs the same fleet. **M** mutes Bangla reactions; subtitles stay on. The volume slider, **L** labels, **I** inspection, **G** alignment and **F3** statistics remain. Inspection pauses every actor and cancels speech; I/Escape returns to the previous walking/riding view.
+Eight vans appear as yellow minimap markers; disabled vans turn red. Approach a stopped van and press **E** to ride behind its driver. **W/S** drive/brake/reverse, **A/D** steer, **Space** brakes, **E** jumps off at any speed. The passenger inherits momentum and takes landing damage at speed; the driver continues along mapped roads. **R** returns to the gate and repairs the fleet/player. **M** mutes recorded reactions; dialogue subtitles are removed. Labels, inspection, alignment, volume and F3 remain. Inspection pauses every actor and cancels recordings.
 
-The build must include `audio/reactions.json`, all eleven WAV files and `audio/README.txt`. Fetch the manifest and each listed clip after deploying and compare against the local production build. Browser Bengali SpeechSynthesis support varies; the bundled synthetic clips are the fallback. HTTP checks prove clip delivery, not pronunciation or browser autoplay behavior.
+The build must include `audio/reactions.json`, `audio/README.txt` and the four supplied MP3s under `audio/npc/`. Fetch and compare every recording after deploying. Synthetic WAVs must be absent. No speech synthesis is used; missing or blocked audio stays silent. HTTP checks prove file delivery, not subjective voice quality or autoplay behavior.
 
 See `VALIDATION.md` for checks and browser/performance verification limits. The release response records the actual commit and verified workflow result; a successful push alone does not confirm publication.

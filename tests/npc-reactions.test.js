@@ -23,7 +23,7 @@ test('thirty students stay on safe OSM routes and preserve personal space', () =
     assert.ok(pairSpacing(crowd.agents) >= .52 - 1e-6);
     for (const agent of crowd.agents) {
       assert.ok(queries.discClear(agent.position.x, agent.position.z, .28));
-      assert.ok(queries.onRoad(agent.position.x, agent.position.z));
+      assert.ok(graph.isWalkable(agent.position.x, agent.position.z));
       const a = graph.nodes[agent.current], b = graph.nodes[agent.target];
       assert.ok(Math.hypot(agent.offset.x, agent.offset.z) <= .8);
       assert.ok(pointToSegmentDistance([agent.position.x, agent.position.z], [a.x, a.z], [b.x, b.z]) <= .8);
@@ -56,7 +56,7 @@ test('opposing students pass on the right without overlap or leaving a narrow ma
     assert.ok(gap >= .52 - 1e-6);
     for (const agent of [a, b]) {
       assert.ok(localQueries.discClear(agent.position.x, agent.position.z, .28));
-      assert.ok(localQueries.onRoad(agent.position.x, agent.position.z));
+      assert.ok(localGraph.isWalkable(agent.position.x, agent.position.z));
       assert.ok(Math.hypot(agent.offset.x, agent.offset.z) <= .8);
     }
     sidestepped ||= Math.abs(a.position.z) > .05 || Math.abs(b.position.z) > .05;
@@ -106,7 +106,7 @@ test('thirty walkers keep moving safely around eight real parked campus vans for
     if (tick % 30) continue;
     for (const agent of crowd.agents) {
       assert.ok(queries.discClear(agent.position.x, agent.position.z, .28));
-      assert.ok(queries.onRoad(agent.position.x, agent.position.z));
+      assert.ok(graph.isWalkable(agent.position.x, agent.position.z));
       assert.ok(fleet.every(van => van.distanceFrom(agent.position.x, agent.position.z) >= .55 - 1e-6));
     }
     closest = Math.min(closest, pairSpacing(crowd.agents));
@@ -127,7 +127,7 @@ test('impact is accepted once, harms without gore, falls, then safely rejoins it
   for (let i = 0; i < 360; i++) {
     crowd.update(1 / 60);
     assert.ok(queries.discClear(agent.position.x, agent.position.z, .28));
-    assert.ok(queries.onRoad(agent.position.x, agent.position.z));
+    assert.ok(graph.isWalkable(agent.position.x, agent.position.z));
     assert.ok(Math.hypot(agent.position.x - first.x, agent.position.z - first.z) < 5);
   }
   assert.ok(agent.health >= 25);

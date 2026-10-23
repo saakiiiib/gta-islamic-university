@@ -1,25 +1,11 @@
-Bengali reaction audio
-======================
+NPC reaction recordings
+=======================
 
-These eleven WAV clips are locally bundled synthetic Bengali speech, generated
-from the lines in src/audio/reactions.js with the Bengali voice in eSpeak NG
-1.52.0. The voice sounds robotic; these are not human performances. The browser
-uses a Bengali SpeechSynthesis voice when one is available, then these WAV clips
-when no suitable browser voice is available. Bengali subtitles accompany every
-selected reaction. No remote speech service is called at runtime.
+The four MP3 files in npc/ are byte-for-byte copies of the recordings supplied
+by the project owner. near_01.mp3 and near_02.mp3 play for near misses;
+hit_01.mp3 and hit_02.mp3 play for collisions. reactions.json maps each event
+category to its recordings.
 
-Provenance: eSpeak NG 1.52.0 official release:
-https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0
-Bengali (bn) support documented by the project:
-https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md
-eSpeak NG license (GPL version 3):
-https://github.com/espeak-ng/espeak-ng/blob/master/COPYING
-
-The eSpeak executable and voice data are not bundled with this site. These WAV
-files are pre-rendered output. GPLv3 section 2 states that the output of running
-a covered work is covered by the license only when its content constitutes a
-covered work. The spoken lines here were written for this game.
-
-To replace a line with a human recording, put a local WAV/MP3/OGG file here and
-update its file name in reactions.json under "clips". Use only recordings you own
-or are licensed to redistribute, and add their attribution here when required.
+No transcript has been verified for these recordings. The game does not show
+dialogue captions or generate speech. If a recording cannot load or decode,
+that reaction stays silent. No audio is sent to a remote service.

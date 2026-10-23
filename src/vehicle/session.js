@@ -1,5 +1,6 @@
 import { localToWorld } from '../navigation/campusQueries.js';
 import { Group } from 'three';
+import { passengerWorldPosition } from './occupants.js';
 const STOP_SPEED = .08;
 
 function disposeProxy(group) {
@@ -9,11 +10,17 @@ function disposeProxy(group) {
 }
 
 export class VehicleSession {
-  constructor(player, vanOrFleet, queries) {
+  constructor(player, vanOrFleet, queries, { onDepart = () => {} } = {}) {
     this.player = player; this.vans = Array.isArray(vanOrFleet) ? vanOrFleet : [vanOrFleet]; this.van = this.vans[0]; this.queries = queries; this.driving = false;
+    this.onDepart = onDepart;
     this.refreshParkedCollision();
   }
   refreshParkedCollision() {
+    if (this.player.setVanObstacles) {
+      this.player.setDynamicObstacles(null);
+      this.player.setVanObstacles(this.vans, { ignore: this.driving ? this.van : null });
+      return;
+    }
     const proxy = new Group();
     for (const van of this.vans) if (!this.driving || van !== this.van) proxy.add(van.createParkedCollider());
     proxy.updateMatrixWorld(true); this.player.setDynamicObstacles(proxy); disposeProxy(proxy);
@@ -46,33 +53,30 @@ export class VehicleSession {
       && van.distanceFrom(this.player.position.x, this.player.position.z) < 1.4
       && this.clearRoute([this.player.position.x, this.player.position.z], seat, van);
   }
-  safeExit(pedestrians = []) {
-    const van = this.van, radius = this.player.config.radius;
-    for (const [u, v] of [[-1.5, -.4], [1.5, -.4], [-1.6, .9], [1.6, .9], [0, 2.65], [0, -2.5]]) {
-      const [x, z] = localToWorld(u, v, van.position, van.yaw);
-      if (!this.queries.discClear(x, z, radius + .12) || van.distanceFrom(x, z) < radius + .15) continue;
-      if (!this.clearRoute(localToWorld(0, .9, van.position, van.yaw), [x, z], van)) continue;
-      if (this.vans.some(other => other !== van && other.distanceFrom(x, z) < radius + .15)) continue;
-      if (pedestrians.some(p => Math.hypot(p.position.x - x, p.position.z - z) < radius + .6)) continue;
-      return { x, y: this.queries.groundHeight(x, z) + .015, z };
+  dismountSide(position) {
+    // Choose only the launch direction; never relocate to a candidate ground point.
+    const van = this.van, right = { x: Math.cos(van.yaw), z: -Math.sin(van.yaw) };
+    for (const sign of [-1, 1]) {
+      const end = [position.x + right.x * sign * 1.5, position.z + right.z * sign * 1.5];
+      if (this.queries.segmentClear([position.x, position.z], end, this.player.config.radius)) return { x: right.x * sign, z: right.z * sign };
     }
-    return null;
+    return { x: -right.x, z: -right.z };
   }
   interact(pedestrians = []) {
     if (!this.driving) {
       const van = this.nearestVan();
       if (!this.canEnter(van)) return { changed: false, message: '' };
       this.van = van;
+      van.autonomous = false;
       this.driving = this.van.occupied = true;
       this.player.velocity.set(0, 0, 0); this.player.speed = 0; this.player.group.visible = true; this.refreshParkedCollision();
-      return { changed: true, message: `Van ${(van.id ?? 0) + 1} · You ride behind the driver. W/S drive · A/D steer · SPACE brake · E exit stopped.` };
+      return { changed: true, message: `Van ${(van.id ?? 0) + 1} · Ride behind the driver. W/S drive · A/D steer · SPACE brake · E jump off at any speed.` };
     }
-    if (Math.abs(this.van.speed) > STOP_SPEED) return { changed: false, message: 'Stop the van before stepping off. Hold Space to brake.' };
-    const exit = this.safeExit(pedestrians);
-    if (!exit) return { changed: false, message: 'No clear place to step off. Move to an open area and stop.' };
-    this.van.speed = 0; this.driving = this.van.occupied = false;
-    this.player.teleport(exit, this.van.yaw); this.player.group.visible = true; this.refreshParkedCollision();
-    return { changed: true, message: 'Back on foot. The van stays where you parked it.' };
+    const van = this.van, position = passengerWorldPosition(van), speed = Math.abs(van.speed);
+    this.player.beginDismount({ position, yaw: van.yaw, velocity: { x: -Math.sin(van.yaw) * van.speed, z: -Math.cos(van.yaw) * van.speed }, side: this.dismountSide(position), speed, van });
+    this.driving = van.occupied = false;
+    this.player.group.visible = true; this.refreshParkedCollision(); this.onDepart(van);
+    return { changed: true, message: speed > 3 ? 'Jumped off with the van’s momentum. Brace for the landing!' : 'Stepping off. The driver continues along the road.' };
   }
   reset(spawn) {
     this.driving = false; for (const van of this.vans) van.reset(); this.van = this.vans[0];
@@ -82,7 +86,7 @@ export class VehicleSession {
     return this.driving ? { position: this.van.position, yaw: this.van.yaw, speed: Math.abs(this.van.speed), grounded: true, driving: true, reversing: this.van.speed < -.05, durability: this.van.durability, disabled: this.van.disabled, vanId: this.van.id } : this.player;
   }
   get hint() {
-    if (this.driving) return this.van.disabled ? 'Van disabled · Press E to step off · R repairs and returns to gate' : Math.abs(this.van.speed) > STOP_SPEED ? 'Hold SPACE to stop · E exits when stopped' : 'Press E to exit van';
+    if (this.driving) return this.van.disabled ? 'Van disabled · E to jump off · R repairs and returns to gate' : Math.abs(this.van.speed) > 3 ? 'Press E to jump off · A fast landing can hurt' : 'Press E to step off at any speed';
     return this.canEnter() ? 'Press E to enter electric van' : '';
   }
 }

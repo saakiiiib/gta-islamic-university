@@ -6,6 +6,7 @@ import { VehicleSession } from '../vehicle/session.js';
 import { PedestrianSystem } from '../npc/pedestrians.js';
 import { VanOccupants } from '../vehicle/occupants.js';
 import { ImpactSystem } from './impacts.js';
+import { DriverContinuation } from '../vehicle/driver.js';
 
 /** All moving campus entities share this fixed-step, explicitly suspended simulation. */
 export class CampusSimulation {
@@ -15,7 +16,8 @@ export class CampusSimulation {
     this.player = new PlayerController({ collisionGroup, mapData });
     const fleet = createVanFleet(mapData, this.queries);
     this.vans = fleet.vans; this.fleetGroup = fleet.group;
-    this.session = new VehicleSession(this.player, this.vans, this.queries);
+    this.driverController = new DriverContinuation(mapData, this.queries, this.vans);
+    this.session = new VehicleSession(this.player, this.vans, this.queries, { onDepart: van => this.driverController.depart(van) });
     this.player.update(1 / 60); this.player.rig.pose = null; this.player.animate(0);
     this.graph = buildPedestrianGraph(mapData, this.queries);
     this.crowd = new PedestrianSystem(mapData, this.queries, this.graph, { count: 30, render: renderCrowd, avoid: this.vans.map(v => ({ ...v.position, radius: 5 })) });
@@ -36,6 +38,7 @@ export class CampusSimulation {
       const step = duration / ticks;
       this.impacts.update(step); this.crowd.update(step, this.vans);
       if (this.session.driving) this.session.van.update(step, input, { pedestrians: this.crowd.agents, vans: this.vans, onImpact: impact => this.impacts.handle(impact) });
+      this.driverController.update(step, { pedestrians: this.crowd.agents, onImpact: impact => this.impacts.handle(impact), player: this.session.driving ? null : this.player });
       if (!this.session.driving) this.player.update(step, { ...input, jump: i === 0 && input.jump }, cameraYaw);
       const events = [...this.crowd.drainEvents(), ...this.impacts.drainEvents()];
       for (const reaction of events) {
@@ -52,11 +55,11 @@ export class CampusSimulation {
     this.occupants.update(dt, this.session); this.crowd.animate(dt);
   }
   reset() {
-    this.session.reset(this.map.spawn); this.crowd.clearAround(this.vans); this.impacts.reset(); this.events.length = 0; this.lastCollision = null;
+    this.driverController.reset(); this.session.reset(this.map.spawn); this.crowd.clearAround(this.vans); this.impacts.reset(); this.events.length = 0; this.lastCollision = null;
     this.occupants.update(0, this.session); this.yieldingForPedestrian = false;
   }
   drainEvents() { return this.events.splice(0); }
   get van() { return this.session.driving ? this.session.van : this.session.nearestVan() ?? this.vans[0]; }
   get entity() { return this.session.entity; }
-  dispose() { this.occupants.dispose(); this.player.dispose(); for (const van of this.vans) van.dispose(); this.crowd.dispose(); this.fleetGroup.clear(); }
+  dispose() { this.driverController.dispose(); this.occupants.dispose(); this.player.dispose(); for (const van of this.vans) van.dispose(); this.crowd.dispose(); this.fleetGroup.clear(); }
 }

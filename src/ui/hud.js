@@ -20,6 +20,10 @@ export class HUD {
     $('speed-unit').textContent = driving ? 'KM / H' : 'METRES / SECOND';
     $('movement-state').textContent = inspection ? 'CAMPUS VIEW · SIMULATION PAUSED' : driving ? player.disabled ? 'VAN DISABLED · E TO STEP OFF' : player.reversing ? 'REVERSING · PASSENGER' : player.speed > .1 ? 'RIDING BEHIND THE DRIVER' : 'PARKED · PASSENGER' : !player.grounded ? 'IN THE AIR' : player.state?.motionState === 'land' ? 'LANDING' : player.speed > 4.5 ? 'SPRINTING' : player.speed > .2 ? 'EXPLORING' : 'TAKING IT IN';
     $('foot-controls').hidden = driving; $('van-controls').hidden = !driving;
+    const character = simulation?.player, motion = character?.state.motionState;
+    $('player-health-card').hidden = inspection;
+    $('player-health').value = character?.health ?? 100;
+    $('player-health-label').textContent = `YOU · ${Math.round(character?.health ?? 100)} HP${['jumpOff','stumble','fallen','recover'].includes(motion) ? ` · ${motion === 'jumpOff' ? 'JUMPING OFF' : motion.toUpperCase()}` : ''}`;
     const hint = simulation?.session.hint ?? '';
     $('interaction-prompt').hidden = inspection || !hint;
     $('interaction-text').textContent = hint;

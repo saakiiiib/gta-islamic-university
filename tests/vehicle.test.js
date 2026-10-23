@@ -95,20 +95,23 @@ function walkingSession(extra = {}) {
   return { player, v, session, dispose() { player.dispose(); v.dispose(); ground.geometry.dispose(); material.dispose(); } };
 }
 
-test('E entry requires proximity, keeps the student visible, and stopped exit restores beside the van', () => {
+test('E entry requires proximity and moving exit keeps the student at the passenger position', () => {
   const s = walkingSession(); assert.ok(s.session.canEnter());
   assert.equal(s.session.interact().changed, true); assert.ok(s.session.driving && s.v.occupied); assert.equal(s.player.group.visible, true);
-  s.v.speed = 2; assert.equal(s.session.interact().changed, false); assert.ok(s.session.driving);
-  s.v.speed = 0; assert.equal(s.session.interact().changed, true); assert.equal(s.player.group.visible, true); assert.equal(s.v.occupied, false);
+  s.v.speed = 2; assert.equal(s.session.interact().changed, true); assert.equal(s.player.group.visible, true); assert.equal(s.v.occupied, false);
+  assert.ok(Math.abs(s.player.position.x) < 1e-6 && Math.abs(s.player.position.z - .9) < 1e-6, 'starts at the actual seat rather than a selected safe ground location');
+  assert.equal(s.player.state.motionState, 'jumpOff'); assert.equal(s.v.speed, 2);
+  for (let i = 0; i < 90; i++) s.player.update(1 / 60);
   assert.ok(s.v.distanceFrom(s.player.position.x, s.player.position.z) > s.player.config.radius);
   s.player.teleport({ x: -15, y: 0, z: 0 }); assert.equal(s.session.canEnter(), false); s.dispose();
 });
 
-test('blocked dismount stays mounted and never puts the student in water or a building', () => {
+test('a blocked launch direction cannot prevent E dismounting at the real seat', () => {
   const s = walkingSession(); s.session.interact();
-  const before = s.player.position.toArray(), original = s.session.queries.discClear;
+  const original = s.session.queries.discClear;
   s.session.queries.discClear = () => false;
-  assert.equal(s.session.interact().changed, false); assert.ok(s.session.driving); assert.deepEqual(s.player.position.toArray(), before);
+  assert.equal(s.session.interact().changed, true); assert.equal(s.session.driving, false);
+  assert.ok(Math.abs(s.player.position.x) < 1e-6 && Math.abs(s.player.position.z - .9) < 1e-6);
   s.session.queries.discClear = original; s.dispose();
 });
 
@@ -138,11 +141,13 @@ test('entry cannot reach through a thin wall or across a strip of water', () => 
   }
 });
 
-test('safe exit rejects an apparently clear endpoint if its dismount path crosses a wall', () => {
+test('jump-off chooses an unobstructed impulse direction without relocating the player', () => {
   const s = walkingSession(); s.session.interact();
   s.session.queries = queries({ buildings: [{ polygons: square(-1.05, -4, .05, 8) }] });
   assert.ok(s.session.queries.discClear(-1.5, -.4, .44), 'endpoint alone looks clear');
-  const result = s.session.interact(); assert.equal(result.changed, true); assert.ok(s.player.position.x > 0, 'choose the unobstructed side'); s.dispose();
+  const result = s.session.interact(); assert.equal(result.changed, true);
+  assert.ok(s.player.velocity.x > 0, 'launch toward the unobstructed side');
+  assert.ok(Math.abs(s.player.position.x) < 1e-6, 'do not move immediately to that side'); s.dispose();
 });
 
 test('a turning van cannot sweep its corners through a nearby pedestrian', () => {

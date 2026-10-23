@@ -1,32 +1,37 @@
-# Campus in Motion validation
+# Recorded voices, pedestrian routes and moving exits — validation
 
-Verified on 2026-10-24 with Node.js 24.17.0, npm 11.13.0, Three.js 0.186.1 and Vite 8.3.5. Upgrade base: `ddf0896cc308cb1f1888badfdaf0638bfd13828f`. This upgrades the existing project in place. Historical results remain in `VALIDATION-PHASE2.md`, `VALIDATION-PHASE1.5.md` and their JSON reports.
+Verified on 2026-10-24 with Node.js 24.17.0, npm 11.13.0, Three.js 0.186.1 and Vite 8.3.5. Upgrade base: `dca1412ecf10439f64cbfe2b99618500d0a014a7`. This modifies the existing game in place. Previous release results are preserved in `VALIDATION-CAMPUS-MOTION.md`, `VALIDATION-PHASE2.md` and `VALIDATION-PHASE1.5.md`.
 
 ## Automated results
 
-`npm test`: **125 passed, zero failed**. There are 33 added checks beyond the previous 92-test release. Previous expectations for one van, twelve students and a hidden mounted player were updated to eight vans, thirty pedestrians and visible passengers. Exact pedestrian centre-line assertions now allow a bounded safe pavement sidestep for passing; land, road and separation checks remain.
+`npm test`: **143 passed, zero failed**. Existing movement, source-map, geometry, collision, bridge, courtyard, camera, inspection, fleet, occupancy, damage, avoidance, pause and reset coverage remains. Old stopped-exit, vehicle-road-centre walking and synthesized/subtitled dialogue expectations were replaced to match the requested behavior.
 
-- Eight distinct original cargo tricycles start on valid, nonoverlapping road footprints spread across campus. Every instance can be approached and entered. All eight drivers remain visible through three instanced batches; the original student stays visible on the selected rear deck, including after vehicle pitch/roll/yaw. Tests check hip placement, feet on the deck and hands reaching the driver's handlebars.
-- W/S forward/brake/reverse, A/D steering, held Space braking, wheel animation, low maximum speeds, stopped safe exit, camera transitions, wall obstruction, pointer-lock fallback and input clearing retain their regression coverage. Exit routes reject water, walls, other vans and pedestrians. The student returns upright to on-foot movement.
-- Actual van-to-pedestrian contact reduces both health and durability according to speed. Tests check low versus high impact, contact-enter damage, no repeated damage while throttle is held against a person, and damage rearming only after separation/cooldown. The shared simulation forwards contact events to the presentation layer.
-- Low impacts stumble; harder impacts fall and recover nonlethally. Tests cover health zero/recovery, constrained knockback, route rejoining, reaction precedence and finite instanced fall/get-up animation. Nearby moving vans trigger stepping back, turning toward the van and throttled near-miss events. Parked vans do not shout-trigger pedestrians.
-- Damage visibly changes paint tint and chassis proportions; repair restores the original appearance. Zero durability stops acceleration while retaining a safe exit. Other parked vans stop the moving footprint and take damage; walls also damage the van. Collision sounds and impact recoil are bounded; there is no gore.
-- Thirty students keep moving around the eight actual parked vans for one simulated minute, staying on mapped pavement, separated from each other and clear of van footprints. A separate opposing-walker regression checks passing on narrow pavement; blocked routes reverse rather than permanently deadlocking. Sidesteps are speed-limited and animated as walking.
-- Bengali audio tests mock device voices, delayed `voiceschanged`, Bengali-script utterances, distance limits, global/per-NPC cooldowns, no speech queue, mute, pause, exceptions and asynchronous speech failure. All eleven fallback entries are valid nonempty local PCM WAV files. Subtitles remain available muted or without audio and expire on gameplay time.
-- Pause/inspection freezes every actor, health/reaction timer and impact state without catch-up. Reset preserves the same eight instances, repairs/reparks them and safely clears pedestrians from parking positions. It does not add another fleet.
-- All source map, geometry, heights, courtyards, road/bridge, label, minimap, walking/running/jumping/gravity, collision and inspection regressions continue passing. The actual bent lake bridge remains traversable with careful alignment.
+- Eight existing cargo tricycles retain visible permanent drivers and a visible student passenger behind the selected driver. Occupant transforms follow the vehicle. Entry still requires a nearby stopped van; exit does not.
+- Moving exits start at the passenger's actual transformed seat position and inherit the van's horizontal momentum plus an outward/upward jump. Low- and high-speed tests cover gravity, landing, speed-scaled injury, stumble/fall/recovery, live van/static collisions and camera handoff. Falling/recovering prevents immediate walking or jumping. Reset restores health and clears exit state. There is no safe-point teleport on dismount.
+- The departing van retains its visible driver and continues on connected mapped vehicle roads. Driver tests cover momentum, forward travel, steering, obstacles, pedestrian yielding, dead-end parking, re-entry and reset. Pause/inspection freezes driver continuation along with the other actors.
+- Navigation prioritizes source footways, pedestrian paths and the bridge. Where sidewalks are absent, unrendered parallel roadside corridors are estimated outside vehicle pavement. Crossings are short links at mapped junctions or connected footpath ends. Tests check their placement, connectivity, static safety and walking-corridor containment, including thirty students passing the eight vans during a simulated minute.
+- Walking, avoidance and impact displacement reject buildings, water and moving van penetration while allowing retreat from an existing overlap. Existing near-miss, damage, contact cooldown, stumbling, falling and recovery tests remain.
+- Nine audio checks cover the four supplied MP3s, separate near-miss/collision selection, decoded caching, spatial NPC/listener updates, random variation, mute/pause, missing/failed clips, global/per-NPC cooldowns and absence of synthesis/subtitles. Collision recordings take priority over near misses and can replace one active warning without overlapping audio or repeatedly bypassing the collision cooldown.
 
-## Build and delivery checks
+## Human recordings
 
-`npm run build` passes. Vite bundles the existing dependencies and new ES modules without adding a runtime library. The ordinary >500 kB Three.js bundle advisory remains; it is not a build failure. `npm run build:pages` regenerates `docs/` with relative URLs and `.nojekyll` for the existing `main → /docs` configuration.
+The four MP3s in `public/audio/npc/` are unchanged copies of the project owner's files. `near_01.mp3` and `near_02.mp3` are near-miss reactions; `hit_01.mp3` and `hit_02.mp3` are collision reactions. `CAMPUS-MOTION-REPORT.json` records byte counts and SHA-256 hashes. All eleven former synthetic WAVs and the speech-synthesis implementation are removed. Dialogue subtitles are removed as requested.
 
-The release verification checks development modules, production HTML, exact hashed JavaScript/CSS, map and the voice manifest plus every WAV over HTTP. Public deployment is recorded separately with its commit and GitHub Pages workflow outcome; an HTTP 200 alone is not treated as evidence of the new build. The source, lockfile, map, notices, reports, `dist/` and `docs/` are packaged without `node_modules`.
+Web Audio uses an NPC-position HRTF panner, with a stereo fallback where supported. One shout plays at a time, with an eight-second per-NPC cooldown and 2.4-second global spacing. Collision priority is the bounded exception described above. Reactions outside approximately 35 metres are skipped. Missing/undecodable files or unavailable audio stay silent. Impact sound effects remain separate from voice recordings. Paths use `import.meta.env.BASE_URL`.
 
-Development modules and production preview returned **HTTP 200**. Production HTML, JavaScript (`index-BMG6qfor.js`, 793,537 bytes), CSS (`index-Dr_wyePp.css`, 15,701 bytes), favicon, map, voice manifest and all eleven WAVs matched the generated files byte-for-byte. The main/HUD bindings reference 51 unique, existing HTML IDs. The generated Pages assets contain the same relative paths and voice files.
+## Build and HTTP checks
+
+`npm run build` and `npm run build:pages` pass. The Three.js bundle still produces Vite's ordinary >500 kB advisory, with no build error. No dependency was added. Generated `docs/` retains relative assets and `.nojekyll` for `main → /docs`.
+
+The build contains `index-DC9KCpgh.js` (805,693 bytes) and `index-DKs0AoxZ.css` (15,269 bytes). The release verifier checks production HTML, every referenced JavaScript/CSS/favicon asset, the unchanged map, the voice manifest and all four recordings over HTTP against exact local hashes. A successful push alone is not treated as a successful deployment; the release response and separate deployment JSON record the actual commit, Pages workflow and hosted-file verification.
+
+Production preview returned HTTP 200 for all of these files, with byte-for-byte hash matches. The generated Pages directory contains the same build and recordings, with no synthetic WAV files.
+
+The downloadable ZIP includes source, tests, lockfile, bundled map/recordings, notices, reports, `dist/` and `docs/`; installed dependencies are excluded.
 
 ## Map integrity
 
-Source bytes, geographic model, counts, projection, bounds, footprints, courtyard holes, height estimates and static collision winding match the original baseline. Nothing in `src/map/` or the source OSM database was changed. New actors are game props. Grass/garden/water palette changes do not change geographic geometry.
+No source-map, projection, building footprint/height, road surface, bridge or static collision geometry was changed. Estimated walking corridors are navigation data rather than new rendered or surveyed sidewalks. Source counts, geographic model and static collision winding match the original baseline.
 
 | Invariant | Value |
 | --- | --- |
@@ -37,20 +42,20 @@ Source bytes, geographic model, counts, projection, bounds, footprints, courtyar
 | Geographic model SHA-256 | `f1ecf729f9bd2d41e663d9779420ee5f75df41bfd6bfbbac9ba3bc6071a57d61` |
 | Static collision SHA-256 | `b95c22529398f30fd82c60571453cfcc198080818f92b707fce8a31470aea1be` |
 
-The eight dynamic parked-van proxies are separate from the canonical static collision world. `tests/phase1-baseline.json` verifies original geography; `CAMPUS-MOTION-REPORT.json` records current actor/render/audio counts and checksums.
+The new walking graph contains 2,066 nodes and 2,195 edges across six components: 146 footpath, 1,851 roadside and 198 crossing edges. Route length is 987.41 m of footpath, 13,455.89 m of roadside and 1,085.90 m of crossings. More than 93% is outside crossing segments. Disconnected source areas are not connected through buildings or water.
 
-## Performance
+## Browser and performance checks
 
-Static campus geometry remains **211 mesh batches / 113,842 triangles**. The existing student uses 23 meshes / 502 triangles. Eight original vans collectively use 40 meshes / 34,176 triangles; thirty pedestrians use three instanced batches / 12,600 triangles; eight drivers use three more instanced batches / 3,360 triangles. There are no per-limb draw calls for the crowd or drivers. Labels, static batching, pixel ratio cap and nearby shadows remain.
+The in-app browser successfully loaded the production preview, entered gameplay, displayed the grounded student and permanent van driver, decoded the recorded clips (the HUD shows **Recorded voices**), toggled mute, entered/exited inspection and returned to the previous student view. No browser warnings or runtime errors were captured during these checks. The normal viewport was restored after desktop-size checks. A gameplay screenshot is included alongside the delivery ZIP.
 
-A reproducible sample (`node scripts/report-campus-motion.mjs`) ran 600 updates representing ten seconds in **491.55 ms total / 0.819 ms mean per update** on this machine. It includes the idle player's physics, thirty wandering pedestrians, eight parked vans, occupants and actor animation/matrix updates. It excludes WebGL rendering, camera, labels, audio and HUD. This is a CPU simulation sample, **not an FPS or GPU draw-call measurement**.
+At Main Gate, the F3 display reported approximately 60–61 FPS, 159 draw calls and 121,015 rendered triangles at a 1,067 × 600 CSS-pixel viewport. This is a single-location smoke observation, not a controlled benchmark or a guarantee across devices and the whole campus.
 
-## Audio and gameplay limits
+Static campus geometry remains 211 mesh batches / 113,842 triangles. The student uses 23 meshes / 502 triangles, eight vans use 40 meshes / 34,176 triangles, thirty pedestrians use three instanced batches / 12,600 triangles, and eight drivers use three instanced batches / 3,360 triangles. Existing batching, nearby shadows and pixel-ratio cap remain.
 
-The eleven Bengali fallback files are synthetic eSpeak NG speech with a robotic sound; they are not human recordings. The executable and voice database are not bundled. `public/audio/README.txt` records provenance and how to replace a line with a permitted human recording. Browser SpeechSynthesis may use an OS/browser voice service; local clips need no such service. Autoplay permissions and available voices vary. If audio cannot play, subtitles continue.
+`node scripts/report-campus-motion.mjs` sampled 600 updates representing ten seconds in 1,681.54 ms total / 2.803 ms mean per update. This includes idle-player physics, thirty wandering pedestrians, eight parked vans, occupants and actor animation. It excludes rendering, camera, labels, audio and HUD, so it is not an FPS measurement.
 
-Vans use stable upright kinematics and visual suspension rather than full rigid-body/tire simulation. Pedestrian knockback and falling are constrained animated reactions, not ragdolls. Recovery is nonlethal; health regenerates. Only the selected van moves, with its permanent driver and visible student passenger. The remaining vans wait where parked. No new vehicle types, autonomous traffic, missions, combat or map redesign are included.
+## Verification limits
 
-## Browser verification limit
+Detailed moving exits, collisions and driver continuation were verified through scripted simulation tests; the browser smoke check is not a complete manual playthrough of every route or high-speed exit. The supplied files decoded successfully, but subjective audible clarity and pronunciation were not personally auditioned through the browser tool. Automated audio API checks and file hashes do not establish those qualities.
 
-The browser tool reports **“Local browser use is disabled in Work settings.”** No workaround was used. Interactive visual review, real audio pronunciation/quality, pointer-lock behavior, screenshots, actual GPU frame rate and WebGL draw calls remain unverified. Automated animation, audio-API mocks, valid WAV/HTTP checks and CPU timings cannot establish those results.
+Vehicles use bounded kinematics, visual suspension and capsule/triangle collision rather than a full rigid-body engine. Falls use animated poses rather than ragdolls; injury/recovery remains nonlethal. Departed drivers brake or park when blocked or at route ends. There are no new vehicle types, missions or map redesigns.
