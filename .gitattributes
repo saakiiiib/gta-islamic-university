@@ -1,0 +1,3 @@
+# Keep the recorded-voice manifest identical in Windows builds and GitHub Pages.
+public/audio/reactions.json text eol=lf
+docs/audio/reactions.json text eol=lf
