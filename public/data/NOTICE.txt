@@ -1,0 +1,10 @@
+Map data: (c) OpenStreetMap contributors.
+https://www.openstreetmap.org/copyright
+
+The bundled map.osm is an unchanged copy of the user-supplied OSM export.
+OpenStreetMap data is available under the Open Data Commons Open Database License 1.0:
+https://opendatacommons.org/licenses/odbl/1-0/
+
+The game projects and renders this data locally. Building heights, road widths,
+building appearance, bridge elevation and flat terrain are estimates.
+No Google Maps imagery, paid map API or online map tiles are used.

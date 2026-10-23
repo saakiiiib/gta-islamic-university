@@ -1,0 +1,62 @@
+{
+  "source": "public/data/map.osm",
+  "sourceSHA256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
+  "origin": {
+    "lat": 23.72220495,
+    "lon": 89.15084115
+  },
+  "bounds": {
+    "minX": -543.187208149616,
+    "maxX": 543.1872081481678,
+    "minZ": -695.9099321401516,
+    "maxZ": 695.9099321397562
+  },
+  "spawn": {
+    "x": 283.64124000734955,
+    "z": -61.44279294356622,
+    "y": 0,
+    "yaw": 0.738343918474469,
+    "forward": [
+      -0.6730640233970344,
+      -0.739584221308565
+    ]
+  },
+  "counts": {
+    "sourceNodes": 3260,
+    "sourceWays": 482,
+    "sourceRelations": 14,
+    "buildings": 189,
+    "roads": 42,
+    "greens": 16,
+    "water": 4,
+    "bridges": 1,
+    "trees": 1,
+    "treeRows": 1
+  },
+  "heightSources": {
+    "estimate:academic": 13,
+    "building:levels": 1,
+    "estimate:unclassified": 161,
+    "estimate:shed": 1,
+    "estimate:dormitory": 11,
+    "estimate:house": 2
+  },
+  "warnings": [
+    "Reattached courtyard way 1317423251 from outer-less relation 18079383 to uniquely enclosing building 18079382.",
+    "Reattached courtyard way 1317423250 from outer-less relation 18079383 to uniquely enclosing building 18079382."
+  ],
+  "repairs": [
+    {
+      "type": "orphan-courtyard",
+      "fromRelation": "18079383",
+      "toBuilding": "18079382",
+      "wayId": "1317423251"
+    },
+    {
+      "type": "orphan-courtyard",
+      "fromRelation": "18079383",
+      "toBuilding": "18079382",
+      "wayId": "1317423250"
+    }
+  ]
+}
