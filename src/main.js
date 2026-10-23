@@ -2,15 +2,18 @@ import './style.css';
 import * as THREE from 'three';
 import { loadMap } from './map/index.js';
 import { buildWorld } from './world/index.js';
-import { PlayerController, InputController, ThirdPersonCamera } from './player/index.js';
+import { InputController } from './player/index.js';
 import { HUD } from './ui/hud.js';
 import { InspectionCamera, InspectionSession } from './player/inspection.js';
 import { PlaceLabels } from './ui/labels.js';
+import { CampusSimulation } from './game/simulation.js';
+import { TravelCamera } from './vehicle/camera.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('game');
 let state = 'loading', renderer, scene, camera, world, mapData, player, input, chase, hud, sun;
 let inspection, inspectionSession, labels, gameplayFog;
+let simulation;
 let accumulator = 0, lastTime = performance.now(), fps = 60;
 const STEP = 1 / 60;
 const sunOffset = new THREE.Vector3(-55, 110, -40);
@@ -31,7 +34,7 @@ function resize() {
 function pause(reason = 'escape') {
   if (!['playing', 'inspection'].includes(state)) return;
   state = 'paused'; accumulator = 0;
-  input.setEnabled(false); inspectionSession.suspend();
+  input.setEnabled(false); inspectionSession.suspend(); simulation.setSuspended(true);
   if (document.pointerLockElement === canvas) document.exitPointerLock();
   $('pause-reason').textContent = reason === 'focus' ? 'The game paused while you stepped away.' : 'Your campus is waiting.';
   $('pause-screen').hidden = false;
@@ -43,30 +46,33 @@ async function play() {
   const firstStart = state === 'ready';
   state = inspectionSession.active ? 'inspection' : 'playing'; accumulator = 0; lastTime = performance.now();
   inspectionSession.resume();
-  if (firstStart) { player.reset(mapData.spawn); chase.reset(mapData.spawn); }
+  simulation.setSuspended(inspectionSession.active);
+  if (firstStart) { simulation.reset(); chase.setDriving(false); chase.reset(mapData.spawn); }
   $('start-screen').hidden = true; $('pause-screen').hidden = true; $('play-hud').hidden = false;
   $('pause-button').disabled = false;
   $('view-toolbar').hidden = false;
   canvas.focus({ preventScroll: true });
-  $('announcer').textContent = 'Explore Islamic University. WASD moves, Shift sprints, Space jumps. Escape pauses.';
+  $('announcer').textContent = 'Explore campus. WASD moves, Shift sprints, Space jumps. Approach the parked electric van and press E to drive.';
   if (inspectionSession.active) { syncView(); return; }
   const locked = await input.requestPointerLock();
-  if (!locked && state === 'playing') hud.toast('WASD to move. Hold right mouse and drag to look around.');
+  if (!locked && state === 'playing') hud.toast(firstStart ? 'WASD to move. Right-drag to look. The electric van is parked ahead; approach and press E.' : 'Hold right mouse and drag to look around.', 6500);
+  else if (firstStart) hud.toast('The electric van is parked ahead. Approach it and press E to drive.', 5500);
 }
 function resetPlayer() {
   if (inspectionSession.active) { inspectionSession.exit(); syncView(); }
-  player.reset(mapData.spawn); chase.reset(mapData.spawn); accumulator = 0;
-  hud.toast('Back at Main Gate. The campus is yours.');
+  simulation.reset(); simulation.setSuspended(false); chase.setDriving(false); chase.reset(mapData.spawn); accumulator = 0;
+  hud.toast('Back at Main Gate. Your electric van is parked nearby.');
 }
 
 function syncView() {
   const active = inspectionSession.active;
   scene.fog = active ? null : gameplayFog;
+  simulation.setSuspended(active);
   document.body.classList.toggle('inspecting', active);
   $('inspection-button').setAttribute('aria-pressed', String(active));
-  $('inspection-button').querySelector('span').textContent = active ? 'Back to student' : 'Inspect campus';
+  $('inspection-button').querySelector('span').textContent = active ? simulation.session.driving ? 'Back to van' : 'Back to student' : 'Inspect campus';
   $('inspection-banner').hidden = !active;
-  $('announcer').textContent = active ? 'Inspection camera. Student paused. Mouse drag or arrows orbit, right drag or WASD pan, wheel zoom. I or Escape returns.' : 'Back to the student.';
+  $('announcer').textContent = active ? 'Inspection camera. Student, van and pedestrians paused. Mouse drag or arrows orbit, right drag or WASD pan, wheel zoom. I or Escape returns.' : simulation.session.driving ? 'Back to the electric van.' : 'Back to the student.';
   labels.elapsed = 1;
 }
 function toggleInspection() {
@@ -94,8 +100,8 @@ function toggleAlignment() {
 }
 
 function lighting() {
-  scene.add(new THREE.HemisphereLight(0xd9e6ec, 0x797c65, 1.4));
-  sun = new THREE.DirectionalLight(0xffebcb, 2.0);
+  scene.add(new THREE.HemisphereLight(0xd9edf4, 0x6f805e, 1.25));
+  sun = new THREE.DirectionalLight(0xffeed0, 2.15);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   Object.assign(sun.shadow.camera, { left: -58, right: 58, top: 58, bottom: -58, near: 1, far: 210 });
@@ -108,31 +114,34 @@ function tick(t) {
   fps += ((1 / Math.max(.001, elapsed)) - fps) * .06;
   if (state === 'playing') {
     // Consume camera motion once per render; one-shot jump/reset on each physics tick.
-    chase.update(elapsed, player.position, input.consumeLook(elapsed));
+    chase.setDriving(simulation.session.driving);
+    chase.updateTravel(elapsed, simulation.entity, input.consumeLook(elapsed));
     accumulator = Math.min(accumulator + elapsed, STEP * 5);
     while (accumulator >= STEP) {
       const controls = input.snapshot();
       if (controls.reset) { resetPlayer(); break; }
-      else player.update(STEP, controls, chase.yaw);
+      const event = simulation.update(STEP, controls, chase.yaw);
+      if (event.message) hud.toast(event.message);
+      if (event.changed) { input.clear(); chase.setDriving(simulation.session.driving); }
       accumulator -= STEP;
     }
-    player.animate(elapsed);
-    chase.update(0, player.position);
-    world.update(elapsed, player.position);
-    sun.target.position.set(Math.round(player.position.x * 8) / 8, 0, Math.round(player.position.z * 8) / 8);
+    simulation.animate(elapsed);
+    chase.updateTravel(0, simulation.entity);
+    world.update(elapsed, simulation.entity.position);
+    sun.target.position.set(Math.round(simulation.entity.position.x * 8) / 8, 0, Math.round(simulation.entity.position.z * 8) / 8);
     sun.position.copy(sun.target.position).add(sunOffset);
-    hud.update(elapsed, player, renderer, fps);
+    hud.update(elapsed, simulation.entity, renderer, fps, { simulation });
   } else if (state === 'inspection') {
     // No physics, character animation or catch-up accumulation in inspection.
     inspection.update(elapsed);
-    hud.update(elapsed, player, renderer, fps, { inspection: true });
+    hud.update(elapsed, simulation.entity, renderer, fps, { inspection: true, simulation });
   } else if (state === 'ready') {
     world.update(elapsed, player.position);
   }
   if (renderer && scene && camera) {
     const activeCamera = inspectionSession.active ? inspection.camera : camera;
     renderer.render(scene, activeCamera);
-    labels.update(elapsed, activeCamera, player.position, { inspection: inspectionSession.active, visible: ['playing', 'inspection'].includes(state), width: window.innerWidth, height: window.innerHeight });
+    labels.update(elapsed, activeCamera, simulation.entity.position, { inspection: inspectionSession.active, visible: ['playing', 'inspection'].includes(state), width: window.innerWidth, height: window.innerHeight });
   }
   requestAnimationFrame(tick);
 }
@@ -146,16 +155,17 @@ async function initialize() {
     await new Promise(resolve => requestAnimationFrame(resolve));
     world = buildWorld(mapData, { onProgress: message => progress(62, message) });
     progress(76, 'Preparing movement and collision geometry…');
-    player = new PlayerController({ collisionGroup: world.collisionGroup, mapData });
+    progress(82, 'Preparing an electric van and campus walking routes…');
+    simulation = new CampusSimulation(mapData, world.collisionGroup); player = simulation.player;
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = .95;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
-    scene = new THREE.Scene(); scene.background = new THREE.Color(0xb8cbd6);
-    gameplayFog = new THREE.Fog(0xb8cbd6, 350, 1600); scene.fog = gameplayFog;
-    scene.add(world.group, player.group);
+    scene = new THREE.Scene(); scene.background = new THREE.Color(0xb0d0df);
+    gameplayFog = new THREE.Fog(0xb0d0df, 350, 1600); scene.fog = gameplayFog;
+    scene.add(world.group, player.group, simulation.van.group, simulation.crowd.group);
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
-    chase = new ThirdPersonCamera(camera, world.collisionGroup, { distance: 6 });
+    chase = new TravelCamera(camera, world.collisionGroup);
     chase.reset(mapData.spawn);
     input = new InputController(canvas, { onPause: reason => {
       if (reason === 'escape' && state === 'inspection') toggleInspection();
@@ -182,9 +192,11 @@ async function initialize() {
     // DOM diagnostics support QA without exposing or changing game controls.
     setInterval(() => {
       document.body.dataset.gameState = state;
-      canvas.dataset.position = `${player.position.x.toFixed(2)},${player.position.y.toFixed(2)},${player.position.z.toFixed(2)}`;
-      canvas.dataset.grounded = String(player.grounded);
-      canvas.dataset.cameraMode = inspectionSession.active ? 'inspection' : 'student';
+      const entity = simulation.entity;
+      canvas.dataset.position = `${entity.position.x.toFixed(2)},${entity.position.y.toFixed(2)},${entity.position.z.toFixed(2)}`;
+      canvas.dataset.grounded = String(entity.grounded);
+      canvas.dataset.cameraMode = inspectionSession.active ? 'inspection' : simulation.session.driving ? 'vehicle' : 'student';
+      canvas.dataset.vehicleSpeed = simulation.van.speed.toFixed(2); canvas.dataset.pedestrians = simulation.crowd.agents.length;
     }, 250);
     lastTime = performance.now(); requestAnimationFrame(tick);
   } catch (error) {

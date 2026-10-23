@@ -1,29 +1,33 @@
-# Phase 1.5 validation
+# Phase 2 validation
 
-Verified on 2026-10-23 with Node.js 24.17.0, npm 11.13.0, Three.js 0.186.1 and Vite 8.3.5.
+Verified on 2026-10-23 with Node.js 24.17.0, npm 11.13.0, Three.js 0.186.1 and Vite 8.3.5. Upgrade base: `24e0c8e4bd1d1b59baece745ef358825ed2eb313`. Historical visual comparisons remain in `VALIDATION-PHASE1.5.md` and `VISUAL-REPORT.json`.
 
 ## Automated checks
 
-`npm test`: **62 tests passed, zero failed**, including all 42 Phase 1 tests and 20 added checks.
+`npm test`: **92 tests passed, zero failed**. This includes all 62 earlier tests and 30 Phase 2 checks.
 
-- Unchanged map bytes, source/selected counts, projection, bounds, footprints, courtyard holes, heights and `heightSource`.
-- Canonical collision positions and triangle winding match the pre-change baseline: **3,600 triangles**. Decorative façades, road edges and planting add no colliders.
-- Movement, normalized diagonal speed, sprint, jump/landing, gravity, fixed stepping, wall/corner containment, rooftop landing, courtyard access, shoreline blocking, real bridge traversal, reset and camera obstruction remain passing.
-- Road unions retain junction connectivity; walking and vehicle pavement no longer overlap. Curbs open at junctions, walking links and bridge approaches, exclude buildings/water, and avoid walking pavement. Paint belongs only to trunk/tertiary roads, skips vehicle junctions and sits above pavement.
-- Bridge pavement cuts match its square deck ends, preventing artificial gaps from round buffer caps.
-- Façade normals face outward for both outer-ring winding directions and both courtyard-ring directions.
-- Material classification respects source tags, with worship before “Hall.” Heights are independent and unchanged.
-- Labels use actual source names/entrance refs, deduplicate nearby identical names while retaining source IDs, and anchor inside buildings rather than courtyard holes. Synthetic “Lake footbridge” is excluded.
-- Surveyed entrance coordinates/tags survive normalization; renderer prefers building entries and otherwise chooses a road-facing outer wall.
-- Decorative planting is deterministic, observes exclusion zones and stays within its caps.
-- Inspection clears input, releases pointer lock without pausing, preserves student capsule/velocity and the separate chase view, fits campus after resize, and supports bounded pan/orbit/zoom. Focus loss clears controls; suspend/resume retains the inspection camera. Held-key repeats cannot restart student movement after exit.
-- Label range, six/eighteen caps, occlusion filtering, overlap rejection and HUD avoidance are tested.
+- Player movement retains camera-relative axes, normalized diagonals, walking/sprinting speeds, gravity, grounded jumps, wall sliding, corner containment, rooftop landing, open courtyards, shoreline blocking, bridge ramps and reset. New tests check bounded acceleration/deceleration, turning, all five animation states, landing compression and pose reset.
+- The original electric cargo model has exactly one front and two rear wheels, an open rear platform and exposed cycle frame. Its approximately 1.50 m width, 3.44 m length and 1.55 m height fit the conservative collision footprint. It uses five merged meshes and 4,272 triangles.
+- Vehicle tests cover progressive acceleration, 28.8 km/h maximum forward speed, 9 km/h reverse, coasting, held braking, braking before reverse, limited steering rate, correct reverse steering, wheel/front-fork animation, bounded tilt and 30/60 Hz integration agreement.
+- Full-footprint displacement substeps stop forward/reverse travel at thin walls and protect rotating corners. Tests cover water, map bounds, courtyard holes, a synthetic bridge and the actual bent lake bridge, way `1317423268`. The real-map test drives slowly along its centre line, reaches the opposite shore without a collision and follows the 0.45 m deck elevation.
+- Entering requires proximity, grounded feet, a stopped van and a clear route to its seat. Exiting checks a stopped van, clear land, a clear dismount path and pedestrian separation. A blocked exit leaves the player mounted. Tests reject interaction through thin walls and water strips. The parked van provides a separate on-foot collider without modifying static campus geometry.
+- Camera tests check smooth walking/driving profile transitions and building obstruction. E is one-shot; Space braking remains held. Pause/focus clears interaction and controls.
+- Navigation splits real mapped road/path junctions, excludes major highways, preserves known bridge elevation, rejects unsafe edges and adds no straight shortcuts through obstacles. All **1,072 accepted edges across 1,057 nodes** lie on mapped pavement and pass land/building/water checks. The graph has two components; students stay within their connected component.
+- Twelve deterministic, initially separated students safely wander for a simulated minute in integration tests. Checks cover dead-end reversal, idle/walk behavior, van proximity yielding and three instanced visual batches with finite animated matrices. Turning vehicle corners cannot pass through pedestrians.
+- Whole-simulation tests cover real-campus enter/drive/reverse/brake/exit, complete pause/inspection suspension, no resume catch-up, and reset from driving. Reset reuses the same single van and clears its parking position if a pedestrian has wandered there.
+- All earlier OSM, road union/curb/decal, façade winding, source-only label, inspection, input, minimap and static collision regressions remain passing.
 
-`npm run build`: **passed**. `npm run build:pages`: **passed**. The output includes 734,738 bytes of JavaScript (about 199 kB gzip) and 12,065 bytes of CSS. Generated Pages output uses relative asset paths and includes the unchanged map, notices and `.nojekyll`. Vite's >500 kB bundle advisory is expected for the bundled Three.js application; it is not a build failure.
+## Build and HTTP checks
 
-## Source and collision integrity
+`npm run build`: **passed**. `npm run build:pages`: **passed**. Final production assets are `index-oWEJ6gaH.js` (765,742 bytes, approximately 211 kB gzip) and `index-CZYvJa0i.css` (12,932 bytes). Vite reports its usual >500 kB bundle advisory because Three.js is bundled; there are no build errors. No runtime dependency was added.
 
-Baseline source commit: `a4efab4befcce33191b9fce9cc14c5c898309354`. The baseline was captured before editing the renderer and is stored in `tests/phase1-baseline.json`.
+Development HTTP checks returned **200** for the HTML, main module, all new simulation/vehicle/navigation/pedestrian modules and map. Production preview returned **200** for the HTML, exact hashed JavaScript/CSS, favicon and map. Their bytes match the production build, including the original map checksum. Generated `docs/` uses relative asset paths, includes `.nojekyll` and notices, and replaces obsolete hashed assets.
+
+The release process separately verifies the GitHub Pages workflow and hosted HTML/assets/map. The delivered deployment report records the actual commit and result. HTTP delivery checks do not establish interactive playability.
+
+## Map and collision integrity
+
+The geographic source, projection, bounds, feature counts, footprints, holes, height estimates and `heightSource` are unchanged. Original source counts remain 3,260 nodes, 482 ways and 14 relations; selected features remain 189 buildings, 42 roads, 16 green areas, four water areas and one bridge. The new van and students are procedural game actors, not surveyed OSM features.
 
 Raw map SHA-256 (770,269 bytes):
 
@@ -37,37 +41,24 @@ Canonical geographic model SHA-256:
 f1ecf729f9bd2d41e663d9779420ee5f75df41bfd6bfbbac9ba3bc6071a57d61
 ```
 
-Canonical collision SHA-256 (cyclic vertex order and batch order normalized; winding retained):
+Canonical static collision SHA-256, including winding (**3,600 triangles**):
 
 ```text
 b95c22529398f30fd82c60571453cfcc198080818f92b707fce8a31470aea1be
 ```
 
-`MAP-REPORT.json` retains bounds/counts/height sources/repairs. `VISUAL-REPORT.json` records 55 source-name anchors, five entrance nodes, 240 added trees, 48 shrubs and 188 illustrative entry treatments. No surveyed entrance in this extract lies on a building wall.
+The fixture in `tests/phase1-baseline.json` and current `PHASE2-REPORT.json` record these invariants. The parked van's temporary 24-triangle proxy is intentionally separate from the static world.
 
-## Performance checks and limits
+## Performance and implementation limits
 
-Vertex-coloured building batches reduce the scene from 343 mesh objects to 211. Curbs, façade detail and planting increase total geometry from 61,530 to 113,842 triangles. Window density was reduced and vegetation combined into one instanced mesh to bound overhead. No per-window objects or external textures were added.
+Static campus rendering remains at 211 mesh batches and 113,842 triangles. The van adds five mesh batches; the twelve pedestrians collectively add three instanced batches and 5,040 triangles. NPCs reuse original student geometry and materials; there are no per-limb draw calls. Actor updates use a shared bounded 60 Hz simulation; camera, HUD, labels and rendering remain separate.
 
-CPU frustum checks used the same camera positions and 16:9 projection for both renderers:
+A reproducible 600-frame CPU sample in `scripts/report-phase2.mjs` took 103.57 ms total (0.173 ms mean per frame) on this machine. It includes idle player physics, twelve walking students, the parked van and actor animation/matrix updates. It excludes WebGL rendering, camera, labels and HUD and **is not an FPS measurement**. Scene batch counts also exclude actual shadow-pass draw calls.
 
-| View | Phase 1 visible batches | Phase 1.5 visible batches | Change |
-| --- | ---: | ---: | ---: |
-| Main Gate | 114 | 78 | −31.6% |
-| Paradise Road | 14 | 14 | 0% |
-| Lake bridge | 11 | 13 | +18.2% |
-| Arts courtyard | 63 | 51 | −19.0% |
-
-Counts exclude the student and shadow passes. They are **not** measured WebGL draw calls or FPS and do not prove the 60 FPS / ≤30% draw-call target. The older Phase 1 browser observation was about 60 FPS and 157 draw calls at Main Gate, but its viewport was not recorded, so it is not a controlled GPU comparison.
+The van uses upright semi-arcade kinematics rather than a full rigid-body engine: it cannot roll over, collide with dynamic crates or simulate tire slip. Water and buildings block its complete footprint; unblocked grass is drivable. Trees/curbs remain decorative. Pedestrian AI uses simple route wandering and proximity yielding, with no traffic rules, conversation or player-body collision. Narrow bridge traversal needs careful low-speed alignment. These are deliberate limits of this milestone.
 
 ## Browser verification limits
 
-Browser control reports **“Local browser use is disabled in Work settings.”** No browser workaround was used. Current-release graphical play checks, console checks and screenshots could not be obtained. Main Gate junctions, Paradise Road, Lake road/bridge, academic buildings, halls, playing fields and the repaired Arts courtyard still need interactive visual review. Automated checks cover source geometry and the existing real-map movement regressions.
+Browser control reports **“Local browser use is disabled in Work settings.”** No workaround was used. Current-release interactive visual play checks, console inspection, screenshots, real mouse/pointer-lock behavior, perceived animation/lighting quality and actual GPU FPS/draw-call measurements remain unverified. Automated geometry and simulation tests plus HTTP asset checks do not replace these checks.
 
-Actual FPS/draw calls, perceived daylight/label readability, real mouse drag/wheel behavior, visual z-fighting and hosted gameplay remain unverified. Unit tests and static checks cannot establish those visual results.
-
-## Build and hosting verification
-
-Development HTTP checks returned **200** for the HTML, main module, new inspection/label/road modules and unchanged map. Production preview returned **200** for HTML, JavaScript, CSS, favicon and map; their bytes match the generated build. `dist/` and `docs/` contain the same map checksum. Generated `docs/` was reviewed before commit, including removal of obsolete hashed assets.
-
-The release process also checks the GitHub Pages workflow and hosted HTML/assets/map over HTTPS. These confirm delivery and file integrity, not interactive gameplay. The actual commit and workflow result are reported with the delivered update. See `HOSTING.md` for publishing commands.
+Interactive review should cover Main Gate entry, driving and safe exits, NPC visibility/yielding, tight turns, the lake bridge, camera transitions, pause/inspection and color/readability at ordinary desktop resolution. No cars, motorcycles, combat, missions or police systems are included.

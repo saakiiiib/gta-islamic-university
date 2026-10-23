@@ -1,0 +1,99 @@
+{
+  "milestone": "Phase 2 — electric cargo van, pedestrians and motion",
+  "upgradeBaseCommit": "24e0c8e4bd1d1b59baece745ef358825ed2eb313",
+  "map": {
+    "sha256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
+    "bytes": 770269,
+    "counts": {
+      "sourceNodes": 3260,
+      "sourceWays": 482,
+      "sourceRelations": 14,
+      "buildings": 189,
+      "roads": 42,
+      "greens": 16,
+      "water": 4,
+      "bridges": 1,
+      "trees": 1,
+      "treeRows": 1
+    },
+    "modelSha256": "f1ecf729f9bd2d41e663d9779420ee5f75df41bfd6bfbbac9ba3bc6071a57d61",
+    "staticCollision": {
+      "triangles": 3600,
+      "sha256": "b95c22529398f30fd82c60571453cfcc198080818f92b707fce8a31470aea1be"
+    }
+  },
+  "actors": {
+    "electricVans": 1,
+    "wheels": 3,
+    "pedestrians": 12
+  },
+  "van": {
+    "spawn": {
+      "x": 279.2181873078744,
+      "z": -68.23444994445087,
+      "yaw": 0.738343918474469
+    },
+    "localModelMetres": {
+      "width": 1.5,
+      "height": 1.5510000050067902,
+      "length": 3.442500044107437
+    },
+    "configuration": {
+      "maxSpeed": 8,
+      "reverseSpeed": 2.5,
+      "acceleration": 2.6,
+      "reverseAcceleration": 1.7,
+      "braking": 5.4,
+      "rolling": 0.25,
+      "drag": 0.018,
+      "wheelbase": 2.22,
+      "maxSteer": 0.52,
+      "wheelRadius": 0.4,
+      "halfWidth": 0.82,
+      "front": 1.7,
+      "rear": 1.82
+    },
+    "rendering": {
+      "meshes": 5,
+      "instancedBatches": 0,
+      "triangles": 4272
+    }
+  },
+  "navigation": {
+    "nodes": 1057,
+    "edges": 1072,
+    "sourceSegments": 226,
+    "intersections": 297,
+    "rejectedEdges": 186,
+    "duplicateEdges": 0,
+    "components": 2,
+    "invalidEdges": 0
+  },
+  "rendering": {
+    "staticWorld": {
+      "meshes": 211,
+      "instancedBatches": 1,
+      "triangles": 113842
+    },
+    "student": {
+      "meshes": 23,
+      "instancedBatches": 0,
+      "triangles": 502
+    },
+    "pedestrians": {
+      "meshes": 3,
+      "instancedBatches": 3,
+      "triangles": 5040
+    },
+    "additionalActorMeshBatches": 8
+  },
+  "cpuSample": {
+    "frames": 600,
+    "simulatedSeconds": 10,
+    "totalMilliseconds": 103.57,
+    "meanMilliseconds": 0.173,
+    "includes": "Idle player physics, twelve wandering pedestrians, parked van and all actor animation/matrix updates. Excludes WebGL rendering, camera, labels and HUD. Not an FPS measurement."
+  },
+  "estimates": "The reference-inspired original van, students and their placement are game actors, not surveyed OSM objects. Vehicle dynamics are upright semi-arcade kinematics, not a full rigid-body simulation.",
+  "verificationLimits": "Browser automation is disabled in Work settings. Interactive visual/mouse checks, actual FPS and WebGL draw-call measurements remain unverified."
+}

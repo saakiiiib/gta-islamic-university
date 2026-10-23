@@ -1,4 +1,4 @@
-const TRACKED_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ShiftLeft', 'ShiftRight', 'Space', 'KeyR', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
+const TRACKED_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ShiftLeft', 'ShiftRight', 'Space', 'KeyR', 'KeyE', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
 
 /** Browser listeners are installed only when instantiated, keeping imports testable. */
 export class InputController {
@@ -11,6 +11,7 @@ export class InputController {
     this.keys = new Set();
     this.jumpQueued = false;
     this.resetQueued = false;
+    this.interactQueued = false;
     this.lookDelta = { dx: 0, dy: 0 };
     this.dragging = false;
     this.lastMouse = null;
@@ -29,6 +30,7 @@ export class InputController {
       if (!event.repeat && !this.keys.has(event.code)) {
         if (event.code === 'Space') this.jumpQueued = true;
         if (event.code === 'KeyR') this.resetQueued = true;
+        if (event.code === 'KeyE') this.interactQueued = true;
       }
       this.keys.add(event.code);
     });
@@ -69,9 +71,11 @@ export class InputController {
       left: this.keys.has('KeyA'), right: this.keys.has('KeyD'),
       sprint: this.keys.has('ShiftLeft') || this.keys.has('ShiftRight'),
       jump: this.jumpQueued, reset: this.resetQueued,
+      brake: this.keys.has('Space'), interact: this.interactQueued,
     };
     this.jumpQueued = false;
     this.resetQueued = false;
+    this.interactQueued = false;
     return input;
   }
 
@@ -88,7 +92,7 @@ export class InputController {
 
   clear() {
     this.keys.clear();
-    this.jumpQueued = this.resetQueued = this.dragging = false;
+    this.jumpQueued = this.resetQueued = this.interactQueued = this.dragging = false;
     this.lookDelta.dx = this.lookDelta.dy = 0;
     this.lastMouse = null;
   }

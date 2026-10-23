@@ -136,7 +136,7 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
   }
   onProgress('Joining roads and opening walking connections');
   const roadAppearance = buildRoadAppearance(mapData);
-  for (const [key, level, color] of [['asphalt', ROAD_LEVELS.asphalt, 0x363c3f], ['paths', ROAD_LEVELS.path, 0xc4b697], ['edges', ROAD_LEVELS.edge, 0xaeb4a8], ['markings', ROAD_LEVELS.marking, 0xd4d4b9]]) {
+  for (const [key, level, color] of [['asphalt', ROAD_LEVELS.asphalt, 0x343e43], ['paths', ROAD_LEVELS.path, 0xd2c29c], ['edges', ROAD_LEVELS.edge, 0xbac2ad], ['markings', ROAD_LEVELS.marking, 0xeae4b6]]) {
     for (const polygon of roadAppearance[key]) {
       const [x, z] = polygonCenter(polygon);
       batches.add(tintGeometry(surfaceGeometry(polygon, level), color), materials.pavement, x, z, { kind: 'road' });

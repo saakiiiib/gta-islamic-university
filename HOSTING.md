@@ -13,8 +13,8 @@ npm install
 npm test
 npm run build
 npm run build:pages
-git add src tests scripts index.html README.md VALIDATION.md VISUAL-REPORT.json docs
-git commit -m "Improve campus visual clarity and inspection"
+git add src tests scripts index.html README.md VALIDATION.md PHASE2-REPORT.json docs
+git commit -m "Add electric cargo van, campus pedestrians and motion polish"
 git push origin main
 ```
 
@@ -26,6 +26,6 @@ Confirm the **pages build and deployment** workflow for the pushed commit succee
 8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9
 ```
 
-Phase 1.5 controls: **L** labels, **I** inspection, **G** map alignment, **F3** statistics. Inspection pauses the student; drag/arrows orbit, right drag/WASD pan, scroll zoom, I/Escape returns.
+Phase 2: approach the yellow minimap van marker and press **E** to enter. **W/S** drive/brake/reverse, **A/D** steer, **Space** brakes, **E** exits when stopped. **L** labels, **I** inspection, **G** map alignment, **F3** statistics remain. Inspection pauses all entities; drag/arrows orbit, right drag/WASD pan, scroll zoom, I/Escape returns to the previous walking/driving mode.
 
 See `VALIDATION.md` for checks and browser/performance verification limits. The release response records the actual commit and verified workflow result; a successful push alone does not confirm publication.

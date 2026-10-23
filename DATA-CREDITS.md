@@ -14,3 +14,5 @@ Source snapshot: 3,260 nodes, 482 ways, 14 relations. The selected context conta
 Geometry repair: the two orphan inner rings of source relation `18079383` are associated with their unique enclosing existing building relation `18079382` during import. This does not add a new geographic footprint and does not alter the raw export. Incomplete administrative boundaries are excluded from gameplay.
 
 The production build includes `data/map.osm` and this notice as `data/NOTICE.txt`.
+
+The electric cargo tricycle and pedestrian characters are original procedural Three.js geometry. The van's shape/paint is inspired by the user's supplied visual reference; no reference bitmap, watermark or third-party game model is included. These game actors and their spawn/route choices are illustrative additions, not surveyed OSM objects. Campus geographic data and attribution remain unchanged.

@@ -24,18 +24,27 @@ export class PlayerController {
     this.speed = 0;
     this.grounded = false;
     this.animationTime = 0;
+    this.landingTime = 0;
+    this.turnRate = 0;
+    this.dynamicWorld = null;
     this.spawn = { x: 0, y: 0, z: 0, yaw: 0 };
     this.reset(this.mapData.spawn ?? this.spawn);
   }
 
   reset(spawn = this.spawn) {
     this.spawn = { ...spawn };
+    this.teleport(spawn, spawn.yaw ?? 0);
+  }
+
+  teleport(spawn, yaw = this.yaw) {
     this.position.set(spawn.x ?? 0, spawn.y ?? 0, spawn.z ?? 0);
     this.velocity.set(0, 0, 0);
-    this.yaw = spawn.yaw ?? 0;
+    this.yaw = yaw;
     this.speed = 0;
     this.grounded = false;
     this.animationTime = 0;
+    this.landingTime = this.turnRate = 0;
+    this.rig.pose = null;
     this.syncCapsule();
     this.group.position.copy(this.position);
     this.group.rotation.y = this.yaw;
@@ -48,8 +57,11 @@ export class PlayerController {
   }
 
   get state() {
-    return { position: this.position, yaw: this.yaw, speed: this.speed, grounded: this.grounded, verticalSpeed: this.velocity.y, sprinting: this.speed > this.config.walkSpeed + 0.2 };
+    return { position: this.position, yaw: this.yaw, speed: this.speed, grounded: this.grounded, verticalSpeed: this.velocity.y, sprinting: this.speed > this.config.walkSpeed + 0.2,
+      motionState: !this.grounded ? 'jump' : this.landingTime > 0 ? 'land' : this.speed > 4.5 ? 'run' : this.speed > .12 ? 'walk' : 'idle', landingBlend: this.landingTime / .2, turnRate: this.turnRate };
   }
+
+  setDynamicObstacles(group) { this.dynamicWorld = group ? new CollisionWorld(group) : null; }
 
   update(dt, input = {}, cameraYaw = 0) {
     if (!Number.isFinite(dt) || dt <= 0) return;
@@ -63,17 +75,22 @@ export class PlayerController {
 
   step(dt, input, cameraYaw) {
     const cfg = this.config;
+    const wasGrounded = this.grounded;
+    this.landingTime = Math.max(0, this.landingTime - dt);
     const direction = movementDirection(input, cameraYaw);
     const desiredSpeed = input.sprint ? cfg.sprintSpeed : cfg.walkSpeed;
     const targetVelocity = direction.multiplyScalar(desiredSpeed);
     const difference = new Vector3(targetVelocity.x - this.velocity.x, 0, targetVelocity.z - this.velocity.z);
-    if (difference.length() > cfg.acceleration * dt) difference.setLength(cfg.acceleration * dt);
+    const turning = this.velocity.x * targetVelocity.x + this.velocity.z * targetVelocity.z < 0;
+    const acceleration = targetVelocity.lengthSq() < .01 ? cfg.deceleration : turning ? cfg.turnAcceleration : cfg.acceleration;
+    if (difference.length() > acceleration * dt) difference.setLength(acceleration * dt);
     this.velocity.add(difference);
     if (input.jump && this.grounded) {
       this.velocity.y = cfg.jumpSpeed;
       this.grounded = false;
     }
     this.velocity.y -= cfg.gravity * dt;
+    const fallSpeed = this.velocity.y;
     const count = Math.max(1, Math.ceil(this.velocity.length() * dt / 0.15));
     const subDt = dt / count;
     let grounded = false;
@@ -93,20 +110,28 @@ export class PlayerController {
       }
       this.capsule.translate(new Vector3(nextX - priorX, this.velocity.y * subDt, nextZ - priorZ));
       grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
+      if (this.dynamicWorld) {
+        grounded = this.dynamicWorld.resolve(this.capsule, this.velocity) || grounded;
+        grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
+      }
       this.position.copy(this.capsule.start).y -= cfg.radius;
     }
     this.grounded = grounded;
+    if (!wasGrounded && grounded && fallSpeed < -1.4) this.landingTime = .2;
     this.speed = Math.hypot(this.velocity.x, this.velocity.z);
     if (this.speed > 0.08) {
       const targetYaw = Math.atan2(-this.velocity.x, -this.velocity.z);
-      this.yaw += Math.atan2(Math.sin(targetYaw - this.yaw), Math.cos(targetYaw - this.yaw)) * (1 - Math.exp(-14 * dt));
-    }
+      const angle = Math.atan2(Math.sin(targetYaw - this.yaw), Math.cos(targetYaw - this.yaw));
+      const turn = angle * (1 - Math.exp(-(16 + Math.min(2, this.speed / 4)) * dt));
+      this.yaw += turn;
+      this.turnRate = MathUtils.lerp(this.turnRate, turn / dt, 1 - Math.exp(-10 * dt));
+    } else this.turnRate *= Math.exp(-10 * dt);
     if (this.position.y < -8 || !Number.isFinite(this.position.lengthSq())) this.reset();
   }
 
   animate(dt) {
     this.animationTime += Math.max(0, Math.min(dt, 0.1));
-    animateStudent(this.rig, this.state, this.animationTime);
+    animateStudent(this.rig, this.state, this.animationTime, dt);
   }
 
   dispose() {

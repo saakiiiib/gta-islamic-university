@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 /** An original, metre-scaled student. The root origin is at the soles. */
-export function createStudent() {
+export function createStudent({ palette = {} } = {}) {
   const group = new THREE.Group();
   group.name = 'Student';
   const materials = {
@@ -13,6 +13,7 @@ export function createStudent() {
     eye: new THREE.MeshStandardMaterial({ color: 0x171b1e }),
     bag: new THREE.MeshStandardMaterial({ color: 0x42624e, roughness: 1 }),
   };
+  for (const [key, color] of Object.entries(palette)) materials[key]?.color.set(color);
   function box(parent, size, position, material) {
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(...size), material);
     mesh.position.set(...position);
@@ -61,21 +62,33 @@ export function createStudent() {
     legs.push(leg);
     knees.push(knee);
   }
-  return { group, body, arms, legs, knees };
+  return { group, body, arms, legs, knees, head, hair, pose: null };
 }
 
-export function animateStudent(rig, state, time) {
+export function animateStudent(rig, state, time, dt = .01667) {
   const moving = state.speed > 0.08;
   const running = state.speed > 4.5;
-  const cycle = time * (running ? 13 : 8.5);
+  const delta = Math.max(0, Math.min(dt, .1));
+  rig.phase = (rig.phase ?? 0) + delta * (running ? 13 : 8.5) * Math.min(1.2, state.speed / (running ? 6 : 3));
+  const cycle = rig.phase;
   const stride = Math.min(state.speed / 3.8, 1) * (running ? 0.8 : 0.52);
   const swing = Math.sin(cycle) * stride;
-  rig.body.position.y = state.grounded ? (moving ? Math.abs(Math.sin(cycle)) * (running ? 0.045 : 0.023) : Math.sin(time * 2) * 0.006) : 0;
-  rig.body.rotation.x = running && state.grounded ? -0.09 : 0;
-  rig.arms[0].rotation.x = state.grounded ? -swing * 0.85 : -0.55;
-  rig.arms[1].rotation.x = state.grounded ? swing * 0.85 : -0.55;
-  rig.legs[0].rotation.x = state.grounded ? swing : -0.25;
-  rig.legs[1].rotation.x = state.grounded ? -swing : 0.2;
-  rig.knees[0].rotation.x = state.grounded ? Math.max(0, -Math.sin(cycle)) * stride * 0.7 : 0.45;
-  rig.knees[1].rotation.x = state.grounded ? Math.max(0, Math.sin(cycle)) * stride * 0.7 : 0.3;
+  const landing = Math.sin(Math.max(0, Math.min(1, state.landingBlend ?? 0)) * Math.PI) * .065;
+  const target = {
+    bob: state.grounded ? (moving ? Math.abs(Math.sin(cycle)) * (running ? .042 : .021) : Math.sin(time * 2) * .006) - landing : 0,
+    lean: state.grounded && running ? -.105 : !state.grounded ? -.035 : 0,
+    roll: THREE.MathUtils.clamp((state.turnRate ?? 0) * state.speed * .007, -.13, .13),
+    a0: state.grounded ? -swing * .85 : -.55, a1: state.grounded ? swing * .85 : -.55,
+    l0: state.grounded ? swing : -.28, l1: state.grounded ? -swing : .23,
+    k0: state.grounded ? Math.max(0, -Math.sin(cycle)) * stride * .85 + landing * 4 : .5,
+    k1: state.grounded ? Math.max(0, Math.sin(cycle)) * stride * .85 + landing * 4 : .35,
+  };
+  if (!rig.pose) { rig.pose = { ...target }; rig.phase = 0; }
+  else for (const key of Object.keys(target)) rig.pose[key] = THREE.MathUtils.lerp(rig.pose[key], target[key], 1 - Math.exp(-16 * delta));
+  const pose = rig.pose;
+  rig.body.position.y = pose.bob; rig.body.rotation.x = pose.lean; rig.body.rotation.z = pose.roll;
+  rig.arms[0].rotation.x = pose.a0; rig.arms[1].rotation.x = pose.a1;
+  rig.arms[0].rotation.z = -.045; rig.arms[1].rotation.z = .045;
+  rig.legs[0].rotation.x = pose.l0; rig.legs[1].rotation.x = pose.l1;
+  rig.knees[0].rotation.x = pose.k0; rig.knees[1].rotation.x = pose.k1;
 }

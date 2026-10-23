@@ -4,5 +4,5 @@ export const MAP_CONFIG = Object.freeze({
 });
 export const PLAYER_CONFIG = Object.freeze({
   height: 1.75, radius: 0.32, walkSpeed: 3.8, sprintSpeed: 7.5,
-  gravity: 18, jumpSpeed: 5.8, acceleration: 20,
+  gravity: 18, jumpSpeed: 5.8, acceleration: 20, deceleration: 14, turnAcceleration: 24,
 });

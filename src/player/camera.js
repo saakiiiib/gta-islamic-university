@@ -12,6 +12,8 @@ export class ThirdPersonCamera {
     this.target = new Vector3();
     this.initialized = false;
     this.currentDistance = distance;
+    this.targetHeight = 1.35;
+    this.followRate = 14;
   }
 
   reset(spawn) {
@@ -41,9 +43,9 @@ export class ThirdPersonCamera {
   update(dt, playerPosition, lookDelta = { dx: 0, dy: 0 }) {
     this.yaw -= (lookDelta.dx ?? 0) * 0.0025;
     this.pitch = MathUtils.clamp(this.pitch + (lookDelta.dy ?? 0) * 0.0025, 0.1, 1.05);
-    const desiredTarget = playerPosition.clone().add(new Vector3(0, 1.35, 0));
+    const desiredTarget = playerPosition.clone().add(new Vector3(0, this.targetHeight, 0));
     if (!this.initialized) this.target.copy(desiredTarget);
-    else this.target.lerp(desiredTarget, 1 - Math.exp(-14 * Math.max(0, dt)));
+    else this.target.lerp(desiredTarget, 1 - Math.exp(-this.followRate * Math.max(0, dt)));
     const direction = new Vector3(Math.sin(this.yaw) * Math.cos(this.pitch), Math.sin(this.pitch), Math.cos(this.yaw) * Math.cos(this.pitch));
     const allowed = this.obstructionDistance(this.target, direction, this.distance);
     if (allowed < this.currentDistance || !this.initialized) this.currentDistance = allowed;
