@@ -6,9 +6,13 @@ import { createStudent, animateStudent } from './character.js';
 import { resolveVanCapsule } from './vanCollisions.js';
 
 export function movementDirection(input = {}, cameraYaw = 0) {
-  const x = Number(Boolean(input.right)) - Number(Boolean(input.left));
-  const z = Number(Boolean(input.back)) - Number(Boolean(input.forward));
-  return new Vector3(x * Math.cos(cameraYaw) + z * Math.sin(cameraYaw), 0, -x * Math.sin(cameraYaw) + z * Math.cos(cameraYaw)).normalize();
+  const analog = Number.isFinite(input.moveX) && Number.isFinite(input.moveZ);
+  let x = analog ? input.moveX : Number(Boolean(input.right)) - Number(Boolean(input.left));
+  let z = analog ? input.moveZ : Number(Boolean(input.back)) - Number(Boolean(input.forward));
+  const length = Math.hypot(x, z);
+  // Preserve joystick magnitude; clamp diagonals without increasing walking speed.
+  if (length > 1) { x /= length; z /= length; }
+  return new Vector3(x * Math.cos(cameraYaw) + z * Math.sin(cameraYaw), 0, -x * Math.sin(cameraYaw) + z * Math.cos(cameraYaw));
 }
 
 export class PlayerController {

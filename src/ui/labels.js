@@ -49,7 +49,7 @@ export class PlaceLabels {
     this.elapsed = 0; this.width = width; this.height = height;
     camera.updateMatrixWorld();
     const avoid = [];
-    for (const element of this.container.ownerDocument.querySelectorAll('.location,.minimap-card,.speed-card,.controls-strip,.game-header,.view-toolbar,.inspection-banner,.interaction-prompt,.player-health,.pedestrian-health,#debug-panel,.attribution')) {
+    for (const element of this.container.ownerDocument.querySelectorAll('.location,.minimap-card,.speed-card,.controls-strip,.game-header,.view-toolbar,.inspection-banner,.interaction-prompt,.player-health,.pedestrian-health,#debug-panel,.attribution,.touch-stick,.touch-actions,.touch-pause,#orientation-hint')) {
       const rect = element.getBoundingClientRect(); if (rect.width && rect.height) avoid.push(rect);
     }
     if (!inspection) avoid.push({ left: width / 2 - 65, right: width / 2 + 65, top: height * .5, bottom: height * .96 });

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#183b32">
   <meta name="description" content="Explore a playable, map-derived 3D Islamic University campus in Kushtia, Bangladesh.">
   <title>GTA Islamic University — Campus Stories</title>
@@ -10,7 +10,7 @@
 </head>
 <body>
   <main id="app">
-    <canvas id="game" tabindex="0" aria-label="3D campus game. WASD moves, Shift sprints, Space jumps. E enters a nearby stopped electric van, or jumps off at any speed. While riding W accelerates, S brakes or reverses, A/D steer, Space brakes. Mouse or arrows look. M mutes recorded voices. I inspects campus, L labels, G map alignment. Escape pauses."></canvas>
+    <canvas id="game" tabindex="0" aria-label="3D campus game. On phones: left joystick moves or steers; swipe right to look. Touch buttons jump, sprint, enter or exit, drive and pause. On desktop: WASD moves, Shift sprints, Space jumps. E enters a stopped van or jumps off at any speed. W/S drive, A/D steer, Space brakes. Mouse or arrows look. M mutes, I inspects, L labels, G map alignment, Escape pauses."></canvas>
     <div class="vignette" aria-hidden="true"></div>
 
     <header class="game-header">
@@ -24,7 +24,8 @@
         <p class="eyebrow">23°43′ N &nbsp; 89°09′ E &nbsp; / &nbsp; THE CAMPUS EDITION</p>
         <h1 id="game-title">Small campus.<br><em>Big stories.</em></h1>
         <p class="intro-copy">Eight vans. Thirty students. A campus with a voice.<br>Ride behind the driver, explore the routes, and mind the crowd.</p>
-        <div class="intro-actions"><button class="primary-button" id="start-button" disabled><span id="start-label">BUILDING YOUR CAMPUS</span><span>↗</span></button><span class="desktop-note">DESKTOP PROTOTYPE<br>KEYBOARD + MOUSE</span></div>
+        <div class="intro-actions"><button class="primary-button" id="start-button" disabled><span id="start-label">BUILDING YOUR CAMPUS</span><span>↗</span></button><span class="desktop-note">BROWSER PROTOTYPE<br>KEYBOARD + MOUSE</span></div>
+        <p id="touch-instructions" class="touch-instructions" hidden>Landscape recommended. Left stick moves · Swipe right to look · Tap Sprint to toggle · Hold Go / Brake to drive.</p>
         <div class="loading"><span id="loading-message">Opening the supplied OpenStreetMap file…</span><span id="loading-percent">0%</span><div class="loading-track"><i id="loading-fill"></i></div></div>
         <p id="error-message" class="error" role="alert" hidden></p>
         <div class="intro-facts"><span><b id="building-count">—</b> MAPPED BUILDINGS</span><span><b>1 : 1</b> METRE SCALE</span><span><b>100%</b> FREE TO EXPLORE</span></div>
@@ -50,6 +51,22 @@
     </section>
 
     <div id="place-labels" aria-hidden="true"></div>
+    <section id="touch-controls" class="touch-controls" aria-label="Touch game controls" data-mode="foot" hidden>
+      <div id="touch-look" class="touch-look" aria-label="Swipe here to rotate the camera"></div>
+      <div id="touch-stick" class="touch-stick" role="group" aria-label="Movement and steering joystick">
+        <span id="touch-stick-thumb" class="touch-stick-thumb"></span><span id="touch-stick-caption" class="touch-stick-caption">MOVE</span>
+      </div>
+      <div class="touch-actions">
+        <button type="button" data-touch-action="sprint" aria-pressed="false" aria-label="Toggle sprint">SPRINT</button>
+        <button type="button" data-touch-action="jump" aria-label="Jump">JUMP</button>
+        <button type="button" data-touch-action="accelerate" aria-label="Accelerate or zoom in" hidden>GO</button>
+        <button type="button" data-touch-action="reverse" aria-label="Brake or reverse, or zoom out" hidden>BRAKE / REVERSE</button>
+        <button type="button" data-touch-action="interact" aria-label="Enter or exit electric van">ENTER</button>
+      </div>
+      <div class="touch-pause"><button type="button" data-touch-action="pause" aria-label="Pause touch game">Ⅱ</button></div>
+      <span class="touch-look-hint" aria-hidden="true">SWIPE RIGHT SIDE TO LOOK</span>
+    </section>
+    <aside id="orientation-hint" hidden>Turn your phone sideways for a wider view</aside>
     <nav id="view-toolbar" class="view-toolbar" aria-label="Campus view options" hidden>
       <button id="labels-button" type="button" aria-pressed="true" title="Toggle nearby place labels (L)"><kbd>L</kbd><span>Place labels</span></button>
       <button id="inspection-button" type="button" aria-pressed="false" title="Pause the student and inspect campus (I)"><kbd>I</kbd><span>Inspect campus</span></button>

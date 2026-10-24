@@ -59,7 +59,8 @@ export class ElectricVan {
     else if (input.back && !input.forward) this.speed = this.speed > .05 ? approach(this.speed, 0, cfg.braking * dt) : Math.min(0, Math.max(-cfg.reverseSpeed, this.speed + Math.min(0, this.driveAcceleration) * dt));
     else this.speed = approach(this.speed, 0, (cfg.rolling + cfg.drag * this.speed * this.speed) * dt);
     if (Math.abs(this.speed) < .01 && (!input.forward && !input.back || brake)) this.speed = 0;
-    const steeringTarget = (Number(!!input.left) - Number(!!input.right)) * cfg.maxSteer / (1 + Math.abs(this.speed) * .065);
+    const steer = Number.isFinite(input.steer) ? MathUtils.clamp(input.steer, -1, 1) : Number(!!input.left) - Number(!!input.right);
+    const steeringTarget = steer * cfg.maxSteer / (1 + Math.abs(this.speed) * .065);
     this.steering = approach(this.steering, steeringTarget, 1.65 * dt);
     const yawRate = this.speed / cfg.wheelbase * Math.tan(this.steering);
     const steps = Math.max(1, Math.ceil((Math.abs(this.speed) + Math.abs(yawRate) * 2.1) * dt / .065));

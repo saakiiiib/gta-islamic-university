@@ -1,7 +1,8 @@
 import { Minimap, nearestPlace } from './minimap.js';
 const $ = id => document.getElementById(id);
 export class HUD {
-  constructor(data) {
+  constructor(data, { touch = false } = {}) {
+    this.touch = touch;
     this.data = data; this.map = new Minimap($('minimap'), data); this.accumulated = 1;
     this.toastUntil = 0; this.debug = false;
     $('building-count').textContent = data.buildings.length;
@@ -24,7 +25,8 @@ export class HUD {
     $('player-health-card').hidden = inspection;
     $('player-health').value = character?.health ?? 100;
     $('player-health-label').textContent = `YOU · ${Math.round(character?.health ?? 100)} HP${['jumpOff','stumble','fallen','recover'].includes(motion) ? ` · ${motion === 'jumpOff' ? 'JUMPING OFF' : motion.toUpperCase()}` : ''}`;
-    const hint = simulation?.session.hint ?? '';
+    let hint = simulation?.session.hint ?? '';
+    if (this.touch && hint) hint = driving ? 'Tap EXIT to jump off · Fast landings can hurt' : 'Tap ENTER to ride behind the driver';
     $('interaction-prompt').hidden = inspection || !hint;
     $('interaction-text').textContent = hint;
     const van = simulation?.van;

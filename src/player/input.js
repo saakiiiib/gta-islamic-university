@@ -7,6 +7,7 @@ export class InputController {
     this.document = canvas.ownerDocument;
     this.window = this.document.defaultView;
     this.onPause = onPause;
+    this.touch = null;
     this.enabled = false;
     this.keys = new Set();
     this.jumpQueued = false;
@@ -76,6 +77,31 @@ export class InputController {
     this.jumpQueued = false;
     this.resetQueued = false;
     this.interactQueued = false;
+    if (this.touch?.available && this.enabled) {
+      const touch = this.touch.snapshot();
+      const keyboardMove = input.forward || input.back || input.left || input.right;
+      if (this.touch.mode === 'van') {
+        input.moveX = touch.moveX;
+        input.moveZ = touch.moveZ;
+        input.steer = input.left || input.right ? Number(input.left) - Number(input.right) : touch.steer;
+        if (!input.forward && !input.back) {
+          input.forward = touch.forward;
+          input.back = touch.back;
+        }
+      } else if (!keyboardMove) {
+        input.moveX = touch.moveX;
+        input.moveZ = touch.moveZ;
+        input.steer = touch.steer;
+        input.forward = touch.forward || (this.touch.mode === 'foot' && touch.moveZ < -0.12);
+        input.back = touch.back || (this.touch.mode === 'foot' && touch.moveZ > 0.12);
+        input.left = this.touch.mode === 'foot' && touch.moveX < -0.12;
+        input.right = this.touch.mode === 'foot' && touch.moveX > 0.12;
+      }
+      input.zoom = touch.zoom;
+      input.sprint ||= touch.sprint;
+      input.jump ||= touch.jump;
+      input.interact ||= touch.interact;
+    }
     return input;
   }
 
@@ -87,10 +113,23 @@ export class InputController {
       result.dx += (Number(this.keys.has('ArrowRight')) - Number(this.keys.has('ArrowLeft'))) * 600 * elapsed;
       result.dy += (Number(this.keys.has('ArrowDown')) - Number(this.keys.has('ArrowUp'))) * 450 * elapsed;
     }
+    if (this.enabled && this.touch?.available) {
+      const touch = this.touch.consumeLook();
+      result.dx += touch.dx;
+      result.dy += touch.dy;
+    }
     return result;
   }
 
+  setTouchControls(touch) {
+    if (this.touch === touch) return;
+    this.touch?.setEnabled(false);
+    this.touch = touch ?? null;
+    this.touch?.setEnabled(this.enabled);
+  }
+
   clear() {
+    this.touch?.clear();
     this.keys.clear();
     this.jumpQueued = this.resetQueued = this.interactQueued = this.dragging = false;
     this.lookDelta.dx = this.lookDelta.dy = 0;
@@ -100,11 +139,12 @@ export class InputController {
   setEnabled(enabled) {
     this.enabled = Boolean(enabled);
     if (!this.enabled) this.clear();
+    this.touch?.setEnabled(this.enabled);
   }
 
   async requestPointerLock() {
     try {
-      if (!this.enabled || !this.canvas.requestPointerLock) return false;
+      if (!this.enabled || this.touch?.available || !this.canvas.requestPointerLock) return false;
       await this.canvas.requestPointerLock();
       if (!this.enabled) { this.releasePointerLock(); return false; }
       return this.document.pointerLockElement === this.canvas;
@@ -118,6 +158,8 @@ export class InputController {
 
   dispose() {
     this.setEnabled(false);
+    this.touch?.dispose();
+    this.touch = null;
     for (const [target, type, listener] of this.listeners) target.removeEventListener(type, listener);
     this.listeners.length = 0;
   }

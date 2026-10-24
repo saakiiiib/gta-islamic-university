@@ -1,5 +1,6 @@
 import './style.css';
 import './ui/reactions.css';
+import './ui/touch.css';
 import * as THREE from 'three';
 import { loadMap } from './map/index.js';
 import { buildWorld } from './world/index.js';
@@ -10,13 +11,19 @@ import { PlaceLabels } from './ui/labels.js';
 import { CampusSimulation } from './game/simulation.js';
 import { TravelCamera } from './vehicle/camera.js';
 import { ReactionAudio } from './audio/reactions.js';
+import { TouchControls } from './player/touch.js';
+import { deviceProfile, renderPixelRatio } from './platform/device.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('game');
+const device = deviceProfile(window);
+document.body.classList.toggle('touch-device', device.touch);
+$('touch-instructions').hidden = !device.touch;
 let state = 'loading', renderer, scene, camera, world, mapData, player, input, chase, hud, sun;
 let inspection, inspectionSession, labels, gameplayFog;
 let simulation;
 let reactions;
+let touch, shadowElapsed = Infinity;
 let accumulator = 0, lastTime = performance.now(), fps = 60;
 const STEP = 1 / 60;
 const sunOffset = new THREE.Vector3(-55, 110, -40);
@@ -29,10 +36,18 @@ function progress(percent, message) {
 function resize() {
   if (!renderer) return;
   const width = window.innerWidth, height = window.innerHeight;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  renderer.setPixelRatio(renderPixelRatio(device, width, height, window.devicePixelRatio));
   renderer.setSize(width, height, false);
   camera.aspect = width / Math.max(1, height); camera.updateProjectionMatrix();
   inspection?.resize(width / Math.max(1, height));
+  input?.clear(); // Rotation/browser chrome changes cannot leave a captured stick held.
+}
+function syncTouch() {
+  document.body.dataset.gameState = state;
+  if (!touch) return;
+  touch.setMode(inspectionSession.active ? 'inspection' : simulation.session.driving ? 'van' : 'foot');
+  touch.setEnabled(['playing', 'inspection'].includes(state));
+  $('orientation-hint').hidden = !touch.enabled;
 }
 function pause(reason = 'escape') {
   if (!['playing', 'inspection'].includes(state)) return;
@@ -42,6 +57,7 @@ function pause(reason = 'escape') {
   if (document.pointerLockElement === canvas) document.exitPointerLock();
   $('pause-reason').textContent = reason === 'focus' ? 'The game paused while you stepped away.' : 'Your campus is waiting.';
   $('pause-screen').hidden = false;
+  syncTouch();
   $('announcer').textContent = 'Game paused.';
   $('resume-button').focus({ preventScroll: true });
 }
@@ -57,17 +73,20 @@ async function play() {
   $('start-screen').hidden = true; $('pause-screen').hidden = true; $('play-hud').hidden = false;
   $('pause-button').disabled = false;
   $('view-toolbar').hidden = false;
+  syncTouch();
   canvas.focus({ preventScroll: true });
-  $('announcer').textContent = 'Explore campus. WASD moves, Shift sprints, Space jumps. Approach the parked electric van and press E to drive.';
+  $('announcer').textContent = device.touch ? 'Use the left stick to move, swipe the right side to look, and approach a van to tap Enter.' : 'Explore campus. WASD moves, Shift sprints, Space jumps. Approach the parked electric van and press E to drive.';
   if (inspectionSession.active) { syncView(); return; }
   const locked = await input.requestPointerLock();
-  if (!locked && state === 'playing') hud.toast(firstStart ? 'WASD to move. Right-drag to look. The electric van is parked ahead; approach and press E.' : 'Hold right mouse and drag to look around.', 6500);
+  if (device.touch && state === 'playing') hud.toast(firstStart ? 'Left stick: move · Swipe right: look · Approach the van and tap Enter.' : 'Touch controls ready.', 5000);
+  else if (!locked && state === 'playing') hud.toast(firstStart ? 'WASD to move. Right-drag to look. The electric van is parked ahead; approach and press E.' : 'Hold right mouse and drag to look around.', 6500);
   else if (firstStart) hud.toast('The electric van is parked ahead. Approach it and press E to drive.', 5500);
 }
 function resetPlayer() {
   if (inspectionSession.active) { inspectionSession.exit(); syncView(); }
   simulation.reset(); simulation.setSuspended(false); chase.setDriving(false); chase.reset(mapData.spawn); accumulator = 0;
   reactions?.reset();
+  input.clear(); syncTouch();
   hud.toast('Back at Main Gate. All eight vans repaired and parked.');
 }
 
@@ -80,9 +99,11 @@ function syncView() {
   document.body.classList.toggle('inspecting', active);
   $('inspection-button').setAttribute('aria-pressed', String(active));
   $('inspection-button').querySelector('span').textContent = active ? simulation.session.driving ? 'Back to van' : 'Back to student' : 'Inspect campus';
+  if (device.touch) $('inspection-button').querySelector('kbd').textContent = active ? 'Back' : 'View';
   $('inspection-banner').hidden = !active;
-  $('announcer').textContent = active ? 'Inspection camera. Student, van and pedestrians paused. Mouse drag or arrows orbit, right drag or WASD pan, wheel zoom. I or Escape returns.' : simulation.session.driving ? 'Back to the electric van.' : 'Back to the student.';
+  $('announcer').textContent = active ? device.touch ? 'Inspection camera. Simulation paused. Left stick pans, swipe right to orbit, use zoom buttons. Tap Back to return.' : 'Inspection camera. Student, van and pedestrians paused. Mouse drag or arrows orbit, right drag or WASD pan, wheel zoom. I or Escape returns.' : simulation.session.driving ? 'Back to the electric van.' : 'Back to the student.';
   labels.elapsed = 1;
+  syncTouch();
 }
 function toggleInspection() {
   if (!['playing', 'inspection'].includes(state)) return;
@@ -112,8 +133,9 @@ function lighting() {
   scene.add(new THREE.HemisphereLight(0xd9edf4, 0x6f805e, 1.25));
   sun = new THREE.DirectionalLight(0xffeed0, 2.15);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
-  Object.assign(sun.shadow.camera, { left: -58, right: 58, top: 58, bottom: -58, near: 1, far: 210 });
+  sun.shadow.mapSize.set(device.shadowSize, device.shadowSize);
+  const extent = device.shadowExtent;
+  Object.assign(sun.shadow.camera, { left: -extent, right: extent, top: extent, bottom: -extent, near: 1, far: 210 });
   sun.shadow.bias = -.00015; sun.shadow.normalBias = .035;
   scene.add(sun, sun.target);
   sun.position.copy(player.position).add(sunOffset); sun.target.position.copy(player.position);
@@ -130,8 +152,13 @@ function tick(t) {
       const controls = input.snapshot();
       if (controls.reset) { resetPlayer(); break; }
       const event = simulation.update(STEP, controls, chase.yaw);
-      if (event.message) hud.toast(event.message);
-      if (event.changed) { input.clear(); chase.setDriving(simulation.session.driving); }
+      if (event.message) {
+        if (device.touch && event.changed) {
+          $('toast').hidden = true;
+          $('announcer').textContent = simulation.session.driving ? 'Riding behind the driver. Hold Go to accelerate, Brake / Reverse to slow down or reverse, and Exit to jump off at any speed.' : 'You jumped off the van. Use the stick to move after landing.';
+        } else hud.toast(event.message);
+      }
+      if (event.changed) { input.clear(); chase.setDriving(simulation.session.driving); syncTouch(); }
       accumulator -= STEP;
     }
     simulation.animate(elapsed);
@@ -144,12 +171,23 @@ function tick(t) {
     hud.update(elapsed, simulation.entity, renderer, fps, { simulation });
   } else if (state === 'inspection') {
     // No physics, character animation or catch-up accumulation in inspection.
+    if (touch?.enabled) {
+      const control = touch.snapshot(), look = touch.consumeLook();
+      const speed = inspection.distance * .35 * elapsed;
+      if (control.moveX || control.moveZ) inspection.pan(control.moveX * speed, -control.moveZ * speed);
+      if (look.dx || look.dy) inspection.orbit(look.dx, look.dy);
+      if (control.zoom) inspection.zoom(control.zoom * elapsed * 500);
+    }
     inspection.update(elapsed);
     hud.update(elapsed, simulation.entity, renderer, fps, { inspection: true, simulation });
   } else if (state === 'ready') {
     world.update(elapsed, player.position);
   }
   if (renderer && scene && camera) {
+    if (device.touch) {
+      shadowElapsed += elapsed;
+      if (shadowElapsed >= device.shadowInterval) { renderer.shadowMap.needsUpdate = true; shadowElapsed = 0; }
+    }
     const activeCamera = inspectionSession.active ? inspection.camera : camera;
     renderer.render(scene, activeCamera);
     labels.update(elapsed, activeCamera, simulation.entity.position, { inspection: inspectionSession.active, visible: ['playing', 'inspection'].includes(state), width: window.innerWidth, height: window.innerHeight });
@@ -168,10 +206,11 @@ async function initialize() {
     progress(76, 'Preparing movement and collision geometry…');
     progress(82, 'Parking eight vans and preparing thirty campus pedestrians…');
     simulation = new CampusSimulation(mapData, world.collisionGroup); player = simulation.player;
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: device.antialias, powerPreference: 'high-performance' });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
-    renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = device.touch ? THREE.BasicShadowMap : THREE.PCFShadowMap;
+    renderer.shadowMap.autoUpdate = !device.touch; renderer.shadowMap.needsUpdate = true;
     scene = new THREE.Scene(); scene.background = new THREE.Color(0xb0d0df);
     gameplayFog = new THREE.Fog(0xb0d0df, 350, 1600); scene.fog = gameplayFog;
     scene.add(world.group, player.group, simulation.fleetGroup, simulation.occupants.group, simulation.crowd.group);
@@ -183,12 +222,24 @@ async function initialize() {
       else if (reason === 'escape' && state === 'paused') play();
       else pause(reason);
     } });
+    if (device.touch) {
+      touch = new TouchControls({ root: $('touch-controls'), canvas, onPause: pause, allowMouse: device.preview,
+        onGesture: () => { if (!reactions?.unlocked) reactions?.unlock(); } });
+      input.setTouchControls(touch);
+    }
     inspection = new InspectionCamera(new THREE.PerspectiveCamera(52, 1, .5, 3500), mapData.bounds);
     inspection.attach(canvas, pause);
     inspectionSession = new InspectionSession(input, inspection, document);
     labels = new PlaceLabels($('place-labels'), world.labelAnchors, world.buildingMeshes);
     lighting(); resize();
-    hud = new HUD(mapData);
+    if (device.touch) {
+      $('inspection-banner').querySelector('p').textContent = 'Left stick: pan · Swipe right: orbit · Zoom buttons · Tap Back to return';
+      $('pause-screen').querySelector('.pause-hint').textContent = 'Left stick moves or steers. Swipe right to look. Sprint toggles. Hold Go or Brake / Reverse to drive. Exit works at any speed.';
+    }
+    hud = new HUD(mapData, { touch: device.touch });
+    if (device.touch) {
+      for (const [id, title] of [['labels-button', 'Names'], ['inspection-button', 'View'], ['alignment-button', 'Map'], ['sound-button', 'Sound']]) $(id).querySelector('kbd').textContent = title;
+    }
     reactions = new ReactionAudio({ baseURL: `${import.meta.env.BASE_URL}audio/`, onStatus: status => {
       $('sound-button').setAttribute('aria-pressed', String(status.muted));
       $('sound-label').textContent = status.muted ? 'Sound off' : 'Sound on';
@@ -219,6 +270,9 @@ async function initialize() {
       canvas.dataset.cameraMode = inspectionSession.active ? 'inspection' : simulation.session.driving ? 'vehicle' : 'student';
       canvas.dataset.vehicleSpeed = simulation.van.speed.toFixed(2); canvas.dataset.pedestrians = simulation.crowd.agents.length;
       canvas.dataset.vans = simulation.vans.length; canvas.dataset.durability = simulation.van.durability.toFixed(1);
+      canvas.dataset.inputMode = device.touch ? 'touch' : 'desktop';
+      canvas.dataset.pixelRatio = renderer.getPixelRatio().toFixed(2);
+      canvas.dataset.cameraHeading = (inspectionSession.active ? inspection.yaw : chase.yaw).toFixed(3);
     }, 250);
     lastTime = performance.now(); requestAnimationFrame(tick);
   } catch (error) {
@@ -247,6 +301,7 @@ $('sound-button').addEventListener('click', toggleSound);
 $('sound-volume').addEventListener('input', event => { if (!reactions) return; reactions.setVolume(Number(event.target.value) / 100); reactions.unlock(); saveAudioPreferences(); });
 document.querySelector('.wordmark').addEventListener('click', event => { event.preventDefault(); pause(); });
 window.addEventListener('resize', resize);
+window.visualViewport?.addEventListener('resize', resize);
 window.addEventListener('keydown', event => {
   if (event.repeat || /INPUT|TEXTAREA|SELECT/.test(event.target?.tagName ?? '')) return;
   if (event.code === 'F3') { event.preventDefault(); hud?.toggleDebug(); }

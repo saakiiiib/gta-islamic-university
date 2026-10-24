@@ -2,6 +2,27 @@
 
 A playable third-person browser prototype of Islamic University, Kushtia, Bangladesh. The existing campus layout is preserved from the supplied `map.osm`, using Three.js, JavaScript ES modules and Vite. Eight electric cargo vans, visible drivers/passengers and thirty reacting students bring activity to the existing routes. Map data and the four supplied human voice recordings are bundled locally. No speech synthesis, remote voice service, paid API or backend is used.
 
+Open [the same GitHub Pages game](https://saakiiiib.github.io/gta-islamic-university/) in Chrome on Android or Safari on iPhone. Tap **Step into campus**; touch controls appear automatically. Landscape is recommended. No installation or separate mobile version is required.
+
+## Phone controls
+
+| Control | On foot | In the electric van |
+| --- | --- | --- |
+| Left joystick | Proportional, camera-relative movement | Proportional left/right steering |
+| Swipe the right side | Rotate the chase camera | Rotate the vehicle camera |
+| Jump | One grounded jump per press | Hidden |
+| Sprint | Tap to toggle; resets on pause or mode change | Hidden |
+| Enter / Exit | Board a nearby stopped van | Jump off at any speed with inherited momentum |
+| Go | Hidden | Hold to accelerate |
+| Brake / Reverse | Hidden | Hold to brake forward motion, then reverse |
+| Pause | Freeze the game and clear touches | Same |
+
+Movement, looking and buttons track independent fingers. Interrupted touches, app switching, orientation changes and entering/leaving a van clear held controls. The driver/passenger, thirty pedestrians, damage, moving exits and recorded voices use the same simulation as desktop. Sound and volume remain in the toolbar. Dialogue subtitles remain removed at the owner's request.
+
+**View / Back** opens or closes inspection: the stick pans, right swipes orbit, and held **Zoom + / −** buttons zoom. Physics stays paused. **Names** toggles source labels and **Map** toggles alignment. Portrait remains playable and displays a small landscape suggestion. UI uses safe-area insets and prevents gameplay scrolling/pinch gestures; start and pause panels can scroll internally.
+
+Touch detection uses mobile/touch capabilities rather than window width, preserving desktop controls on small windows and ordinary touch laptops. For layout QA on a desktop only, append `?touch=1`; this explicit preview also accepts mouse drags on the virtual controls. Normal phone players use the ordinary URL.
+
 ## Run locally
 
 Use Node.js **22.12+ or 24+** with npm. Open a terminal in this project folder:
@@ -11,7 +32,7 @@ npm install
 npm run dev
 ```
 
-Open the localhost URL printed by Vite (normally `http://127.0.0.1:5173/`), then select **STEP INTO CAMPUS**. Use a desktop browser with WebGL 2 and hardware acceleration. The first map load builds collision geometry and may take a few seconds.
+Open the localhost URL printed by Vite (normally `http://127.0.0.1:5173/`), then select **STEP INTO CAMPUS**. Use a modern desktop or mobile browser with WebGL 2. The first map load builds collision/navigation geometry and may take a while on slower devices.
 
 The production build is already included in `dist/`. To rebuild and test it:
 
@@ -23,7 +44,7 @@ npm run preview
 
 Preview normally runs at `http://127.0.0.1:4173/`. JavaScript modules and the map must be served over HTTP; opening `index.html` or `dist/index.html` by double-clicking will not work. `npm ci` can replace `npm install` for an exact lockfile-based installation.
 
-## Controls
+## Desktop controls
 
 | Control | Action |
 | --- | --- |
@@ -128,6 +149,8 @@ One malformed source relation contains only two courtyard inner rings. The impor
 - `src/map/`: XML parsing, projection, relation assembly, clipping, buffers and normalized feature data.
 - `src/world/`: surfaces, footprint extrusion, road unions/curbs, use palettes, façades, vegetation, spatial batches and bridge decks.
 - `src/player/`: student, capsule/live-van collisions, movement, moving-dismount injury, input, chase and inspection camera.
+- `src/player/touch.js`: captured multitouch joystick, swipe look, held actions and walking/driving/inspection modes.
+- `src/platform/`: mobile capability detection and rendering budgets; touch styling lives in `src/ui/touch.css`.
 - `src/vehicle/`: original tricycle, fleet parking, contacts, occupants, moving exits, driver continuation and camera profile.
 - `src/navigation/`: indexed campus safety queries, mapped footpaths, estimated roadside walking corridors and crossing links.
 - `src/npc/`: route wandering, avoidance, health/reactions and three instanced student render batches.
@@ -154,8 +177,14 @@ Alternatively, upload **the contents of `dist/`**, including `data/`, `assets/`,
 
 See [DATA-CREDITS.md](./DATA-CREDITS.md) for OpenStreetMap attribution and [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md) for dependency licenses. The prototype visibly credits **© OpenStreetMap contributors** with its ODbL link.
 
+## Mobile rendering
+
+Mobile rendering caps device pixel ratio at 1.25 and the render buffer at 800,000 pixels, disables MSAA, and uses a 1,024-pixel basic shadow map over a smaller nearby area. Shadows refresh at up to 30 Hz while rendering and fixed-step physics keep their own rates. Desktop retains its 1.5 DPR cap, MSAA and 2,048-pixel PCF shadows. No NPCs, vans, voices, map features or physics updates are removed. Actual performance depends on the phone; no physical-device FPS benchmark is claimed.
+
+This remains a static website: no web app manifest, service worker, installation prompt, APK, Capacitor or native package is added.
+
 ## Validation
 
 Run `npm test` for the full suite; `VALIDATION.md` records the final result. Tests now expect moving exits at the actual seat and roadside/footpath walking. Map, projection, footprint, height and 3,600 static collision triangle checks remain. New checks cover the exact supplied recordings, spatial voice/cooldowns, safe corridors/crossings, low/high-speed dismounts, driver continuation, live van collision, recovery, camera and pause/reset behavior.
 
-Browser smoke checks cover loading, the grounded student/visible driver, recorded-voice decoding, inspection and runtime error logs. Scripted tests provide the detailed dismount/collision coverage; the limited browser smoke check is not a complete visual or audio-quality assessment. The ZIP includes source, lockfile, map, recordings, tests, notices, `dist/` and generated `docs/`, excluding `node_modules`.
+The 158-test suite preserves the preceding 143 checks and adds fifteen touch, device-profile and analog-gameplay tests. Browser checks cover landscape/portrait layout, joystick movement, swipe look, Jump/Sprint, pause/inspection, boarding, touch acceleration and a moving touch exit. The ordinary desktop URL hides touch controls and retains keyboard movement. Physical Android/iPhone testing and sustained phone FPS remain unverified; see `VALIDATION.md`. The ZIP includes source, lockfile, map, recordings, tests, notices, `dist/` and generated `docs/`, excluding `node_modules`.

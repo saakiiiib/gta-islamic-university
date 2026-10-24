@@ -4,7 +4,7 @@
 - Repository: https://github.com/saakiiiib/gta-islamic-university
 - Publishing source: `main` branch, `/docs`.
 
-The game runs in a desktop browser with WebGL 2 and keyboard/mouse controls. Playing requires no local install, running terminal, backend, API key or paid hosting.
+The same URL runs in desktop browsers and Android/iPhone browsers with WebGL 2. Phones automatically receive a movement/steering joystick, swipe camera and touch actions; landscape is recommended. Desktop keyboard/mouse controls remain. Playing requires no install, terminal, backend, API key or paid hosting. No PWA, service worker, native wrapper or APK is included.
 
 ## Publish changes
 
@@ -14,7 +14,7 @@ npm test
 npm run build
 npm run build:pages
 git add --all
-git commit -m "Use recorded NPC voices, roadside walking and moving dismounts"
+git commit -m "Add mobile touch controls and adaptive phone rendering"
 git push origin main
 ```
 
