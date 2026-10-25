@@ -1,6 +1,16 @@
-# GTA Islamic University — Campus in Motion
+# GTA Islamic University — Living Campus (Phase 3)
 
 A playable third-person browser prototype of Islamic University, Kushtia, Bangladesh. The existing campus layout is preserved from the supplied `map.osm`, using Three.js, JavaScript ES modules and Vite. Eight electric cargo vans, visible drivers/passengers and thirty reacting students bring activity to the existing routes. Map data and the four supplied human voice recordings are bundled locally. No speech synthesis, remote voice service, paid API or backend is used.
+
+## Living campus
+
+Thirty persistent students now gather around source-named campus hubs instead of being spread as far apart as possible. Main Gate starts with 18 nearby students, with eight assigned to the next hub and four providing background coverage. Pairs walk together, students stop to converse or wait, and physical reactions interrupt those activities. Nearby students walk toward new destinations; distant students can be reassigned only after remaining hidden for three seconds, with an unseen safe destination and no active injury or recorded reaction.
+
+Three electric vans circulate automatically on connected, footprint-validated mapped road circuits. Five others wait at illustrative curbside pickup locations. Drivers yield to pedestrians, follow other traffic and reserve junction approaches; a temporary obstruction causes waiting and retry rather than immediately parking forever. Boarding, visible occupants, damage and moving exits use the existing physics. Reset restores the same fleet and activity pool, with three services ready to circulate again.
+
+Locally bundled CC0 photographs supply asphalt, concrete, brick, grass and appropriate metal roofs. UV-preserving batching, window frames, roof bands and shallow entrance details add depth without changing OSM footprints or estimated heights. Benches, lamps, cycle stands, noticeboards and short boundary-fence sections are illustrative, not surveyed furniture. Their simple solid proxies form a separate scenery collision layer; the original campus collision triangles remain unchanged. See [asset credits](THIRD-PARTY-NOTICES.md) and [Phase 3 validation](VALIDATION-PHASE3.md).
+
+Desktop loads approximately 2.73 MB of new visual assets; phones load approximately 0.60 MB. Furniture uses spatial instancing and distance culling, and distant crowd animation is simplified. F3 reports nearby actors within 80 m and camera/occlusion-based visible estimates within 160 m, separately from total population. It also shows moving/parked/yielding vans and current activity counts. These visibility figures are estimates, not a claim that every actor is unobstructed or easy to notice.
 
 Open [the same GitHub Pages game](https://saakiiiib.github.io/gta-islamic-university/) in Chrome on Android or Safari on iPhone. Tap **Step into campus**; touch controls appear automatically. Landscape is recommended. No installation or separate mobile version is required.
 
@@ -56,16 +66,16 @@ Preview normally runs at `http://127.0.0.1:4173/`. JavaScript modules and the ma
 | Right mouse + drag | Orbit without pointer lock |
 | Arrow keys | Alternative camera orbit |
 | Escape | Pause / resume |
-| R | Return to Main Gate; repair and park the same eight vans |
+| R | Return to Main Gate; repair eight vans and restore campus activity/traffic |
 | M | Mute / unmute recorded reactions |
 | L | Toggle nearby place labels (on by default) |
 | I | Enter / leave the paused campus inspection camera |
 | G | Toggle cyan OSM roads / amber building footprints |
-| F3 | Toggle position, frame rate and map diagnostics |
+| F3 | Toggle frame rate, map, activity and nearby/visible actor diagnostics |
 
 Switching tabs or losing focus pauses movement. Returning requires Resume or Escape. Pointer lock is requested only when you start or resume; if unavailable, use right-drag or the arrow keys. The game starts at mapped node `9027931167`, about 21 metres inside Main Gate, looking northwest.
 
-The nearest electric cargo van is parked about **8 m ahead**, on the mapped Main Gate service road. Seven more are spread across clear campus roads. Yellow minimap markers show usable vans; disabled vans appear red. Walk beside any usable van until **Press E to enter electric van** appears. Every van keeps its visible driver. Your original student remains visibly seated behind that driver while you control the journey.
+The nearest electric cargo van waits at a curbside pickup on the Main Gate service road. Three vans circulate from startup and four additional pickups serve other campus hubs. Yellow minimap markers show usable vans; disabled vans appear red. Walk beside a stopped usable van until **Press E to enter electric van** appears. Every van keeps its visible driver. Your original student remains visibly seated behind that driver while you control the journey.
 
 | While driving | Action |
 | --- | --- |
@@ -77,7 +87,7 @@ The nearest electric cargo van is parked about **8 m ahead**, on the mapped Main
 
 The speedometer switches to **km/h** while riding and back to metres/second on foot. Durability appears near a van or while riding; your health and landing state are displayed separately. A recent impact displays that student's health/reaction. At zero durability the engine stops, and E still jumps off. R repairs the fleet and restores your health. The camera eases between riding and walking without snapping to an exit location.
 
-Exiting starts at the visible passenger's actual seat position, without teleporting to a safe point. You inherit the van's horizontal velocity plus an outward jump. Gravity and collision determine where you land; fast exits cause stumbling or a fall and speed-based injury. The driver remains visible and continues along connected mapped vehicle roads, slowing for people/obstacles and parking if a route ends or cannot be followed safely. Other vans wait until ridden and exited.
+Exiting starts at the visible passenger's actual seat position, without teleporting to a safe point. You inherit the van's horizontal velocity plus an outward jump. Gravity and collision determine where you land; fast exits cause stumbling or a fall and speed-based injury. The driver remains visible: service vans resume their circuit, while departed pickup vans seek a valid curbside stop along connected mapped roads. Temporary traffic and pedestrians cause yielding rather than a position reset.
 
 The visible **Place labels**, **Inspect campus** and **Map alignment** buttons provide the same actions as L, I and G. Labels use actual OSM names or named entrance refs. At most six nearby labels appear within 300 m, with distance fading, building occlusion checks and overlap rejection.
 
@@ -102,7 +112,7 @@ The visible **Place labels**, **Inspect campus** and **Map alignment** buttons p
 - Source-name labels, an elevated inspection camera and an optional map-alignment overlay including courtyard outlines.
 - Deterministic planting inside mapped green polygons: 240 added trees and 48 low shrubs in this extract, without collision volumes.
 
-This milestone has one vehicle type and eight instances. Only vans the player has exited continue under their driver; this is a small continuation controller, not a full traffic simulation. Cars, motorcycles, combat, police, missions, interiors, multiplayer and mobile touch controls are outside its scope. It is an original prototype inspired by the era of third-person open-world games; it contains no GTA game assets, music, logos or code. It is not affiliated with Rockstar Games or the university.
+This milestone has one vehicle type and eight instances, including three automatic services. Cars, motorcycles, combat, police, missions, interiors and multiplayer are outside its scope. Desktop and mobile browsers share the same game and URL. It is an original prototype inspired by the era of third-person open-world games; it contains no GTA game assets, music, logos or code. It is not affiliated with Rockstar Games or the university.
 
 ## Vehicle and pedestrian behavior
 
@@ -116,7 +126,7 @@ Entry requires a stopped van, grounded feet and a clear short path to its seat. 
 
 The walking graph prioritizes actual OSM footway/pedestrian/path ways and the bridge. Where sidewalks are absent, navigation lines are estimated parallel to the road, roughly one metre beyond its pavement edge. These are invisible walking corridors, not new map surfaces or claims of surveyed sidewalks. Every route is checked against campus bounds, buildings and water. Short crossing links are allowed at mapped road junctions and connected footpath ends. Ordinary walking no longer follows vehicle-road centre lines.
 
-The graph has 2,066 nodes and 2,195 edges across six components in this extract. Students prefer footpath links, pause at junctions, turn smoothly, pass with bounded sidesteps and reverse when blocked. Normal walking, sidesteps and impact displacement check walking corridors and van clearance. Approaching vans cause stepping away, facing the vehicle and a recorded shout. Actual contacts still cause damage and stumble/fall/recovery. There is no gore, death or ragdoll simulation. R relocates a walker only if returning vans would overlap them.
+The source walking graph has 2,066 nodes and 2,195 edges across six components in this extract; scenery clearance is applied during game construction. Students prefer footpath links, pause at junctions, turn smoothly, pass with bounded sidesteps and retreat when blocked. Normal walking, sidesteps and impact displacement check walking corridors, scenery and van clearance. Approaching vans cause stepping away, facing the vehicle and a recorded shout. Actual contacts still cause damage and stumble/fall/recovery. There is no gore, death or ragdoll simulation. An explicit R reset restores the original activity placements using the same identities, preserving health and reaction cooldowns.
 
 ## Recorded Bangla voices
 

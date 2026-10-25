@@ -59,5 +59,6 @@ test('pause freezes a departing driver and airborne passenger; reset clears thei
   assert.deepEqual(capture(), before); sim.setSuspended(false); sim.update(1 / 60);
   assert.ok(sim.player.position.distanceTo({ x: before[0][0], y: before[0][1], z: before[0][2] }) < .2);
   sim.reset(); assert.equal(sim.player.health, 100); assert.equal(sim.player.dismount, null);
-  assert.ok(sim.vans.every(v => !v.autonomous && !v.occupied && v.speed === 0)); sim.dispose();
+  assert.ok(sim.vans.every(v => !v.occupied && v.speed === 0));
+  assert.equal(sim.vans.filter(v => v.autonomous).length, 3); sim.dispose();
 });

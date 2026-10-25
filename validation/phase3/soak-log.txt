@@ -1,0 +1,23 @@
+[gate] starting 300s at Main Gate; props=78
+[gate] 60s: moving=3, visibleNPC=17, contacts=0
+[gate] 120s: moving=3, visibleNPC=17, contacts=0
+[gate] 180s: moving=3, visibleNPC=17, contacts=0
+[gate] 240s: moving=3, visibleNPC=24, contacts=0
+[gate] 300s: moving=3, visibleNPC=19, contacts=0
+[gate] PASS {"wallSeconds":23.2134205,"final":{"active":3,"moving":3,"parked":5,"npcNearby":17,"npcVisible":19},"first20":{"visibleNPCMin":25,"visibleNPCMax":26,"firstSecondWith10Visible":0,"movingVanVisible":true},"last10MeanMoving":3,"walkingAgentCount":30,"minPeerGap":0.5200121231032686,"minHealth":100,"minDurability":100,"minPlayerVanClearance":0.660383003941884,"activeServices":3,"travelled":2140.643111146295,"laps":7}
+[library] starting 300s at Central Library; props=78
+[library] 60s: moving=3, visibleNPC=16, contacts=0
+[library] 120s: moving=3, visibleNPC=11, contacts=0
+[library] 180s: moving=3, visibleNPC=12, contacts=0
+[library] 240s: moving=3, visibleNPC=13, contacts=0
+[library] 300s: moving=3, visibleNPC=10, contacts=0
+[library] PASS {"wallSeconds":25.7385546,"final":{"active":3,"moving":3,"parked":5,"npcNearby":21,"npcVisible":10},"first20":{"visibleNPCMin":1,"visibleNPCMax":13,"firstSecondWith10Visible":12,"movingVanVisible":true},"last10MeanMoving":3,"walkingAgentCount":30,"minPeerGap":0.5200014662250727,"minHealth":100,"minDurability":100,"minPlayerVanClearance":3.1797668849792435,"activeServices":3,"travelled":2148.043717309674,"laps":7}
+[applied] starting 300s at Faculty of Applied Science and Technology; props=78
+[applied] 60s: moving=3, visibleNPC=15, contacts=0
+[applied] 120s: moving=3, visibleNPC=13, contacts=0
+[applied] 180s: moving=3, visibleNPC=11, contacts=0
+[applied] 240s: moving=3, visibleNPC=16, contacts=0
+[applied] 300s: moving=3, visibleNPC=17, contacts=0
+[applied] PASS {"wallSeconds":22.305744400000002,"final":{"active":3,"moving":3,"parked":5,"npcNearby":21,"npcVisible":17},"first20":{"visibleNPCMin":1,"visibleNPCMax":17,"firstSecondWith10Visible":14,"movingVanVisible":false},"last10MeanMoving":3,"walkingAgentCount":30,"minPeerGap":0.5200037366100573,"minHealth":100,"minDurability":100,"minPlayerVanClearance":11.784937268775248,"activeServices":3,"travelled":2145.9956294428375,"laps":7}
+Evidence: C:\Users\nazmu\Documents\Codex\2026-10-22\https-shunneklabs-app-games-pen-fight\outputs\gta-islamic-university\validation\phase3\soak.json
+Overall: PASS

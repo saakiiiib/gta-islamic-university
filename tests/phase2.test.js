@@ -16,11 +16,11 @@ function approach(sim) {
   assert.ok(sim.session.canEnter());
 }
 
-test('real campus starts with eight safe parked electric vans and thirty separated students', () => {
+test('real campus starts with eight safe electric vans and thirty locally active students', () => {
   const sim = create(); assert.equal(sim.vans.length, 8); assert.equal(sim.van.group.name, 'electricCargoTricycle-1'); assert.equal(sim.crowd.agents.length, 30);
   assert.equal(sim.session.driving, false); assert.ok(sim.queries.rectangleClear(sim.van.position, sim.van.yaw, sim.van.config));
   assert.ok(sim.queries.onRoad(sim.van.position.x, sim.van.position.z));
-  for (const a of sim.crowd.agents) { assert.ok(sim.vans.every(v => v.distanceFrom(a.position.x, a.position.z) > 2)); for (const b of sim.crowd.agents) if (a !== b) assert.ok(a.position.distanceTo(b.position) > 4); }
+  for (const a of sim.crowd.agents) { assert.ok(sim.vans.every(v => v.distanceFrom(a.position.x, a.position.z) > 2)); for (const b of sim.crowd.agents) if (a !== b) assert.ok(a.position.distanceTo(b.position) >= 2.5 - 1e-6); }
   sim.dispose();
 });
 

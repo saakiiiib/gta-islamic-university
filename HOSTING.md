@@ -14,7 +14,7 @@ npm test
 npm run build
 npm run build:pages
 git add --all
-git commit -m "Add mobile touch controls and adaptive phone rendering"
+git commit -m "Add living campus activity, service vans and realistic scenery"
 git push origin main
 ```
 
@@ -26,8 +26,12 @@ Confirm the **pages build and deployment** workflow for the pushed commit succee
 8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9
 ```
 
-Eight vans appear as yellow minimap markers; disabled vans turn red. Approach a stopped van and press **E** to ride behind its driver. **W/S** drive/brake/reverse, **A/D** steer, **Space** brakes, **E** jumps off at any speed. The passenger inherits momentum and takes landing damage at speed; the driver continues along mapped roads. **R** returns to the gate and repairs the fleet/player. **M** mutes recorded reactions; dialogue subtitles are removed. Labels, inspection, alignment, volume and F3 remain. Inspection pauses every actor and cancels recordings.
+Eight vans appear as yellow minimap markers; three circulate automatically and five wait at campus pickup locations. Disabled vans turn red. Approach a stopped van and press **E** to ride behind its driver. **W/S** drive/brake/reverse, **A/D** steer, **Space** brakes, **E** jumps off at any speed. The passenger inherits momentum and takes landing damage at speed; the driver continues along mapped roads. **R** returns to the gate, repairs the fleet/player and restores startup activity. **M** mutes recorded reactions; dialogue subtitles are removed. Labels, inspection, alignment, volume and F3 remain. Inspection pauses every actor and cancels recordings.
 
 The build must include `audio/reactions.json`, `audio/README.txt` and the four supplied MP3s under `audio/npc/`. Fetch and compare every recording after deploying. Synthetic WAVs must be absent. No speech synthesis is used; missing or blocked audio stays silent. HTTP checks prove file delivery, not subjective voice quality or autoplay behavior.
 
 See `VALIDATION.md` for checks and browser/performance verification limits. The release response records the actual commit and verified workflow result; a successful push alone does not confirm publication.
+
+Phase 3 also bundles both texture variants, the bench model and checksummed manifest under `visual/`. Verify every manifest entry after publishing, as well as the original map and recordings. Asset-host services are used only by the optional offline preparation script, never by the released game. See `VALIDATION-PHASE3.md` and `validation/phase3/` for current gameplay evidence.
+
+If publication introduces a loading failure or breaks movement/boarding, restore the last verified generated `docs/` revision from Git history, commit it and push, then verify the new Pages workflow. Keep source-map data unchanged during rollback.

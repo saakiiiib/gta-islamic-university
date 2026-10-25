@@ -1,0 +1,1055 @@
+{
+  "url": "http://127.0.0.1:5175/",
+  "viewport": {
+    "width": 1365,
+    "height": 768
+  },
+  "renderer": "headless Chrome (not a physical-phone benchmark)",
+  "results": [
+    {
+      "name": "main-gate",
+      "pose": null,
+      "samples": [
+        {
+          "state": "playing",
+          "fps": 62.26859677411762,
+          "position": [
+            283.6412400073488,
+            0.0000010000000036924916,
+            -61.44279294356724
+          ],
+          "camera": [
+            287.4746172652221,
+            3.2374003636924504,
+            -57.23055571844115
+          ],
+          "yaw": 0.738343918474469,
+          "calls": 159,
+          "triangles": 121015,
+          "npcVisible": 3,
+          "npcNearby": 4,
+          "vanVisible": 1,
+          "moving": 0,
+          "vans": [
+            {
+              "id": 0,
+              "position": {
+                "x": 279.2181873078744,
+                "y": 0,
+                "z": -68.23444994445087
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 1,
+              "position": {
+                "x": -224.65877549482886,
+                "y": 0,
+                "z": 381.789765103556
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 2,
+              "position": {
+                "x": -331.7575113288435,
+                "y": 0,
+                "z": -296.8432138672048
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 3,
+              "position": {
+                "x": 31.072385454445794,
+                "y": 0,
+                "z": -475.83499825150136
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 4,
+              "position": {
+                "x": 415.73250862883,
+                "y": 0,
+                "z": 307.1241638502187
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 5,
+              "position": {
+                "x": -119.0063824907375,
+                "y": 0,
+                "z": 17.623955056796696
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 6,
+              "position": {
+                "x": 73.16875710221903,
+                "y": 0,
+                "z": 536.6265908501933
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 7,
+              "position": {
+                "x": 77.29197984368194,
+                "y": 0,
+                "z": 240.836176131
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            }
+          ],
+          "touch": false,
+          "dpr": 1
+        },
+        {
+          "state": "playing",
+          "fps": 60.09273411207468,
+          "position": [
+            283.6412400073488,
+            0.0000010000000037480028,
+            -61.44279294356724
+          ],
+          "camera": [
+            287.4746172652221,
+            3.23740036369671,
+            -57.23055571844115
+          ],
+          "yaw": 0.738343918474469,
+          "calls": 159,
+          "triangles": 121015,
+          "npcVisible": 3,
+          "npcNearby": 4,
+          "vanVisible": 1,
+          "moving": 0,
+          "vans": [
+            {
+              "id": 0,
+              "position": {
+                "x": 279.2181873078744,
+                "y": 0,
+                "z": -68.23444994445087
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 1,
+              "position": {
+                "x": -224.65877549482886,
+                "y": 0,
+                "z": 381.789765103556
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 2,
+              "position": {
+                "x": -331.7575113288435,
+                "y": 0,
+                "z": -296.8432138672048
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 3,
+              "position": {
+                "x": 31.072385454445794,
+                "y": 0,
+                "z": -475.83499825150136
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 4,
+              "position": {
+                "x": 415.73250862883,
+                "y": 0,
+                "z": 307.1241638502187
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 5,
+              "position": {
+                "x": -119.0063824907375,
+                "y": 0,
+                "z": 17.623955056796696
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 6,
+              "position": {
+                "x": 73.16875710221903,
+                "y": 0,
+                "z": 536.6265908501933
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 7,
+              "position": {
+                "x": 77.29197984368194,
+                "y": 0,
+                "z": 240.836176131
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            }
+          ],
+          "touch": false,
+          "dpr": 1
+        },
+        {
+          "state": "playing",
+          "fps": 60.071372722836244,
+          "position": [
+            283.6412400073488,
+            0.000001000000003803514,
+            -61.44279294356724
+          ],
+          "camera": [
+            287.4746172652221,
+            3.23740036369671,
+            -57.23055571844115
+          ],
+          "yaw": 0.738343918474469,
+          "calls": 159,
+          "triangles": 121015,
+          "npcVisible": 3,
+          "npcNearby": 4,
+          "vanVisible": 1,
+          "moving": 0,
+          "vans": [
+            {
+              "id": 0,
+              "position": {
+                "x": 279.2181873078744,
+                "y": 0,
+                "z": -68.23444994445087
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 1,
+              "position": {
+                "x": -224.65877549482886,
+                "y": 0,
+                "z": 381.789765103556
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 2,
+              "position": {
+                "x": -331.7575113288435,
+                "y": 0,
+                "z": -296.8432138672048
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 3,
+              "position": {
+                "x": 31.072385454445794,
+                "y": 0,
+                "z": -475.83499825150136
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 4,
+              "position": {
+                "x": 415.73250862883,
+                "y": 0,
+                "z": 307.1241638502187
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 5,
+              "position": {
+                "x": -119.0063824907375,
+                "y": 0,
+                "z": 17.623955056796696
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 6,
+              "position": {
+                "x": 73.16875710221903,
+                "y": 0,
+                "z": 536.6265908501933
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 7,
+              "position": {
+                "x": 77.29197984368194,
+                "y": 0,
+                "z": 240.836176131
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            }
+          ],
+          "touch": false,
+          "dpr": 1
+        }
+      ]
+    },
+    {
+      "name": "central-library",
+      "pose": {
+        "x": -25.28782943698966,
+        "z": -176.02037250679874,
+        "yaw": 0.05
+      },
+      "samples": [
+        {
+          "state": "playing",
+          "fps": 60.08746019502216,
+          "position": [
+            -25.28782943699007,
+            0.0000010000000106868967,
+            -176.02037250679848
+          ],
+          "camera": [
+            -25.00317745116167,
+            3.23740036369605,
+            -170.33207778088277
+          ],
+          "yaw": 0.05,
+          "calls": 113,
+          "triangles": 92366,
+          "npcVisible": 0,
+          "npcNearby": 0,
+          "vanVisible": 0,
+          "moving": 0,
+          "vans": [
+            {
+              "id": 0,
+              "position": {
+                "x": 279.2181873078744,
+                "y": 0,
+                "z": -68.23444994445087
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 1,
+              "position": {
+                "x": -224.65877549482886,
+                "y": 0,
+                "z": 381.789765103556
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 2,
+              "position": {
+                "x": -331.7575113288435,
+                "y": 0,
+                "z": -296.8432138672048
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 3,
+              "position": {
+                "x": 31.072385454445794,
+                "y": 0,
+                "z": -475.83499825150136
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 4,
+              "position": {
+                "x": 415.73250862883,
+                "y": 0,
+                "z": 307.1241638502187
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 5,
+              "position": {
+                "x": -119.0063824907375,
+                "y": 0,
+                "z": 17.623955056796696
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 6,
+              "position": {
+                "x": 73.16875710221903,
+                "y": 0,
+                "z": 536.6265908501933
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 7,
+              "position": {
+                "x": 77.29197984368194,
+                "y": 0,
+                "z": 240.836176131
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            }
+          ],
+          "touch": false,
+          "dpr": 1
+        },
+        {
+          "state": "playing",
+          "fps": 60.02774341981788,
+          "position": [
+            -25.28782943699007,
+            0.000001000000010797919,
+            -176.02037250679848
+          ],
+          "camera": [
+            -25.00317745116167,
+            3.2374003636967172,
+            -170.33207778088277
+          ],
+          "yaw": 0.05,
+          "calls": 113,
+          "triangles": 92366,
+          "npcVisible": 0,
+          "npcNearby": 0,
+          "vanVisible": 0,
+          "moving": 0,
+          "vans": [
+            {
+              "id": 0,
+              "position": {
+                "x": 279.2181873078744,
+                "y": 0,
+                "z": -68.23444994445087
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 1,
+              "position": {
+                "x": -224.65877549482886,
+                "y": 0,
+                "z": 381.789765103556
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 2,
+              "position": {
+                "x": -331.7575113288435,
+                "y": 0,
+                "z": -296.8432138672048
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 3,
+              "position": {
+                "x": 31.072385454445794,
+                "y": 0,
+                "z": -475.83499825150136
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 4,
+              "position": {
+                "x": 415.73250862883,
+                "y": 0,
+                "z": 307.1241638502187
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 5,
+              "position": {
+                "x": -119.0063824907375,
+                "y": 0,
+                "z": 17.623955056796696
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 6,
+              "position": {
+                "x": 73.16875710221903,
+                "y": 0,
+                "z": 536.6265908501933
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 7,
+              "position": {
+                "x": 77.29197984368194,
+                "y": 0,
+                "z": 240.836176131
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            }
+          ],
+          "touch": false,
+          "dpr": 1
+        },
+        {
+          "state": "playing",
+          "fps": 60.066885028087746,
+          "position": [
+            -25.28782943699007,
+            0.0000010000000106868967,
+            -176.02037250679848
+          ],
+          "camera": [
+            -25.00317745116167,
+            3.2374003636967172,
+            -170.33207778088277
+          ],
+          "yaw": 0.05,
+          "calls": 113,
+          "triangles": 92366,
+          "npcVisible": 0,
+          "npcNearby": 0,
+          "vanVisible": 0,
+          "moving": 0,
+          "vans": [
+            {
+              "id": 0,
+              "position": {
+                "x": 279.2181873078744,
+                "y": 0,
+                "z": -68.23444994445087
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 1,
+              "position": {
+                "x": -224.65877549482886,
+                "y": 0,
+                "z": 381.789765103556
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 2,
+              "position": {
+                "x": -331.7575113288435,
+                "y": 0,
+                "z": -296.8432138672048
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 3,
+              "position": {
+                "x": 31.072385454445794,
+                "y": 0,
+                "z": -475.83499825150136
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 4,
+              "position": {
+                "x": 415.73250862883,
+                "y": 0,
+                "z": 307.1241638502187
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 5,
+              "position": {
+                "x": -119.0063824907375,
+                "y": 0,
+                "z": 17.623955056796696
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 6,
+              "position": {
+                "x": 73.16875710221903,
+                "y": 0,
+                "z": 536.6265908501933
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 7,
+              "position": {
+                "x": 77.29197984368194,
+                "y": 0,
+                "z": 240.836176131
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            }
+          ],
+          "touch": false,
+          "dpr": 1
+        }
+      ]
+    },
+    {
+      "name": "applied-science",
+      "pose": {
+        "x": 37.895737317760904,
+        "z": -100.1933783111557,
+        "yaw": 1.5707963267948966
+      },
+      "samples": [
+        {
+          "state": "playing",
+          "fps": 60.003047726085164,
+          "position": [
+            37.89573731776096,
+            0.0000010000000061349823,
+            -100.1933783111557
+          ],
+          "camera": [
+            43.59114982625559,
+            3.237400363696048,
+            -100.1933783111557
+          ],
+          "yaw": 1.5707963267948966,
+          "calls": 134,
+          "triangles": 107264,
+          "npcVisible": 1,
+          "npcNearby": 1,
+          "vanVisible": 0,
+          "moving": 0,
+          "vans": [
+            {
+              "id": 0,
+              "position": {
+                "x": 279.2181873078744,
+                "y": 0,
+                "z": -68.23444994445087
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 1,
+              "position": {
+                "x": -224.65877549482886,
+                "y": 0,
+                "z": 381.789765103556
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 2,
+              "position": {
+                "x": -331.7575113288435,
+                "y": 0,
+                "z": -296.8432138672048
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 3,
+              "position": {
+                "x": 31.072385454445794,
+                "y": 0,
+                "z": -475.83499825150136
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 4,
+              "position": {
+                "x": 415.73250862883,
+                "y": 0,
+                "z": 307.1241638502187
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 5,
+              "position": {
+                "x": -119.0063824907375,
+                "y": 0,
+                "z": 17.623955056796696
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 6,
+              "position": {
+                "x": 73.16875710221903,
+                "y": 0,
+                "z": 536.6265908501933
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 7,
+              "position": {
+                "x": 77.29197984368194,
+                "y": 0,
+                "z": 240.836176131
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            }
+          ],
+          "touch": false,
+          "dpr": 1
+        },
+        {
+          "state": "playing",
+          "fps": 60.03462543282377,
+          "position": [
+            37.89573731776096,
+            0.00000100000000602396,
+            -100.1933783111557
+          ],
+          "camera": [
+            43.59114982625559,
+            3.2374003636967124,
+            -100.1933783111557
+          ],
+          "yaw": 1.5707963267948966,
+          "calls": 134,
+          "triangles": 107264,
+          "npcVisible": 1,
+          "npcNearby": 1,
+          "vanVisible": 0,
+          "moving": 0,
+          "vans": [
+            {
+              "id": 0,
+              "position": {
+                "x": 279.2181873078744,
+                "y": 0,
+                "z": -68.23444994445087
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 1,
+              "position": {
+                "x": -224.65877549482886,
+                "y": 0,
+                "z": 381.789765103556
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 2,
+              "position": {
+                "x": -331.7575113288435,
+                "y": 0,
+                "z": -296.8432138672048
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 3,
+              "position": {
+                "x": 31.072385454445794,
+                "y": 0,
+                "z": -475.83499825150136
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 4,
+              "position": {
+                "x": 415.73250862883,
+                "y": 0,
+                "z": 307.1241638502187
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 5,
+              "position": {
+                "x": -119.0063824907375,
+                "y": 0,
+                "z": 17.623955056796696
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 6,
+              "position": {
+                "x": 73.16875710221903,
+                "y": 0,
+                "z": 536.6265908501933
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 7,
+              "position": {
+                "x": 77.29197984368194,
+                "y": 0,
+                "z": 240.836176131
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            }
+          ],
+          "touch": false,
+          "dpr": 1
+        },
+        {
+          "state": "playing",
+          "fps": 60.098267679941344,
+          "position": [
+            37.89573731776096,
+            0.0000010000000061904935,
+            -100.1933783111557
+          ],
+          "camera": [
+            43.59114982625559,
+            3.2374003636967124,
+            -100.1933783111557
+          ],
+          "yaw": 1.5707963267948966,
+          "calls": 134,
+          "triangles": 107264,
+          "npcVisible": 1,
+          "npcNearby": 1,
+          "vanVisible": 0,
+          "moving": 0,
+          "vans": [
+            {
+              "id": 0,
+              "position": {
+                "x": 279.2181873078744,
+                "y": 0,
+                "z": -68.23444994445087
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 1,
+              "position": {
+                "x": -224.65877549482886,
+                "y": 0,
+                "z": 381.789765103556
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 2,
+              "position": {
+                "x": -331.7575113288435,
+                "y": 0,
+                "z": -296.8432138672048
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 3,
+              "position": {
+                "x": 31.072385454445794,
+                "y": 0,
+                "z": -475.83499825150136
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 4,
+              "position": {
+                "x": 415.73250862883,
+                "y": 0,
+                "z": 307.1241638502187
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 5,
+              "position": {
+                "x": -119.0063824907375,
+                "y": 0,
+                "z": 17.623955056796696
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 6,
+              "position": {
+                "x": 73.16875710221903,
+                "y": 0,
+                "z": 536.6265908501933
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            },
+            {
+              "id": 7,
+              "position": {
+                "x": 77.29197984368194,
+                "y": 0,
+                "z": 240.836176131
+              },
+              "speed": 0,
+              "durability": 100,
+              "autonomous": false
+            }
+          ],
+          "touch": false,
+          "dpr": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "failedRequests": []
+}

@@ -6,6 +6,8 @@ import { buildRoadAppearance, ROAD_LEVELS } from './roads.js';
 import { buildingPalette, hashId, LAND_COLORS } from './appearance.js';
 import { facadeGeometry, tintGeometry, chooseEntries } from './facades.js';
 import { planVegetation } from './vegetation.js';
+import { horizontalUVs, facadeUVs, ensureBatchUVs, disposeWorldTextures } from './assets.js';
+import { buildScenery } from './scenery.js';
 
 export { bridgeHeightAt } from './bridge.js';
 
@@ -21,8 +23,9 @@ class SpatialBatches {
   }
   add(geometry, material, x, z, { collision = false, kind = 'surface' } = {}) {
     if (!geometry.getAttribute('position')?.count) { geometry.dispose(); return; }
-    // Standardise attributes for independently generated caps, strips and quads.
-    geometry.deleteAttribute('uv');
+    // Preserve metre-scaled UVs while standardising independently generated
+    // surfaces, facade quads and caps for the shared spatial batches.
+    ensureBatchUVs(geometry);
     if (geometry.index) {
       const nonIndexed = geometry.toNonIndexed();
       geometry.dispose();
@@ -100,7 +103,12 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
   const standard = (color, options = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.94, ...options });
   const materials = {
     ground: standard(LAND_COLORS.ground), pavement: standard(0xffffff, { vertexColors: true, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }),
-    building: standard(0xffffff, { vertexColors: true }), windows: standard(0x476369, { roughness: 0.48, metalness: 0.12 }),
+    asphalt: standard(0x343b3b, { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }),
+    paths: standard(0xd3cebc, { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }),
+    edges: standard(0xaeb5aa, { vertexColors: true, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }),
+    building: standard(0xffffff, { vertexColors: true }), roof: standard(0xffffff, { vertexColors: true }),
+    brick: standard(0xffffff, { vertexColors: true }), shedRoof: standard(0xffffff, { vertexColors: true, metalness: .35 }),
+    windows: standard(0x4b6669, { roughness: 0.35, metalness: 0.18 }),
     decor: standard(0xffffff, { vertexColors: true }), water: standard(LAND_COLORS.water, { roughness: 0.3, metalness: 0.15 }),
     garden: standard(LAND_COLORS.garden), park: standard(LAND_COLORS.park), grass: standard(LAND_COLORS.grass),
     forest: standard(LAND_COLORS.forest), orchard: standard(LAND_COLORS.orchard), pitch: standard(LAND_COLORS.pitch),
@@ -110,18 +118,22 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
     debugRoad: new THREE.LineBasicMaterial({ color: 0x49e7f0, transparent: true, opacity: .8, depthTest: false }),
     debugBuilding: new THREE.LineBasicMaterial({ color: 0xffbd54, transparent: true, opacity: .9, depthTest: false }),
   };
+  // Concrete roof/wall appearance is carried by their own UVs and vertex tints;
+  // sharing the material retains batching instead of doubling academic chunks.
+  materials.roof.dispose(); materials.roof = materials.building;
   const batches = new SpatialBatches(group, collisionGroup);
   const bounds = mapData.bounds;
   const ground = new THREE.PlaneGeometry(bounds.maxX - bounds.minX, bounds.maxZ - bounds.minZ);
   ground.rotateX(-Math.PI / 2);
   ground.translate((bounds.minX + bounds.maxX) / 2, 0, (bounds.minZ + bounds.maxZ) / 2);
+  horizontalUVs(ground, 5);
   batches.add(ground, materials.ground, 0, 0, { collision: true, kind: 'ground' });
   onProgress('Rendering mapped landscape');
   for (const green of mapData.greens ?? []) {
     const key = /forest|wood/.test(green.kind) ? 'forest' : /orchard/.test(green.kind) ? 'orchard' : /pitch|recreation_ground/.test(green.kind) ? 'pitch' : /garden/.test(green.kind) ? 'garden' : /park/.test(green.kind) ? 'park' : 'grass';
     for (const polygon of green.polygons) {
       const [x, z] = polygonCenter(polygon);
-      batches.add(surfaceGeometry(polygon, 0.012), materials[key], x, z);
+      batches.add(horizontalUVs(surfaceGeometry(polygon, 0.012), key === 'pitch' ? 6 : 4), materials[key], x, z);
       if (key === 'pitch') {
         const line = new THREE.LineSegments(lineSegmentsGeometry(polygon, 0.025), materials.pitchLine);
         line.name = 'mapped-pitch-boundary'; group.add(line);
@@ -139,13 +151,16 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
   for (const [key, level, color] of [['asphalt', ROAD_LEVELS.asphalt, 0x343e43], ['paths', ROAD_LEVELS.path, 0xd2c29c], ['edges', ROAD_LEVELS.edge, 0xbac2ad], ['markings', ROAD_LEVELS.marking, 0xeae4b6]]) {
     for (const polygon of roadAppearance[key]) {
       const [x, z] = polygonCenter(polygon);
-      batches.add(tintGeometry(surfaceGeometry(polygon, level), color), materials.pavement, x, z, { kind: 'road' });
+      const material = key === 'asphalt' ? materials.asphalt : key === 'paths' ? materials.paths : key === 'edges' ? materials.edges : materials.pavement;
+      const geometry = horizontalUVs(surfaceGeometry(polygon, level), key === 'asphalt' ? 4 : 2.4);
+      // Keep vertex colours consistent within a batch, without darkening photos twice.
+      batches.add(tintGeometry(geometry, key === 'asphalt' || key === 'paths' ? 0xffffff : color), material, x, z, { kind: 'road' });
     }
   }
   for (const polygon of roadAppearance.curbs) {
     const [x, z] = polygonCenter(polygon), geometry = buildingGeometry(polygon, ROAD_LEVELS.curbTop - ROAD_LEVELS.curbBase);
     geometry.translate(0, ROAD_LEVELS.curbBase, 0);
-    batches.add(tintGeometry(geometry, 0x9daba1), materials.pavement, x, z, { kind: 'road' });
+    batches.add(tintGeometry(geometry, 0xc2c5b8), materials.edges, x, z, { kind: 'road' });
   }
   onProgress('Extruding campus buildings');
   const entryTreatments = [];
@@ -155,8 +170,12 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
     for (const polygon of building.polygons) {
       const [x, z] = polygonCenter(polygon);
       const geometry = buildingGeometry(polygon, building.height);
-      batches.add(tintGeometry(geometryMaterialPart(geometry, 0), palette.roof), materials.building, x, z, { collision: true, kind: 'building' });
-      batches.add(tintGeometry(geometryMaterialPart(geometry, 1), palette.wall), materials.building, x, z, { collision: true, kind: 'building' });
+      const roofMaterial = /^(shed|garage|grarage)$/.test(building.tags?.building ?? '') ? materials.shedRoof : materials.roof;
+      const wallMaterial = palette.kind === 'residential' || palette.kind === 'construction' ? materials.brick : materials.building;
+      // Only UV/material attributes change; the original collision positions and
+      // triangle winding remain those of the unmodified OSM extrusion.
+      batches.add(tintGeometry(horizontalUVs(geometryMaterialPart(geometry, 0), 3), palette.roof), roofMaterial, x, z, { collision: true, kind: 'building' });
+      batches.add(tintGeometry(facadeUVs(geometryMaterialPart(geometry, 1), polygon, wallMaterial === materials.brick ? 2.5 : 3.5), palette.wall), wallMaterial, x, z, { collision: true, kind: 'building' });
       geometry.dispose();
       const facade = facadeGeometry(polygon, building.height, palette, entries);
       batches.add(facade.windows, materials.windows, x, z, { kind: 'facade' });
@@ -172,6 +191,8 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
   batches.finish();
   const vegetation = planVegetation(mapData);
   addTrees(mapData, group, materials, vegetation);
+  const scenery = buildScenery(mapData, { vegetation });
+  group.add(scenery.group);
   const footprintDebug = new THREE.Group(); footprintDebug.name = 'osm-alignment-debug'; footprintDebug.visible = false;
   const debugLines = (rings, elevation, material) => {
     if (!rings.length) return;
@@ -183,8 +204,8 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
   group.updateMatrixWorld(true); collisionGroup.updateMatrixWorld(true);
   onProgress('Campus geometry ready');
   let elapsed = 0;
-  return {
-    group, collisionGroup, bridgeMeshes: batches.bridgeMeshes, buildingMeshes: batches.buildingMeshes,
+  const world = {
+    group, collisionGroup, materials, scenery, bridgeMeshes: batches.bridgeMeshes, buildingMeshes: batches.buildingMeshes,
     decoration: { roads: roadAppearance, vegetation, entryTreatments }, footprintDebug, labelAnchors: mapData.places ?? [],
     update(dt) {
       elapsed += Math.max(0, dt);
@@ -194,6 +215,7 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
       materials.water.color.setHex(LAND_COLORS.water).multiplyScalar(lightness);
     },
     dispose() {
+      disposeWorldTextures(world); scenery.dispose();
       const geometries = new Set();
       group.traverse(object => { if (object.geometry) geometries.add(object.geometry); });
       collisionGroup.traverse(object => { if (object.geometry) geometries.add(object.geometry); });
@@ -203,4 +225,5 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
       group.clear(); collisionGroup.clear();
     },
   };
+  return world;
 }

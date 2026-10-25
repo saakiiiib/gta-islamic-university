@@ -73,22 +73,32 @@ export function facadeGeometry(polygon, height, palette, entries = []) {
     for (let floor = 0; floor < floors; floor++) {
       const y0 = floor * 3.2 + 1.05, y1 = Math.min(height - .55, y0 + 1.35);
       if (y1 <= y0 || length < 2.1) continue;
-      const count = Math.max(1, Math.floor((length - 1) / 3.2)), spacing = length / count;
+      const bay = palette.kind === 'academic' ? 3.4 : palette.kind === 'residential' ? 2.9 : 3.2;
+      const count = Math.max(1, Math.floor((length - 1) / bay)), spacing = length / count;
       for (let w = 0; w < count; w++) {
         const center = (w + .5) * spacing, half = Math.min(.62, spacing * .25);
         if (!floor && doors.some(d => Math.abs(d.distance - center) < half + .85)) continue;
         detail(edge, center - half - .08, center + half + .08, y0 - .07, y1 + .07, 0x394c4e, .025);
         facingQuad(windowVertices, edge.at(center - half, y0, .037), edge.at(center + half, y0, .037), edge.at(center + half, y1, .037), edge.at(center - half, y1, .037), edge.nx, edge.nz);
-        detail(edge, center - half - .11, center + half + .11, y1, y1 + .11, 0xd8d3bf, .07);
+        // Restrained frames, central mullion and sill shadow make the glazing
+        // readable at student height, without per-window objects or colliders.
+        for (const x of [center - half, center - .022, center + half - .045]) detail(edge, x, x + .045, y0, y1, 0xa8aba0, .05);
+        detail(edge, center - half, center + half, y0, y0 + .045, 0xbabdb0, .055);
+        detail(edge, center - half - .11, center + half + .11, y0 - .12, y0 - .025, 0x505d59, .065);
+        detail(edge, center - half - .11, center + half + .11, y1, y1 + .1, 0xc9c7b6, .07);
+        detail(edge, center - half, center + half, y0 + (y1 - y0) * .6, y0 + (y1 - y0) * .6 + .035, 0x8f9e96, .051);
       }
     }
     for (let floor = 1; floor < floors; floor++) detail(edge, 0, length, floor * 3.2 - .07, floor * 3.2 + .07, palette.accent);
-    detail(edge, 0, length, height - .24, height + .07, 0xd2cbb8, .055);
+    detail(edge, 0, length, height - .28, height - .18, 0x66736b, .055);
+    detail(edge, 0, length, height - .18, height + .07, 0xc6c4b4, .07);
     for (const door of doors) {
       const d = door.distance, half = Math.min(.7, length * .22);
       detail(edge, d - half - .1, d + half + .1, .06, 2.5, palette.accent, .075);
       detail(edge, d - half, d + half, .07, 2.32, 0x334a47, .083);
       detail(edge, d - .025, d + .025, .07, 2.32, 0xa0b0a3, .09);
+      detail(edge, d + half * .52, d + half * .52 + .035, .94, 1.18, 0xc9c3a4, .105);
+      detail(edge, d - half, d + half, .07, .15, 0xb4b5a5, .13);
       detail(edge, d - half - .16, d + half + .16, 2.36, 2.51, 0xd6d3be, .15);
     }
   }

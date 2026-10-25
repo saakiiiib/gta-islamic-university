@@ -13,6 +13,8 @@ import { TravelCamera } from './vehicle/camera.js';
 import { ReactionAudio } from './audio/reactions.js';
 import { TouchControls } from './player/touch.js';
 import { deviceProfile, renderPixelRatio } from './platform/device.js';
+import { applyWorldAssets } from './world/assets.js';
+import { CampusVisibility } from './activity/visibility.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('game');
@@ -24,6 +26,7 @@ let inspection, inspectionSession, labels, gameplayFog;
 let simulation;
 let reactions;
 let touch, shadowElapsed = Infinity;
+let visibility;
 let accumulator = 0, lastTime = performance.now(), fps = 60;
 const STEP = 1 / 60;
 const sunOffset = new THREE.Vector3(-55, 110, -40);
@@ -87,7 +90,7 @@ function resetPlayer() {
   simulation.reset(); simulation.setSuspended(false); chase.setDriving(false); chase.reset(mapData.spawn); accumulator = 0;
   reactions?.reset();
   input.clear(); syncTouch();
-  hud.toast('Back at Main Gate. All eight vans repaired and parked.');
+  hud.toast('Back at Main Gate. Eight vans repaired; campus traffic restored.');
 }
 
 function syncView() {
@@ -130,13 +133,14 @@ function toggleAlignment() {
 }
 
 function lighting() {
-  scene.add(new THREE.HemisphereLight(0xd9edf4, 0x6f805e, 1.25));
-  sun = new THREE.DirectionalLight(0xffeed0, 2.15);
+  scene.add(new THREE.HemisphereLight(0xd9e7ed, 0x879078, 1.55));
+  sun = new THREE.DirectionalLight(0xffeed7, 2.0);
   sun.castShadow = true;
   sun.shadow.mapSize.set(device.shadowSize, device.shadowSize);
   const extent = device.shadowExtent;
   Object.assign(sun.shadow.camera, { left: -extent, right: extent, top: extent, bottom: -extent, near: 1, far: 210 });
   sun.shadow.bias = -.00015; sun.shadow.normalBias = .035;
+  sun.shadow.intensity = .72;
   scene.add(sun, sun.target);
   sun.position.copy(player.position).add(sunOffset); sun.target.position.copy(player.position);
 }
@@ -147,6 +151,8 @@ function tick(t) {
     // Consume camera motion once per render; one-shot jump/reset on each physics tick.
     chase.setDriving(simulation.session.driving);
     chase.updateTravel(elapsed, simulation.entity, input.consumeLook(elapsed));
+    visibility.prepare(camera);
+    simulation.crowd.setView?.({ position: simulation.entity.position, camera, visible: visibility.visible });
     accumulator = Math.min(accumulator + elapsed, STEP * 5);
     while (accumulator >= STEP) {
       const controls = input.snapshot();
@@ -164,11 +170,16 @@ function tick(t) {
     simulation.animate(elapsed);
     reactions.consume(simulation.drainEvents(), simulation.entity.position, chase.yaw);
     reactions.update(elapsed, simulation.entity.position, chase.yaw, simulation.crowd.agents);
+    for (const agent of simulation.crowd.agents) {
+      agent.voicePlaying = String(agent.id) === reactions.active?.npcId;
+      if (agent.voicePlaying) agent.lastVoiceAt = simulation.crowd.time;
+    }
     chase.updateTravel(0, simulation.entity);
     world.update(elapsed, simulation.entity.position);
+    world.scenery?.update(simulation.entity.position);
     sun.target.position.set(Math.round(simulation.entity.position.x * 8) / 8, 0, Math.round(simulation.entity.position.z * 8) / 8);
     sun.position.copy(sun.target.position).add(sunOffset);
-    hud.update(elapsed, simulation.entity, renderer, fps, { simulation });
+    hud.update(elapsed, simulation.entity, renderer, fps, { simulation, visibility: visibility.sample(elapsed, simulation, simulation.entity.position) });
   } else if (state === 'inspection') {
     // No physics, character animation or catch-up accumulation in inspection.
     if (touch?.enabled) {
@@ -179,9 +190,11 @@ function tick(t) {
       if (control.zoom) inspection.zoom(control.zoom * elapsed * 500);
     }
     inspection.update(elapsed);
-    hud.update(elapsed, simulation.entity, renderer, fps, { inspection: true, simulation });
+    visibility.prepare(inspection.camera);
+    hud.update(elapsed, simulation.entity, renderer, fps, { inspection: true, simulation, visibility: visibility.sample(elapsed, simulation, simulation.entity.position) });
   } else if (state === 'ready') {
     world.update(elapsed, player.position);
+    world.scenery?.update(player.position);
   }
   if (renderer && scene && camera) {
     if (device.touch) {
@@ -203,9 +216,12 @@ async function initialize() {
     // Yield so loading feedback reaches the screen before geometry construction.
     await new Promise(resolve => requestAnimationFrame(resolve));
     world = buildWorld(mapData, { onProgress: message => progress(62, message) });
+    progress(70, 'Loading campus materials and furniture…');
+    await applyWorldAssets(world, { baseURL: import.meta.env.BASE_URL, mobile: device.touch });
     progress(76, 'Preparing movement and collision geometry…');
-    progress(82, 'Parking eight vans and preparing thirty campus pedestrians…');
-    simulation = new CampusSimulation(mapData, world.collisionGroup); player = simulation.player;
+    progress(82, 'Starting campus traffic and gathering thirty students…');
+    simulation = new CampusSimulation(mapData, world.collisionGroup, { scenery: world.scenery }); player = simulation.player;
+    visibility = new CampusVisibility([player.world, player.sceneryWorld]);
     renderer = new THREE.WebGLRenderer({ canvas, antialias: device.antialias, powerPreference: 'high-performance' });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
@@ -215,7 +231,10 @@ async function initialize() {
     gameplayFog = new THREE.Fog(0xb0d0df, 350, 1600); scene.fog = gameplayFog;
     scene.add(world.group, player.group, simulation.fleetGroup, simulation.occupants.group, simulation.crowd.group);
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
-    chase = new TravelCamera(camera, world.collisionGroup);
+    const cameraColliders = new THREE.Group();
+    cameraColliders.add(world.collisionGroup);
+    if (world.scenery?.collisionGroup) cameraColliders.add(world.scenery.collisionGroup);
+    chase = new TravelCamera(camera, cameraColliders);
     chase.reset(mapData.spawn);
     input = new InputController(canvas, { onPause: reason => {
       if (reason === 'escape' && state === 'inspection') toggleInspection();
@@ -273,6 +292,10 @@ async function initialize() {
       canvas.dataset.inputMode = device.touch ? 'touch' : 'desktop';
       canvas.dataset.pixelRatio = renderer.getPixelRatio().toFixed(2);
       canvas.dataset.cameraHeading = (inspectionSession.active ? inspection.yaw : chase.yaw).toFixed(3);
+      canvas.dataset.nearbyNpcs = visibility.stats.npcNearby ?? 0;
+      canvas.dataset.visibleNpcs = visibility.stats.npcVisible ?? 0;
+      canvas.dataset.visibleVans = visibility.stats.vanVisible ?? 0;
+      canvas.dataset.movingVans = visibility.stats.vanMoving ?? 0;
     }, 250);
     lastTime = performance.now(); requestAnimationFrame(tick);
   } catch (error) {

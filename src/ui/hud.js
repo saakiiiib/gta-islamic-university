@@ -7,7 +7,7 @@ export class HUD {
     this.toastUntil = 0; this.debug = false;
     $('building-count').textContent = data.buildings.length;
   }
-  update(dt, player, renderer, fps, { inspection = false, simulation } = {}) {
+  update(dt, player, renderer, fps, { inspection = false, simulation, visibility = {} } = {}) {
     this.accumulated += dt;
     if (this.accumulated < .1) return;
     this.accumulated = 0;
@@ -50,13 +50,18 @@ export class HUD {
     scale.style.width = `${$('minimap').clientWidth * 100 / this.map.span}px`;
     if (this.toastUntil && performance.now() > this.toastUntil) { $('toast').hidden = true; this.toastUntil = 0; }
     if (this.debug) $('debug-text').textContent = [
-      `GTA Islamic University · CAMPUS IN MOTION · ${inspection ? 'INSPECTION' : driving ? 'ELECTRIC VAN' : 'STUDENT'}`,
+      `GTA Islamic University · LIVING CAMPUS · ${inspection ? 'INSPECTION' : driving ? 'ELECTRIC VAN' : 'STUDENT'}`,
       `FPS ${fps.toFixed(0)} · draw calls ${renderer.info.render.calls} · triangles ${renderer.info.render.triangles.toLocaleString()}`,
       `Position ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`,
       `Grounded ${player.grounded} · speed ${player.speed.toFixed(2)} m/s`,
       `Buildings ${this.data.buildings.length} · roads ${this.data.roads.length} · bridge ${this.data.bridges.length}`,
       `Map warnings ${this.data.diagnostics.warnings.length} · repairs ${this.data.diagnostics.repairs.length}`,
       `Vans ${simulation?.vans.length ?? 0} · pedestrians ${simulation?.crowd.agents.length ?? 0} · durability ${Math.round(van?.durability ?? 100)}%`,
+      `NPCs nearby (80m) ${visibility.npcNearby ?? '—'} · visible estimate (160m) ${visibility.npcVisible ?? '—'}`,
+      `Vans nearby ${visibility.vanNearby ?? '—'} · visible estimate ${visibility.vanVisible ?? '—'} · moving ${visibility.vanMoving ?? '—'}`,
+      `Traffic parked ${visibility.vanParked ?? '—'} · yielding ${visibility.vanYielding ?? '—'}`,
+      `Activity: ${simulation?.crowd.activity?.primary?.name ?? simulation?.crowd.stats?.primaryHub ?? 'Campus approaches'}`,
+      `Walking ${simulation?.crowd.stats?.walking ?? 0} · paired students ${simulation?.crowd.stats?.pairs ?? 0} · chatting ${simulation?.crowd.stats?.conversation ?? 0} · waiting ${simulation?.crowd.stats?.waiting ?? 0}`,
       `Water blocks movement; the mapped bridge remains walkable.`,
       `F3 hides this panel.`,
     ].join('\n');

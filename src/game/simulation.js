@@ -10,10 +10,10 @@ import { DriverContinuation } from '../vehicle/driver.js';
 
 /** All moving campus entities share this fixed-step, explicitly suspended simulation. */
 export class CampusSimulation {
-  constructor(mapData, collisionGroup, { renderCrowd = true } = {}) {
+  constructor(mapData, collisionGroup, { renderCrowd = true, scenery = null } = {}) {
     this.map = mapData; this.suspended = false; this.yieldingForPedestrian = false; this.events = []; this.lastCollision = null;
-    this.queries = new CampusQueries(mapData);
-    this.player = new PlayerController({ collisionGroup, mapData });
+    this.queries = new CampusQueries(mapData, { obstacles: scenery?.obstacles ?? [] });
+    this.player = new PlayerController({ collisionGroup, sceneryCollisionGroup: scenery?.collisionGroup, mapData });
     const fleet = createVanFleet(mapData, this.queries);
     this.vans = fleet.vans; this.fleetGroup = fleet.group;
     this.driverController = new DriverContinuation(mapData, this.queries, this.vans);
@@ -23,11 +23,12 @@ export class CampusSimulation {
     this.crowd = new PedestrianSystem(mapData, this.queries, this.graph, { count: 30, render: renderCrowd, avoid: this.vans.map(v => ({ ...v.position, radius: 5 })) });
     this.impacts = new ImpactSystem(this.crowd);
     this.occupants = new VanOccupants(this.vans, this.player, { render: renderCrowd });
+    this.driverController.startServices?.();
   }
   setSuspended(suspended) { this.suspended = !!suspended; }
   update(dt, input = {}, cameraYaw = 0) {
     if (this.suspended || !Number.isFinite(dt) || dt <= 0) return {};
-    if (input.reset) { this.reset(); return { reset: true, changed: true, message: 'Back at Main Gate. Eight vans repaired and parked.' }; }
+    if (input.reset) { this.reset(); return { reset: true, changed: true, message: 'Back at Main Gate. Campus traffic restored and eight vans repaired.' }; }
     let event = {};
     if (input.interact) {
       event = this.session.interact(this.crowd.agents);
@@ -55,7 +56,8 @@ export class CampusSimulation {
     this.occupants.update(dt, this.session); this.crowd.animate(dt);
   }
   reset() {
-    this.driverController.reset(); this.session.reset(this.map.spawn); this.crowd.clearAround(this.vans); this.impacts.reset(); this.events.length = 0; this.lastCollision = null;
+    this.driverController.reset(); this.session.reset(this.map.spawn); this.crowd.resetActivity?.(); this.crowd.clearAround(this.vans); this.impacts.reset(); this.events.length = 0; this.lastCollision = null;
+    this.driverController.startServices?.();
     this.occupants.update(0, this.session); this.yieldingForPedestrian = false;
   }
   drainEvents() { return this.events.splice(0); }

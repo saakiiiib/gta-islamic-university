@@ -65,7 +65,7 @@ test('a parked van blocks a departing one without footprint overlap', () => {
   s.dispose();
 });
 
-test('missing route or a wall leads to parking; reset releases all original vans', () => {
+test('missing route parks, a wall causes waiting, and reset releases all original vans', () => {
   const wall = { polygons: [[[[ -8, 3 ], [8, 3], [8, 3.1], [-8, 3.1], [-8, 3 ]]]] };
   const s = scene([road([[0, 60], [0, -40]], 10)], [{ x: 0, z: 13, yaw: 0 }, { x: 40, z: 40, yaw: 0 }]);
   s.map.buildings = [wall];
@@ -102,7 +102,10 @@ test('the departing driver yields to the dismounted player and releases a reboar
   for (let i = 0; i < 600; i++) s.driver.update(1 / 60, { player });
   assert.ok(van.position.z > player.position.z + van.config.front + .32);
   assert.equal(van.speed, 0);
-  assert.equal(s.driver.isActive(van), false);
+  assert.equal(s.driver.isActive(van), true, 'temporary obstruction keeps the driver ready to resume');
+  const waiting = van.position.clone();
+  for (let i = 0; i < 120; i++) s.driver.update(1 / 60);
+  assert.ok(van.position.distanceTo(waiting) > .5, 'driver resumes after the player leaves the lane');
   s.driver.depart(van);
   van.occupied = true; van.autonomous = false;
   const position = van.position.clone();

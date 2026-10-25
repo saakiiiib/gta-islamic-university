@@ -16,7 +16,7 @@ const world = buildWorld(map);
 const create = () => new CampusSimulation(map, world.collisionGroup, { renderCrowd: false });
 const flat = new CampusQueries({ bounds: { minX: -10000, maxX: 10000, minZ: -10000, maxZ: 10000 } });
 
-test('eight parked vans have distinct valid road footprints spread across campus', () => {
+test('eight vans have distinct valid road footprints, three service roles and five pickups', () => {
   const sim = create();
   assert.equal(sim.vans.length, 8); assert.equal(sim.fleetGroup.children.length, 8);
   assert.equal(new Set(sim.vans.map(v => v.id)).size, 8);
@@ -28,16 +28,19 @@ test('eight parked vans have distinct valid road footprints spread across campus
     assert.ok(rectangleFootprint(van.position, van.yaw, van.config).every(([x, z]) => sim.queries.onRoad(x, z)), `van ${i} on pavement`);
     for (const other of sim.vans.slice(i + 1)) {
       assert.equal(vansOverlap(van.position, van.yaw, van.config, other), false);
-      assert.ok(van.position.distanceTo(other.position) > 24, 'fleet covers separate campus roads');
+      assert.ok(van.position.distanceTo(other.position) > 11, 'pickup and service footprints have clear headway');
     }
   }
   assert.equal(sim.crowd.agents.length, 30);
+  assert.equal(sim.vans.filter(v => v.role === 'service' && v.autonomous).length, 3);
+  assert.equal(sim.vans.filter(v => v.role === 'pickup' && !v.autonomous).length, 5);
   sim.dispose();
 });
 
-test('any of the eight parked vans can be entered and the student stays visible', () => {
+test('any stopped pickup or service van can be entered and the student stays visible', () => {
   const sim = create();
   for (const van of sim.vans) {
+    sim.driverController.park(van);
     const [x, z] = localToWorld(-1.5, -.4, van.position, van.yaw);
     sim.player.teleport({ x, y: sim.queries.groundHeight(x, z), z });
     for (let i = 0; i < 10; i++) sim.update(1 / 60);

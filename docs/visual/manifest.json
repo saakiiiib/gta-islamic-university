@@ -1,0 +1,261 @@
+{
+  "license": "CC0-1.0",
+  "sources": [
+    {
+      "url": "https://ambientcg.com/get?file=Asphalt010_1K-JPG.zip",
+      "sha256": "716f9433ddef61ea025d3859a3b06de2cbff54a293b091bf3d736b3787071e7b",
+      "bytes": 8410675
+    },
+    {
+      "url": "https://ambientcg.com/get?file=Concrete034_1K-JPG.zip",
+      "sha256": "5839d284d94ffb8d2a56df742ec522b13dd311c52dbd42b8fd33f0409ceedb81",
+      "bytes": 3657575
+    },
+    {
+      "url": "https://ambientcg.com/get?file=Bricks051_1K-JPG.zip",
+      "sha256": "c23d3d459e1a73f3d8a0b83606571c6172e485f544ff4605d1cb37eb637bfdfd",
+      "bytes": 7497159
+    },
+    {
+      "url": "https://ambientcg.com/get?file=Grass004_1K-JPG.zip",
+      "sha256": "4b63495f459db8481f4d5144e4e9069345c81cf898cc71f2216f5dd3bb344469",
+      "bytes": 11003149
+    },
+    {
+      "url": "https://ambientcg.com/get?file=CorrugatedSteel005_1K-JPG.zip",
+      "sha256": "4198faced790c75c551750d323ef384ea1ab353463b2067f44f8e5f5ff2d1a09",
+      "bytes": 5894008
+    },
+    {
+      "url": "https://api.polyhaven.com/files/painted_wooden_bench",
+      "sha256": "015c4afeb96530eae14bdf8f483495a71d54de5ed543e902035e8382e76f2f8c",
+      "bytes": 20775
+    },
+    {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/painted_wooden_bench/painted_wooden_bench_1k.gltf",
+      "sha256": "2289ab82f3fe3045bf18f7b9541743d2c65b9f071cb34bbe424d2bc998f3e507",
+      "bytes": 2835
+    },
+    {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/painted_wooden_bench/painted_wooden_bench.bin",
+      "sha256": "5799bcb20924105cccd6424de8cdb8e67eb57fddc19c395befeac634a7b2e013",
+      "bytes": 25444
+    },
+    {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/painted_wooden_bench/painted_wooden_bench_nor_gl_1k.jpg",
+      "sha256": "a0f53740d77fc61aac01de0b7e1ae6109445d1756839f739ae31fdf10c9911f2",
+      "bytes": 830104
+    },
+    {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/painted_wooden_bench/painted_wooden_bench_diff_1k.jpg",
+      "sha256": "9bc533313091ee71eaca5fa6334b71d27935d9d75311f64df6a53c28a67c435c",
+      "bytes": 545216
+    },
+    {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/painted_wooden_bench/painted_wooden_bench_arm_1k.jpg",
+      "sha256": "878785565eeff706b8f1e4db7e3d794a544e9cf0e56cee424d9a271ab4ead47e",
+      "bytes": 586040
+    }
+  ],
+  "files": [
+    {
+      "path": "1024/Asphalt010-color.webp",
+      "bytes": 164816,
+      "sha256": "26442c34ad74ac794863effbcb54f7a1f06819c24d368f1f06298d49efea08a8"
+    },
+    {
+      "path": "1024/Asphalt010-normal.webp",
+      "bytes": 325282,
+      "sha256": "3881e608f8e3de3eb3c722fbc1730119f0078d343e9be9d0cf8e4d7148d5c0af"
+    },
+    {
+      "path": "1024/Asphalt010-orm.webp",
+      "bytes": 150220,
+      "sha256": "0fd243355dc35098f78a568f0e7a690e7bcb8adb609ead52aa16fc4884636992"
+    },
+    {
+      "path": "1024/bench-color.webp",
+      "bytes": 45370,
+      "sha256": "8af404b2ea2cd53f494f9c993120f3102bf30ba3821ab6025fe645d7f43d4b63"
+    },
+    {
+      "path": "1024/bench-normal.webp",
+      "bytes": 161656,
+      "sha256": "f1f656a3317b90fc73f193ffd3a6559609a6acbaca51ce7cd3b1267ebe4e9a80"
+    },
+    {
+      "path": "1024/bench-orm.webp",
+      "bytes": 44218,
+      "sha256": "05f0c5f48e340b90a7fe2bdb84a1f4a6763e0452edecb9f1ee73283e30a16e14"
+    },
+    {
+      "path": "1024/Bricks051-color.webp",
+      "bytes": 106356,
+      "sha256": "f2f79fb5a6434061be50ccbe7b3a8da5a0dcf11bd3195629b34ae73f275f9d2f"
+    },
+    {
+      "path": "1024/Bricks051-normal.webp",
+      "bytes": 223082,
+      "sha256": "5849835e1895c1e3959a17e6920e694d2107825d98b6d79369591a85b3523ab0"
+    },
+    {
+      "path": "1024/Bricks051-orm.webp",
+      "bytes": 19692,
+      "sha256": "0dd779de498f9c8bbc7ff67475948ad2a0181d49cb4c545ad494a2c1ca69b7fd"
+    },
+    {
+      "path": "1024/Concrete034-color.webp",
+      "bytes": 38770,
+      "sha256": "9cd4a7d292976e80d99b39bf6842aba542b181318d0ec683edceb39a89118781"
+    },
+    {
+      "path": "1024/Concrete034-normal.webp",
+      "bytes": 109806,
+      "sha256": "725314006dafb29069abb6841e522f7cd272f14cd2641c6597ab3707ecc7c306"
+    },
+    {
+      "path": "1024/Concrete034-orm.webp",
+      "bytes": 24122,
+      "sha256": "ce5263e13bb6bd2822951ce4221cee23089cb106bb29094ed10f81aa59d72ebd"
+    },
+    {
+      "path": "1024/CorrugatedSteel005-color.webp",
+      "bytes": 70278,
+      "sha256": "cf5a973196ab4772a3dcb82f060449bffe494eda5c6c6f2d7995fc5bc305ec80"
+    },
+    {
+      "path": "1024/CorrugatedSteel005-normal.webp",
+      "bytes": 23948,
+      "sha256": "5cce7c5e19034ee0a45e2f4be1a5c6804b63d47ce1d0923ac841dd7abbb26460"
+    },
+    {
+      "path": "1024/CorrugatedSteel005-orm.webp",
+      "bytes": 88804,
+      "sha256": "8dac55a635f727ad7787db76546273eaf2b20ce96f116583590b221c3d54db59"
+    },
+    {
+      "path": "1024/Grass004-color.webp",
+      "bytes": 295022,
+      "sha256": "e6c1aab18099197ff810b802bcf52875eea693dbd2cc4fe37e3d6bdfb2c6ee0f"
+    },
+    {
+      "path": "1024/Grass004-normal.webp",
+      "bytes": 428116,
+      "sha256": "b056edb623d4b54837ef3eef9c277567066a32664b48c72e37a44c93f043dea7"
+    },
+    {
+      "path": "1024/Grass004-orm.webp",
+      "bytes": 386286,
+      "sha256": "8a2fdeb2271c374ee6dc386724a319b384aa6c8df90e03f5f0807fe55d65d2b0"
+    },
+    {
+      "path": "1024/painted-wooden-bench.gltf",
+      "bytes": 1597,
+      "sha256": "49d779066773d40bbbb7755fb7f7258f981f689932eb6d464af3d903a80c2579"
+    },
+    {
+      "path": "512/Asphalt010-color.webp",
+      "bytes": 20754,
+      "sha256": "d88bd7c7c229c919b0a97e1462f0776a6c3af40c57005c013ac7926a0c8a6166"
+    },
+    {
+      "path": "512/Asphalt010-normal.webp",
+      "bytes": 28418,
+      "sha256": "bbd3c0d141a623a5f80a1e516c29ca1e4b153209dd0214c735ee2aa3205c5d5f"
+    },
+    {
+      "path": "512/Asphalt010-orm.webp",
+      "bytes": 30794,
+      "sha256": "84d2a56a127167d0b04cf84ec5265a7d7a338cbcec240d7cf0cf588b68ce67ab"
+    },
+    {
+      "path": "512/bench-color.webp",
+      "bytes": 14266,
+      "sha256": "844807d9cf8bac987c49b9b62468874297fdad7a29f32b5f28baca9c51aec89f"
+    },
+    {
+      "path": "512/bench-normal.webp",
+      "bytes": 26694,
+      "sha256": "2c2a1a837b5cd5fc4c9d0b54a025a5afc1a54ab99abeee1d3be93ecc04324cbe"
+    },
+    {
+      "path": "512/bench-orm.webp",
+      "bytes": 15150,
+      "sha256": "50323e41246f305adc904c1c770055144c837372f7f42c81b9f2db52829a1ec6"
+    },
+    {
+      "path": "512/Bricks051-color.webp",
+      "bytes": 16422,
+      "sha256": "6b85011450ef8db4d731755a8c65795e25247916170991cc26bc529f910afa8f"
+    },
+    {
+      "path": "512/Bricks051-normal.webp",
+      "bytes": 42942,
+      "sha256": "e93e1f735a450098703b55eb8eec3784f7e19425f6653f7d8aa472d62b087a53"
+    },
+    {
+      "path": "512/Bricks051-orm.webp",
+      "bytes": 7572,
+      "sha256": "881bf4f562fa3f3b8feb9cf9f86a14fbbf34796310a759281bf3e415a6d50c6a"
+    },
+    {
+      "path": "512/Concrete034-color.webp",
+      "bytes": 10026,
+      "sha256": "aab790675542bf131f83c3f911888866b68367f5bc32f417df85be553b5c94a2"
+    },
+    {
+      "path": "512/Concrete034-normal.webp",
+      "bytes": 35010,
+      "sha256": "2356a4af369dd07dfd27a1a077eb5b46de7d421add7e0a11c695a01afab8fbec"
+    },
+    {
+      "path": "512/Concrete034-orm.webp",
+      "bytes": 8154,
+      "sha256": "ab9ff6a24902ad578fa6cbf9f535434ad028b3341e3679d4a9a7d6a5e8c7fefb"
+    },
+    {
+      "path": "512/CorrugatedSteel005-color.webp",
+      "bytes": 17528,
+      "sha256": "eb57af3066760f5c7164a8ba9ed48747b6059b1608fb734df5941f045d5f262c"
+    },
+    {
+      "path": "512/CorrugatedSteel005-normal.webp",
+      "bytes": 5740,
+      "sha256": "98046876ea4450e44e4752aee88350521349b585f6d66e7e744c0a3f67f23b5f"
+    },
+    {
+      "path": "512/CorrugatedSteel005-orm.webp",
+      "bytes": 27436,
+      "sha256": "b3341bf6bcd2e99b1a7c1af6553b21e44e3c36b8f657e1670189ecae2f6a7149"
+    },
+    {
+      "path": "512/Grass004-color.webp",
+      "bytes": 86944,
+      "sha256": "eb4bf3eb8dbce4d70ae636285fc252af074848f95ed98244f59b255551bb3afe"
+    },
+    {
+      "path": "512/Grass004-normal.webp",
+      "bytes": 95014,
+      "sha256": "7e3d1771821f5d6f265676443b0c5af84547dd5a38e196fc588e116d0a0d1fb5"
+    },
+    {
+      "path": "512/Grass004-orm.webp",
+      "bytes": 82274,
+      "sha256": "030cd6a1cc9615de6f89c5028ab274b9858085fe3db2eea0d1f8c9d4053a9d0f"
+    },
+    {
+      "path": "512/painted-wooden-bench.gltf",
+      "bytes": 1597,
+      "sha256": "49d779066773d40bbbb7755fb7f7258f981f689932eb6d464af3d903a80c2579"
+    },
+    {
+      "path": "painted-wooden-bench.bin",
+      "bytes": 25444,
+      "sha256": "5799bcb20924105cccd6424de8cdb8e67eb57fddc19c395befeac634a7b2e013"
+    }
+  ],
+  "variants": {
+    "1024": 2732885,
+    "512": 598179
+  }
+}

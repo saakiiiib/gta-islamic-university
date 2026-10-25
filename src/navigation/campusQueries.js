@@ -57,13 +57,19 @@ class PolygonIndex {
 
 /** Immutable plan-view collision queries: courtyards stay holes, bridge stays a corridor. */
 export class CampusQueries {
-  constructor(map) {
+  constructor(map, { obstacles = [] } = {}) {
     this.map = map; this.bounds = map.bounds ?? { minX: -10000, maxX: 10000, minZ: -10000, maxZ: 10000 };
     const buildings = (map.buildings ?? []).flatMap(b => b.polygons);
     const water = union((map.water ?? []).map(w => w.polygons)), decks = union((map.bridges ?? []).map(bridgeDeckFootprint));
     this.forbiddenWater = subtract(water, decks);
     this.buildings = new PolygonIndex(buildings); this.water = new PolygonIndex(this.forbiddenWater);
     this.roads = new PolygonIndex([...(map.roads ?? []), ...(map.bridges ?? [])].flatMap(r => r.polygons ?? []));
+    this.setSceneryObstacles(obstacles);
+  }
+  /** Illustrative scenery is independent of the immutable OSM map model. */
+  setSceneryObstacles(obstacles = []) {
+    this.sceneryObstacles = obstacles;
+    this.scenery = new PolygonIndex(obstacles.map(o => [o.polygon]).filter(p => p[0]?.length >= 4));
   }
   inBounds(x, z, radius = 0) {
     const b = this.bounds;
@@ -72,20 +78,20 @@ export class CampusQueries {
   discClear(x, z, radius = .32) {
     if (!this.inBounds(x, z, radius)) return false;
     const box = { minX: x - radius, maxX: x + radius, minZ: z - radius, maxZ: z + radius };
-    for (const index of [this.buildings, this.water]) for (const polygon of index.near(box)) if (discIntersectsPolygon([x, z], radius, polygon)) return false;
+    for (const index of [this.buildings, this.water, this.scenery]) for (const polygon of index.near(box)) if (discIntersectsPolygon([x, z], radius, polygon)) return false;
     return true;
   }
   rectangleClear(position, yaw, dimensions, margin = .035) {
     const rect = rectangleFootprint(position, yaw, dimensions, margin);
     if (!rect.every(([x, z]) => this.inBounds(x, z))) return false;
     const box = ringBounds(rect);
-    for (const index of [this.buildings, this.water]) for (const polygon of index.near(box)) if (rectangleIntersectsPolygon(rect, polygon)) return false;
+    for (const index of [this.buildings, this.water, this.scenery]) for (const polygon of index.near(box)) if (rectangleIntersectsPolygon(rect, polygon)) return false;
     return true;
   }
   segmentClear(a, b, radius = .28) {
     if (!this.discClear(...a, radius) || !this.discClear(...b, radius)) return false;
     const box = { minX: Math.min(a[0], b[0]) - radius, maxX: Math.max(a[0], b[0]) + radius, minZ: Math.min(a[1], b[1]) - radius, maxZ: Math.max(a[1], b[1]) + radius };
-    for (const index of [this.buildings, this.water]) for (const polygon of index.near(box)) for (const ring of polygon) for (let i = 1; i < ring.length; i++) {
+    for (const index of [this.buildings, this.water, this.scenery]) for (const polygon of index.near(box)) for (const ring of polygon) for (let i = 1; i < ring.length; i++) {
       if (segmentDistance(a, b, ring[i - 1], ring[i]) <= radius + EPS) return false;
     }
     return true;

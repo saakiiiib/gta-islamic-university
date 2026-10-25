@@ -16,10 +16,11 @@ export function movementDirection(input = {}, cameraYaw = 0) {
 }
 
 export class PlayerController {
-  constructor({ collisionGroup, mapData, config = PLAYER_CONFIG }) {
+  constructor({ collisionGroup, sceneryCollisionGroup, mapData, config = PLAYER_CONFIG }) {
     this.config = { ...PLAYER_CONFIG, ...config };
     this.mapData = mapData ?? {};
     this.world = new CollisionWorld(collisionGroup);
+    this.sceneryWorld = sceneryCollisionGroup ? new CollisionWorld(sceneryCollisionGroup) : null;
     this.rig = createStudent();
     this.group = this.rig.group;
     this.position = new Vector3();
@@ -182,9 +183,11 @@ export class PlayerController {
       this.capsule.translate(new Vector3(nextX - priorX, this.velocity.y * subDt, nextZ - priorZ));
       const beforeWall = Math.hypot(this.velocity.x, this.velocity.z);
       grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
+      if (this.sceneryWorld) grounded = this.sceneryWorld.resolve(this.capsule, this.velocity) || grounded;
       if (this.dynamicWorld) {
         grounded = this.dynamicWorld.resolve(this.capsule, this.velocity) || grounded;
         grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
+        if (this.sceneryWorld) grounded = this.sceneryWorld.resolve(this.capsule, this.velocity) || grounded;
       }
       for (const van of this.vanObstacles) {
         if (this.dismount?.ignoreSource && van === this.dismount.sourceVan) {
@@ -200,6 +203,7 @@ export class PlayerController {
       if (this.vanObstacles.length) {
         // A vehicle's separation must still respect surveyed walls, water and map edges.
         grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
+        if (this.sceneryWorld) grounded = this.sceneryWorld.resolve(this.capsule, this.velocity) || grounded;
         const x = this.capsule.start.x, z = this.capsule.start.z;
         const bounds = this.mapData.bounds;
         const blockedX = bounds && (x < bounds.minX + cfg.radius || x > bounds.maxX - cfg.radius);

@@ -100,6 +100,7 @@ test('touch-style interact exits a moving van with inherited momentum and a visi
   assert.ok(sim.player.position.distanceTo(frozenPlayer) > 0);
   sim.reset();
   assert.equal(sim.player.dismount, null);
-  assert.ok(sim.vans.every(item => !item.autonomous && !item.occupied && item.speed === 0));
+  assert.ok(sim.vans.every(item => !item.occupied && item.speed === 0));
+  assert.equal(sim.vans.filter(item => item.autonomous).length, 3);
   sim.dispose();
 });

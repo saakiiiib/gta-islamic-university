@@ -8,6 +8,8 @@ const SKINS = [0x9c633d, 0xb97b50, 0x835337, 0xc08c63];
 export class CrowdRenderer {
   constructor(agents) {
     this.agents = agents; this.time = 0; this.group = new THREE.Group(); this.group.name = 'campus-pedestrians';
+    this.view = null; this.frustum = new THREE.Frustum(); this.projection = new THREE.Matrix4(); this.sphere = new THREE.Sphere(new THREE.Vector3(), 1.2);
+    this.renderedAgents = agents.length;
     this.material = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .9 });
     this.slots = { box: [], head: [], hair: [] }; this.batches = {};
     agents.forEach((agent, index) => {
@@ -17,7 +19,7 @@ export class CrowdRenderer {
         if (!mesh.isMesh) return;
         const p = mesh.geometry.parameters, type = mesh.geometry.type === 'BoxGeometry' ? 'box' : p.thetaLength < 3 ? 'hair' : 'head';
         const scale = type === 'box' ? [p.width, p.height, p.depth] : [p.radius, p.radius, p.radius];
-        this.slots[type].push({ mesh, scale: new THREE.Matrix4().makeScale(...scale), matrix: new THREE.Matrix4() });
+        this.slots[type].push({ agent, mesh, color: mesh.material.color, scale: new THREE.Matrix4().makeScale(...scale), matrix: new THREE.Matrix4() });
       });
     });
     const geometries = { box: new THREE.BoxGeometry(1, 1, 1), head: new THREE.SphereGeometry(1, 8, 6), hair: new THREE.SphereGeometry(1, 8, 6, 0, Math.PI * 2, 0, Math.PI * .48) };
@@ -30,19 +32,33 @@ export class CrowdRenderer {
     }
     this.update(0);
   }
+  setView(view) { this.view = view; }
   update(dt) {
     this.time += Math.max(0, Math.min(dt, .1));
+    const camera = this.view?.camera, viewer = this.view?.position;
+    if (camera) { camera.updateMatrixWorld(); this.projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse); this.frustum.setFromProjectionMatrix(this.projection); }
+    this.renderedAgents = 0;
     for (const agent of this.agents) {
       const rig = agent.rig;
+      const distance = viewer ? Math.hypot(agent.position.x - viewer.x, agent.position.z - viewer.z) : 0;
+      this.sphere.center.copy(agent.position); this.sphere.center.y += .9;
+      rig.renderActive = distance < 280 && (!camera || this.frustum.intersectsSphere(this.sphere));
+      if (!rig.renderActive) continue;
+      this.renderedAgents++;
+      rig.animationElapsed = (rig.animationElapsed ?? 0) + Math.max(0, dt);
+      const interval = distance < 80 ? 0 : distance < 160 ? .05 : .12;
+      const animate = !dt || !rig.pose || rig.animationElapsed + 1e-6 >= interval;
       rig.group.position.copy(agent.position);
       const turnTowardVan = agent.lookYaw != null && (agent.reactionState === 'startled' || agent.yielding);
-      const facing = turnTowardVan ? agent.lookYaw : agent.yaw;
+      const facing = turnTowardVan ? agent.lookYaw : agent.activityLookYaw ?? agent.yaw;
       const current = rig.renderYaw ?? agent.yaw;
       rig.renderYaw = current + Math.atan2(Math.sin(facing - current), Math.cos(facing - current))
         * (dt > 0 ? 1 - Math.exp(-7 * Math.min(dt, .1)) : 1);
       rig.group.rotation.y = rig.renderYaw;
+      if (!animate) { rig.group.updateMatrixWorld(true); continue; }
+      const animationDt = Math.min(.1, rig.animationElapsed); rig.animationElapsed = 0;
       const visualSpeed = Math.max(agent.speed, agent.avoidSpeed ?? 0);
-      animateStudent(rig, { speed: visualSpeed, grounded: true, turnRate: agent.turnRate ?? 0, motionState: visualSpeed > .08 ? 'walk' : 'idle' }, this.time + agent.id * .47, dt);
+      animateStudent(rig, { speed: visualSpeed, grounded: true, turnRate: agent.turnRate ?? 0, motionState: visualSpeed > .08 ? 'walk' : 'idle' }, this.time + agent.id * .47, animationDt);
       const state = agent.reactionState;
       const target = state === 'fallen' ? 1 : state === 'recover' ? Math.min(1, agent.reactionTime / Math.max(.01, agent.reactionDuration)) : 0;
       rig.reactionBlend = THREE.MathUtils.lerp(rig.reactionBlend ?? 0, target, dt > 0 ? 1 - Math.exp(-12 * Math.min(dt, .1)) : 1);
@@ -60,6 +76,11 @@ export class CrowdRenderer {
       rig.legs[1].rotation.x -= stumble * .35 - fallen * .25;
       rig.knees[0].rotation.x += fallen * .6;
       rig.knees[1].rotation.x += fallen * .5;
+      if (agent.behavior === 'conversation' && !agent.reactionTime && !agent.yielding) {
+        const gesture = Math.sin(this.time * 2.3 + agent.id) * .14;
+        rig.arms[agent.id % 2].rotation.x -= .45 + gesture;
+        rig.arms[agent.id % 2].rotation.z += (agent.id % 2 ? 1 : -1) * .14;
+      }
       const look = agent.lookYaw == null ? 0 : Math.atan2(Math.sin(agent.lookYaw - rig.renderYaw), Math.cos(agent.lookYaw - rig.renderYaw));
       rig.lookAngle = THREE.MathUtils.lerp(rig.lookAngle ?? 0, THREE.MathUtils.clamp(look, -.7, .7), dt > 0 ? 1 - Math.exp(-8 * Math.min(dt, .1)) : 1);
       rig.head.rotation.y = rig.hair.rotation.y = rig.lookAngle;
@@ -67,8 +88,15 @@ export class CrowdRenderer {
     }
     for (const [type, slots] of Object.entries(this.slots)) {
       const batch = this.batches[type];
-      slots.forEach((slot, i) => { slot.matrix.multiplyMatrices(slot.mesh.matrixWorld, slot.scale); batch.setMatrixAt(i, slot.matrix); });
-      batch.instanceMatrix.needsUpdate = true; batch.computeBoundingSphere();
+      let index = 0;
+      for (const slot of slots) {
+        if (!slot.agent.rig.renderActive) continue;
+        slot.matrix.multiplyMatrices(slot.mesh.matrixWorld, slot.scale);
+        batch.setMatrixAt(index, slot.matrix); batch.setColorAt(index++, slot.color);
+      }
+      batch.count = index; batch.visible = index > 0;
+      batch.instanceMatrix.needsUpdate = true; if (batch.instanceColor) batch.instanceColor.needsUpdate = true;
+      if (index) batch.computeBoundingSphere();
     }
   }
   dispose() {

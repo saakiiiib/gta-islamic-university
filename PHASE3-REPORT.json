@@ -1,0 +1,114 @@
+{
+  "generatedAt": "2026-10-25T12:16:48.811Z",
+  "tests": {
+    "passed": 188,
+    "failed": 0
+  },
+  "views": [
+    {
+      "name": "main-gate",
+      "secondsObserved": 20,
+      "before": {
+        "visibleNPC": 3,
+        "nearbyNPC": 4,
+        "movingVans": 0,
+        "drawCalls": 159,
+        "medianFPS": 60.09273411207468
+      },
+      "after": {
+        "visibleNPC": 26,
+        "nearbyNPC": 18,
+        "movingVans": 3,
+        "visibleVans": 3,
+        "drawCalls": 187,
+        "medianFPS": 60.0453339749155,
+        "minFPS": 46.25379440450972,
+        "props": 78,
+        "assetsFailed": []
+      },
+      "drawCallIncreasePercent": 17.610062893081757
+    },
+    {
+      "name": "central-library",
+      "secondsObserved": 20,
+      "before": {
+        "visibleNPC": 0,
+        "nearbyNPC": 0,
+        "movingVans": 0,
+        "drawCalls": 113,
+        "medianFPS": 60.066885028087746
+      },
+      "after": {
+        "visibleNPC": 13,
+        "nearbyNPC": 22,
+        "movingVans": 3,
+        "visibleVans": 1,
+        "drawCalls": 128,
+        "medianFPS": 60.038790357508084,
+        "minFPS": 56.50425998943176,
+        "props": 78,
+        "assetsFailed": []
+      },
+      "drawCallIncreasePercent": 13.27433628318584
+    },
+    {
+      "name": "applied-science",
+      "secondsObserved": 80,
+      "before": {
+        "visibleNPC": 1,
+        "nearbyNPC": 1,
+        "movingVans": 0,
+        "drawCalls": 134,
+        "medianFPS": 60.03462543282377
+      },
+      "after": {
+        "visibleNPC": 10,
+        "nearbyNPC": 16,
+        "movingVans": 3,
+        "visibleVans": 1,
+        "drawCalls": 145,
+        "medianFPS": 59.78588623548567,
+        "minFPS": 51.32285957314333,
+        "props": 78,
+        "assetsFailed": []
+      },
+      "drawCallIncreasePercent": 8.208955223880587
+    }
+  ],
+  "controlsPassed": true,
+  "browserErrors": [],
+  "failedRequests": [],
+  "soakPassed": true,
+  "simulatedSeconds": 300,
+  "integrity": {
+    "rawMapSha256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
+    "modelSha256": "f1ecf729f9bd2d41e663d9779420ee5f75df41bfd6bfbbac9ba3bc6071a57d61",
+    "counts": {
+      "sourceNodes": 3260,
+      "sourceWays": 482,
+      "sourceRelations": 14,
+      "buildings": 189,
+      "roads": 42,
+      "greens": 16,
+      "water": 4,
+      "bridges": 1,
+      "trees": 1,
+      "treeRows": 1
+    },
+    "collision": {
+      "triangles": 3600,
+      "sha256": "b95c22529398f30fd82c60571453cfcc198080818f92b707fce8a31470aea1be"
+    }
+  },
+  "visualAssetBytes": {
+    "512": 598179,
+    "1024": 2732885
+  },
+  "visualFileCount": 39,
+  "limitations": [
+    "Headless Chrome on this desktop; FPS is not a physical-phone benchmark.",
+    "Touch checks use Chrome/iPhone viewport emulation, not a physical Android or iOS Safari device.",
+    "A rapid Library-to-Applied location change required 80 seconds for nearby students to walk into the checked view; no visible teleport was used.",
+    "The production bundle retains a nonfatal Vite chunk-size advisory."
+  ]
+}

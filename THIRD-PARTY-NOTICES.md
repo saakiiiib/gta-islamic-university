@@ -1,6 +1,24 @@
 # Third-party notices
 
-Map data is credited separately in DATA-CREDITS.md. No third-party game art, music or character models are bundled.
+Map data is credited separately in DATA-CREDITS.md. Character models and utility furniture are original procedural geometry. The following environment materials and bench model are bundled locally.
+
+## Phase 3 environment assets (CC0-1.0)
+
+Textures by ambientCG, released under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/). [ambientCG licence](https://docs.ambientcg.com/license/).
+
+| Source | Use |
+| --- | --- |
+| [Asphalt010](https://ambientcg.com/view?id=Asphalt010) | Vehicle road surface |
+| [Concrete034](https://ambientcg.com/view?id=Concrete034) | Concrete/plaster walls, flat roofs, paths and edges |
+| [Bricks051](https://ambientcg.com/view?id=Bricks051) | Selected residential/construction facades |
+| [Grass004](https://ambientcg.com/view?id=Grass004) | Ground and mapped green surfaces |
+| [CorrugatedSteel005](https://ambientcg.com/view?id=CorrugatedSteel005) | Shed/garage roofs only |
+
+[Painted Wooden Bench](https://polyhaven.com/a/painted_wooden_bench) by Poly Haven, CC0-1.0. [Poly Haven licence](https://polyhaven.com/license). The source glTF has 630 triangles. Its original shape, UVs and photograph-based material are retained, uniformly scaled to 1.25 m wide and instanced. Lamps, cycle stands, noticeboards and fences are original lightweight geometry.
+
+`public/visual/manifest.json` records exact public download URLs, SHA-256 checksums and byte counts for sources and every bundled derivative. `scripts/prepare-visual-assets.py` reproduces the assets with Python and Pillow: 1K source maps are converted to 1K desktop / 512-pixel mobile WebP, with occlusion/roughness/metalness packed in RGB. The shipping variant totals are 2,732,885 bytes desktop and 598,179 bytes mobile, including the shared 25,444-byte bench buffer. Source ZIPs and large archives are excluded from the game. No asset-host network requests occur at runtime.
+
+The materials, entrances and furniture are illustrative appearance estimates, not surveyed architecture or mapped furniture. Fence snippets follow only the supplied OSM campus boundary, leaving roads, gates and paths clear. Original source geographic data, heights and map collision geometry remain unchanged. Existing human voice recordings are credited in the audio documentation; no text-to-speech is used.
 
 ## three 0.186.1 (MIT)
 
