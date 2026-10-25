@@ -1,0 +1,477 @@
+{
+  "checkedAt": "2026-10-25T12:29:02.044Z",
+  "url": "https://saakiiiib.github.io/gta-islamic-university/",
+  "revision": "337bffe6106d46b6b93503b2b0ca81409832f71a",
+  "files": 52,
+  "passed": true,
+  "results": [
+    {
+      "path": "assets/index-duulBnIn.css",
+      "status": 200,
+      "bytes": 28262,
+      "sha256": "71bd66d0b387b14eaaaad687067e0eec6077ba56e3f3e5b49009c030521552e5",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "assets/index-DW2rXAom.js",
+      "status": 200,
+      "bytes": 932203,
+      "sha256": "32cc46a879623466342c6832a22d32dff57eb019684236d2688907e78d2af32e",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "audio/npc/hit_01.mp3",
+      "status": 200,
+      "bytes": 10736,
+      "sha256": "de0a7b7074efb3fad9819bd955ec048c6e561d17ddacf85fb19677571bce5592",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "audio/npc/hit_02.mp3",
+      "status": 200,
+      "bytes": 10844,
+      "sha256": "6075719770fe8611024fc973093d540145ac14dc693257f26587ea3b2e5a6def",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "audio/npc/near_01.mp3",
+      "status": 200,
+      "bytes": 16028,
+      "sha256": "b4cf500847148466f1f3e68909a14359c38a39e121de09f40c905a72467a3289",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "audio/npc/near_02.mp3",
+      "status": 200,
+      "bytes": 11924,
+      "sha256": "309affd562c0b2992d9b8f63df3f0f4ea1373918a145211a081272a4bb50d43d",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "audio/reactions.json",
+      "status": 200,
+      "bytes": 417,
+      "sha256": "b151d3683d94083caadb6223e98f5049ec17dca458646ae2d6b7a387e6ff4226",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "audio/README.txt",
+      "status": 200,
+      "bytes": 526,
+      "sha256": "6f1573b9176d17b08a360664a9bb36cd371dbcec1ae489dc44e950a70627c937",
+      "exactMatch": false,
+      "normalization": "CRLF-to-LF documents only",
+      "matches": true
+    },
+    {
+      "path": "data/map.osm",
+      "status": 200,
+      "bytes": 770269,
+      "sha256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "data/NOTICE.txt",
+      "status": 200,
+      "bytes": 509,
+      "sha256": "135c0da9b9e6a4635b17d82dcd046181b153d3e0f647041ef17de0c3751c9969",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "favicon.svg",
+      "status": 200,
+      "bytes": 303,
+      "sha256": "3cfde6cfc0ff91f988bf3fb242d864ce63b29d2a55beee077e418fdfea98f640",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 9311,
+      "sha256": "6c4b34a64d32c20d9ba1e32009f4ec2ef14e69a5a28349322e71b849ed1f42ca",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Asphalt010-color.webp",
+      "status": 200,
+      "bytes": 164816,
+      "sha256": "26442c34ad74ac794863effbcb54f7a1f06819c24d368f1f06298d49efea08a8",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Asphalt010-normal.webp",
+      "status": 200,
+      "bytes": 325282,
+      "sha256": "3881e608f8e3de3eb3c722fbc1730119f0078d343e9be9d0cf8e4d7148d5c0af",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Asphalt010-orm.webp",
+      "status": 200,
+      "bytes": 150220,
+      "sha256": "0fd243355dc35098f78a568f0e7a690e7bcb8adb609ead52aa16fc4884636992",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/bench-color.webp",
+      "status": 200,
+      "bytes": 45370,
+      "sha256": "8af404b2ea2cd53f494f9c993120f3102bf30ba3821ab6025fe645d7f43d4b63",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/bench-normal.webp",
+      "status": 200,
+      "bytes": 161656,
+      "sha256": "f1f656a3317b90fc73f193ffd3a6559609a6acbaca51ce7cd3b1267ebe4e9a80",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/bench-orm.webp",
+      "status": 200,
+      "bytes": 44218,
+      "sha256": "05f0c5f48e340b90a7fe2bdb84a1f4a6763e0452edecb9f1ee73283e30a16e14",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Bricks051-color.webp",
+      "status": 200,
+      "bytes": 106356,
+      "sha256": "f2f79fb5a6434061be50ccbe7b3a8da5a0dcf11bd3195629b34ae73f275f9d2f",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Bricks051-normal.webp",
+      "status": 200,
+      "bytes": 223082,
+      "sha256": "5849835e1895c1e3959a17e6920e694d2107825d98b6d79369591a85b3523ab0",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Bricks051-orm.webp",
+      "status": 200,
+      "bytes": 19692,
+      "sha256": "0dd779de498f9c8bbc7ff67475948ad2a0181d49cb4c545ad494a2c1ca69b7fd",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Concrete034-color.webp",
+      "status": 200,
+      "bytes": 38770,
+      "sha256": "9cd4a7d292976e80d99b39bf6842aba542b181318d0ec683edceb39a89118781",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Concrete034-normal.webp",
+      "status": 200,
+      "bytes": 109806,
+      "sha256": "725314006dafb29069abb6841e522f7cd272f14cd2641c6597ab3707ecc7c306",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Concrete034-orm.webp",
+      "status": 200,
+      "bytes": 24122,
+      "sha256": "ce5263e13bb6bd2822951ce4221cee23089cb106bb29094ed10f81aa59d72ebd",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/CorrugatedSteel005-color.webp",
+      "status": 200,
+      "bytes": 70278,
+      "sha256": "cf5a973196ab4772a3dcb82f060449bffe494eda5c6c6f2d7995fc5bc305ec80",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/CorrugatedSteel005-normal.webp",
+      "status": 200,
+      "bytes": 23948,
+      "sha256": "5cce7c5e19034ee0a45e2f4be1a5c6804b63d47ce1d0923ac841dd7abbb26460",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/CorrugatedSteel005-orm.webp",
+      "status": 200,
+      "bytes": 88804,
+      "sha256": "8dac55a635f727ad7787db76546273eaf2b20ce96f116583590b221c3d54db59",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Grass004-color.webp",
+      "status": 200,
+      "bytes": 295022,
+      "sha256": "e6c1aab18099197ff810b802bcf52875eea693dbd2cc4fe37e3d6bdfb2c6ee0f",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Grass004-normal.webp",
+      "status": 200,
+      "bytes": 428116,
+      "sha256": "b056edb623d4b54837ef3eef9c277567066a32664b48c72e37a44c93f043dea7",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/Grass004-orm.webp",
+      "status": 200,
+      "bytes": 386286,
+      "sha256": "8a2fdeb2271c374ee6dc386724a319b384aa6c8df90e03f5f0807fe55d65d2b0",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/1024/painted-wooden-bench.gltf",
+      "status": 200,
+      "bytes": 1597,
+      "sha256": "49d779066773d40bbbb7755fb7f7258f981f689932eb6d464af3d903a80c2579",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Asphalt010-color.webp",
+      "status": 200,
+      "bytes": 20754,
+      "sha256": "d88bd7c7c229c919b0a97e1462f0776a6c3af40c57005c013ac7926a0c8a6166",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Asphalt010-normal.webp",
+      "status": 200,
+      "bytes": 28418,
+      "sha256": "bbd3c0d141a623a5f80a1e516c29ca1e4b153209dd0214c735ee2aa3205c5d5f",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Asphalt010-orm.webp",
+      "status": 200,
+      "bytes": 30794,
+      "sha256": "84d2a56a127167d0b04cf84ec5265a7d7a338cbcec240d7cf0cf588b68ce67ab",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/bench-color.webp",
+      "status": 200,
+      "bytes": 14266,
+      "sha256": "844807d9cf8bac987c49b9b62468874297fdad7a29f32b5f28baca9c51aec89f",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/bench-normal.webp",
+      "status": 200,
+      "bytes": 26694,
+      "sha256": "2c2a1a837b5cd5fc4c9d0b54a025a5afc1a54ab99abeee1d3be93ecc04324cbe",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/bench-orm.webp",
+      "status": 200,
+      "bytes": 15150,
+      "sha256": "50323e41246f305adc904c1c770055144c837372f7f42c81b9f2db52829a1ec6",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Bricks051-color.webp",
+      "status": 200,
+      "bytes": 16422,
+      "sha256": "6b85011450ef8db4d731755a8c65795e25247916170991cc26bc529f910afa8f",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Bricks051-normal.webp",
+      "status": 200,
+      "bytes": 42942,
+      "sha256": "e93e1f735a450098703b55eb8eec3784f7e19425f6653f7d8aa472d62b087a53",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Bricks051-orm.webp",
+      "status": 200,
+      "bytes": 7572,
+      "sha256": "881bf4f562fa3f3b8feb9cf9f86a14fbbf34796310a759281bf3e415a6d50c6a",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Concrete034-color.webp",
+      "status": 200,
+      "bytes": 10026,
+      "sha256": "aab790675542bf131f83c3f911888866b68367f5bc32f417df85be553b5c94a2",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Concrete034-normal.webp",
+      "status": 200,
+      "bytes": 35010,
+      "sha256": "2356a4af369dd07dfd27a1a077eb5b46de7d421add7e0a11c695a01afab8fbec",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Concrete034-orm.webp",
+      "status": 200,
+      "bytes": 8154,
+      "sha256": "ab9ff6a24902ad578fa6cbf9f535434ad028b3341e3679d4a9a7d6a5e8c7fefb",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/CorrugatedSteel005-color.webp",
+      "status": 200,
+      "bytes": 17528,
+      "sha256": "eb57af3066760f5c7164a8ba9ed48747b6059b1608fb734df5941f045d5f262c",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/CorrugatedSteel005-normal.webp",
+      "status": 200,
+      "bytes": 5740,
+      "sha256": "98046876ea4450e44e4752aee88350521349b585f6d66e7e744c0a3f67f23b5f",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/CorrugatedSteel005-orm.webp",
+      "status": 200,
+      "bytes": 27436,
+      "sha256": "b3341bf6bcd2e99b1a7c1af6553b21e44e3c36b8f657e1670189ecae2f6a7149",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Grass004-color.webp",
+      "status": 200,
+      "bytes": 86944,
+      "sha256": "eb4bf3eb8dbce4d70ae636285fc252af074848f95ed98244f59b255551bb3afe",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Grass004-normal.webp",
+      "status": 200,
+      "bytes": 95014,
+      "sha256": "7e3d1771821f5d6f265676443b0c5af84547dd5a38e196fc588e116d0a0d1fb5",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/Grass004-orm.webp",
+      "status": 200,
+      "bytes": 82274,
+      "sha256": "030cd6a1cc9615de6f89c5028ab274b9858085fe3db2eea0d1f8c9d4053a9d0f",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/512/painted-wooden-bench.gltf",
+      "status": 200,
+      "bytes": 1597,
+      "sha256": "49d779066773d40bbbb7755fb7f7258f981f689932eb6d464af3d903a80c2579",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    },
+    {
+      "path": "visual/manifest.json",
+      "status": 200,
+      "bytes": 8769,
+      "sha256": "dc0ae58dde392241c37937167fb282a54ca511d3de43c0d3d8614344c466e7a4",
+      "exactMatch": false,
+      "normalization": "CRLF-to-LF documents only",
+      "matches": true
+    },
+    {
+      "path": "visual/painted-wooden-bench.bin",
+      "status": 200,
+      "bytes": 25444,
+      "sha256": "5799bcb20924105cccd6424de8cdb8e67eb57fddc19c395befeac634a7b2e013",
+      "exactMatch": true,
+      "normalization": null,
+      "matches": true
+    }
+  ]
+}

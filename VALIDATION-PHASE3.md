@@ -48,3 +48,11 @@ Same 1365 × 768 viewport and chase-camera poses, with no concurrent simulation 
 | applied-science | 1 / 0 | 10 / 3 | 16 | 80s | 59.8 | 134 → 145 |
 
 The rapid Library → Applied Science transfer needed 80 seconds to reach ten visible students in the selected narrow view. This is an explicit limit of retaining the same nearby people and making them walk around buildings; the separate fresh-view five-minute scenario reached ten in 14 seconds. Normal hub population varies as students walk, converse and wait. These results do not guarantee ten people from every camera angle.
+
+## Published-game verification
+
+Feature commit `337bffe6106d46b6b93503b2b0ca81409832f71a` was pushed successfully. [GitHub Pages workflow 40192965808](https://github.com/saakiiiib/gta-islamic-university/actions/runs/40192965808) completed successfully, retaining `main → /docs` and the original URL.
+
+All 52 hosted-file checks passed, including HTML, exact hashed programs/styles, original map, four recordings, all 39 visual files and data/audio notices. Git normalises newline characters in two documentation/JSON files; the verifier records that separately. Map, model buffers, programs, images and recordings use strict byte comparisons. The original map remains 770,269 bytes with the SHA-256 above.
+
+The published URL was also loaded in temporary desktop and Android-style touch Chrome contexts. Both started normally with thirty pedestrians/eight vans, 18 nearby students, three moving vans, no console/page errors and no failed requests. Desktop walking worked; touch controls appeared with a 1.25 DPR cap. See `hosted-browser.json`, `hosted-assets.json` and the hosted screenshots in the evidence directory. These checks still do not replace testing on physical phones.

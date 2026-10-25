@@ -8,7 +8,7 @@ const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const manifest=JSON.parse(await readFile('docs/visual/manifest.json','utf8'));
 const html=await readFile('docs/index.html','utf8');
 const linked=[...html.matchAll(/(?:src|href)="([^"]+)"/g)].map(m=>m[1]).filter(p=>!p.startsWith('#')&&!/^https?:/.test(p));
-const paths=[...new Set(['index.html','data/map.osm','favicon.svg','audio/reactions.json','audio/README.txt',
+const paths=[...new Set(['index.html','data/map.osm','data/NOTICE.txt','favicon.svg','audio/reactions.json','audio/README.txt',
   ...['near_01','near_02','hit_01','hit_02'].map(n=>`audio/npc/${n}.mp3`),
   'visual/manifest.json',...manifest.files.map(f=>`visual/${f.path}`),...linked.map(p=>p.replace(/^\.\//,''))])];
 const results=[];
@@ -20,7 +20,13 @@ await Promise.all(Array.from({length:4},async()=>{
       const expected=await readFile(resolve('docs',path));
       const response=await fetch(url,{signal:AbortSignal.timeout(30000)});
       const body=Buffer.from(await response.arrayBuffer());
-      results.push({path,status:response.status,bytes:body.length,sha256:sha(body),matches:response.ok&&sha(body)===sha(expected)});
+      const exactMatch=sha(body)===sha(expected);
+      // Git normalises CRLF in documentation/JSON. Keep map, programs, images,
+      // model buffers and audio strictly byte-for-byte; report document-only
+      // newline normalisation explicitly instead of hiding an actual mismatch.
+      const documentNewlines=/\.(txt|json)$/.test(path) && body.toString('utf8').replace(/\r\n/g,'\n')===expected.toString('utf8').replace(/\r\n/g,'\n');
+      results.push({path,status:response.status,bytes:body.length,sha256:sha(body),exactMatch,
+        normalization:!exactMatch&&documentNewlines?'CRLF-to-LF documents only':null,matches:response.ok&&(exactMatch||documentNewlines)});
     }catch(error){results.push({path,error:error.message,matches:false});}
   }
 }));

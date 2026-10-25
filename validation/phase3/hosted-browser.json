@@ -1,0 +1,51 @@
+{
+  "url": "https://saakiiiib.github.io/gta-islamic-university/",
+  "checkedAt": "2026-10-25T12:27:39.449Z",
+  "profiles": [
+    {
+      "mobile": false,
+      "state": {
+        "engine": "three.js r186",
+        "position": "283.64,0.00,-61.44",
+        "grounded": "true",
+        "cameraMode": "student",
+        "vehicleSpeed": "0.00",
+        "pedestrians": "30",
+        "vans": "8",
+        "durability": "100.0",
+        "inputMode": "desktop",
+        "pixelRatio": "1.00",
+        "cameraHeading": "0.738",
+        "nearbyNpcs": "18",
+        "visibleNpcs": "26",
+        "visibleVans": "3",
+        "movingVans": "3"
+      },
+      "errors": [],
+      "failed": []
+    },
+    {
+      "mobile": true,
+      "state": {
+        "engine": "three.js r186",
+        "position": "283.64,0.00,-61.44",
+        "grounded": "true",
+        "cameraMode": "student",
+        "vehicleSpeed": "0.00",
+        "pedestrians": "30",
+        "vans": "8",
+        "durability": "100.0",
+        "inputMode": "touch",
+        "pixelRatio": "1.25",
+        "cameraHeading": "0.738",
+        "nearbyNpcs": "18",
+        "visibleNpcs": "26",
+        "visibleVans": "3",
+        "movingVans": "3"
+      },
+      "errors": [],
+      "failed": []
+    }
+  ],
+  "passed": true
+}
