@@ -85,13 +85,16 @@ export class CampusSimulation {
       for (const reaction of events) {
         if (reaction.type === 'collision') {
           this.lastCollision = { npcId: reaction.npcId, time: this.impacts.time };
-          if (reaction.severity === 'high' || reaction.speed >= 3.2) {
+          if (reaction.npcId != null) {
             this.ambulance.dispatch(reaction.position, reaction.npcId);
             this.events.push({ type: 'ambulanceDispatched', npcId: reaction.npcId, position: reaction.position });
           }
         }
         this.events.push(reaction); if (this.events.length > 128) this.events.shift();
       }
+    }
+    if (this.ambulance) {
+      hornAudio.updateSiren(this.ambulance.position, this.session.entity.position);
     }
     return event;
   }

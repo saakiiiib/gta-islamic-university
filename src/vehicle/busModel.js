@@ -3,15 +3,15 @@ import { localToWorld, worldToLocal, rectangleFootprint } from '../navigation/ca
 import { pedestrianContact, touchesPedestrian, vansOverlap } from './contacts.js';
 
 export const BUS_CONFIG = Object.freeze({
-  maxSpeed: 13.5,            // ~48.6 km/h top speed
-  reverseSpeed: 3.2,
-  acceleration: 2.1,          // Heavy bus torque
-  reverseAcceleration: 1.4,
-  braking: 5.8,              // Responsive pneumatic brakes
-  rolling: 0.22,
-  drag: 0.024,
+  maxSpeed: 24.0,            // ~86.4 km/h top speed
+  reverseSpeed: 6.5,
+  acceleration: 5.5,          // Heavy bus torque
+  reverseAcceleration: 3.2,
+  braking: 8.5,              // Responsive pneumatic brakes
+  rolling: 0.18,
+  drag: 0.015,
   wheelbase: 5.4,
-  maxSteer: 0.42,
+  maxSteer: 0.44,
   wheelRadius: 0.54,
   halfWidth: 1.35,           // Bus width: 2.7m
   front: 3.6,                // Bus length: 9.8m
@@ -410,10 +410,13 @@ export class DoubleDeckerBus {
   step(dt, input, emergencyBrake, pedestrians, vans, onImpact) {
     const cfg = this.config;
     const before = this.speed;
+    const isSprint = !!input.sprint;
+    const maxSpeed = isSprint ? 32.0 : cfg.maxSpeed;
+    const acceleration = isSprint ? 8.0 : cfg.acceleration;
     const brake = input.brake || input.jump || emergencyBrake;
     const force =
       input.forward && !input.back
-        ? cfg.acceleration
+        ? acceleration
         : input.back && !input.forward
         ? -cfg.reverseAcceleration
         : 0;
@@ -426,7 +429,7 @@ export class DoubleDeckerBus {
       this.speed =
         this.speed < -0.05
           ? approach(this.speed, 0, cfg.braking * dt)
-          : Math.max(0, Math.min(cfg.maxSpeed, this.speed + Math.max(0, this.driveAcceleration) * dt));
+          : Math.max(0, Math.min(maxSpeed, this.speed + Math.max(0, this.driveAcceleration) * dt));
     } else if (input.back && !input.forward) {
       this.speed =
         this.speed > 0.05

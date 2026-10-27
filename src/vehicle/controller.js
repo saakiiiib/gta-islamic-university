@@ -52,11 +52,14 @@ export class ElectricVan {
   }
   step(dt, input, emergencyBrake, pedestrians, vans, onImpact) {
     const cfg = this.config, before = this.speed;
+    const isSprint = this.occupied && !!input.sprint;
+    const maxSpeed = isSprint ? 16.0 : cfg.maxSpeed;
+    const acceleration = isSprint ? 5.2 : cfg.acceleration;
     const brake = input.brake || input.jump || emergencyBrake;
-    const force = input.forward && !input.back ? cfg.acceleration : input.back && !input.forward ? -cfg.reverseAcceleration : 0;
+    const force = input.forward && !input.back ? acceleration : input.back && !input.forward ? -cfg.reverseAcceleration : 0;
     this.driveAcceleration = MathUtils.lerp(this.driveAcceleration, force, 1 - Math.exp(-14 * dt));
     if (brake) this.speed = approach(this.speed, 0, cfg.braking * dt);
-    else if (input.forward && !input.back) this.speed = this.speed < -.05 ? approach(this.speed, 0, cfg.braking * dt) : Math.max(0, Math.min(cfg.maxSpeed, this.speed + Math.max(0, this.driveAcceleration) * dt));
+    else if (input.forward && !input.back) this.speed = this.speed < -.05 ? approach(this.speed, 0, cfg.braking * dt) : Math.max(0, Math.min(maxSpeed, this.speed + Math.max(0, this.driveAcceleration) * dt));
     else if (input.back && !input.forward) this.speed = this.speed > .05 ? approach(this.speed, 0, cfg.braking * dt) : Math.min(0, Math.max(-cfg.reverseSpeed, this.speed + Math.min(0, this.driveAcceleration) * dt));
     else this.speed = approach(this.speed, 0, (cfg.rolling + cfg.drag * this.speed * this.speed) * dt);
     if (Math.abs(this.speed) < .01 && (!input.forward && !input.back || brake)) this.speed = 0;

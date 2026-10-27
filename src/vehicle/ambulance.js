@@ -4,10 +4,10 @@ import { buildVehicleGraph, shortestVehiclePath } from './routes.js';
 import { hornAudio } from '../audio/horn.js';
 
 export const AMBULANCE_CONFIG = Object.freeze({
-  maxSpeed: 12.0,
-  reverseSpeed: 2.8,
-  acceleration: 3.2,
-  braking: 6.5,
+  maxSpeed: 24.0,
+  reverseSpeed: 4.5,
+  acceleration: 6.0,
+  braking: 8.5,
   wheelbase: 3.2,
   maxSteer: 0.46,
   wheelRadius: 0.44,
@@ -308,7 +308,37 @@ export class AmbulanceController {
     this.target = { x: targetPoint.x, z: targetPoint.z, npcId };
     this.state = 'en_route';
     this.treatmentTimer = 0;
-    this.speed = 1.0;
+
+    // Rapid emergency response:
+    // If victim is distant (>70m, e.g. across campus or at Main Gate),
+    // reposition to a road node ~40-65m from victim facing towards them
+    // so the ambulance immediately rushes into view within 3-4 seconds.
+    const currentDist = Math.hypot(this.position.x - targetPoint.x, this.position.z - targetPoint.z);
+    if (currentDist > 70) {
+      let bestPoint = null;
+      let minScore = Infinity;
+      if (this.graph?.nodes?.length) {
+        for (let i = 0; i < this.graph.nodes.length; i++) {
+          const pt = this.graph.nodes[i].point;
+          const d = Math.hypot(pt[0] - targetPoint.x, pt[1] - targetPoint.z);
+          if (d >= 35 && d <= 75) {
+            const score = Math.abs(d - 52);
+            if (score < minScore) {
+              minScore = score;
+              bestPoint = pt;
+            }
+          }
+        }
+      }
+      if (bestPoint) {
+        const y = this.queries ? this.queries.groundHeight(bestPoint[0], bestPoint[1]) : 0;
+        this.position.set(bestPoint[0], y, bestPoint[1]);
+        this.yaw = Math.atan2(-(targetPoint.x - bestPoint[0]), -(targetPoint.z - bestPoint[1]));
+      }
+      this.speed = 10.0;
+    } else {
+      this.speed = Math.max(this.speed, 2.0);
+    }
 
     // Build route from current position to target
     this.buildRouteToTarget([targetPoint.x, targetPoint.z]);
@@ -371,7 +401,7 @@ export class AmbulanceController {
       const reached = this.driveTowardsPath(dt);
       const distToVictim = this.target ? Math.hypot(this.position.x - this.target.x, this.position.z - this.target.z) : Infinity;
 
-      if (distToVictim < 4.2 || reached) {
+      if (distToVictim < 5.8 || reached) {
         // Arrived at accident scene
         this.state = 'treating';
         this.speed = 0;
@@ -381,6 +411,7 @@ export class AmbulanceController {
       }
     } else if (this.state === 'treating') {
       this.speed = 0;
+      hornAudio.stopSiren();
       this.treatmentTimer -= dt;
       if (this.treatmentTimer <= 0) {
         // Stabilize student
@@ -392,15 +423,18 @@ export class AmbulanceController {
         // Return to Medical Centre
         this.state = 'returning';
         this.target = null;
+        hornAudio.stopSiren();
         this.buildRouteToTarget([this.spawn.x, this.spawn.z]);
       }
     } else if (this.state === 'returning') {
+      hornAudio.stopSiren();
       const reached = this.driveTowardsPath(dt);
       const distToBay = Math.hypot(this.position.x - this.spawn.x, this.position.z - this.spawn.z);
       if (distToBay < 2.5 || reached) {
         this.state = 'idle';
         this.speed = 0;
         this.yaw = this.spawn.yaw;
+        hornAudio.stopSiren();
         event = { type: 'ambulanceReturned' };
       }
     }
