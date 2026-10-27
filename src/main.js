@@ -238,6 +238,7 @@ async function initialize() {
       sha256: CAMPUS_MAP_SHA256,
       expectedBytes: CAMPUS_MAP_BYTES,
       onDownload: data => progress('Downloading the supplied campus map…', data),
+      trimToCampus: true,
     });
     startupStage = 'preparation';
     const preparedData = await loadCampusPreparation(mapData, { onProgress: message => progress(message) });
@@ -258,7 +259,7 @@ async function initialize() {
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = device.touch ? THREE.BasicShadowMap : THREE.PCFShadowMap;
     renderer.shadowMap.autoUpdate = !device.touch; renderer.shadowMap.needsUpdate = true;
     scene = new THREE.Scene(); scene.background = new THREE.Color(0xb3d5e6);
-    gameplayFog = new THREE.Fog(0xb3d5e6, 300, 1500); scene.fog = gameplayFog;
+    gameplayFog = new THREE.Fog(0xb3d5e6, 260, 850); scene.fog = gameplayFog;
     scene.add(world.group, player.group, simulation.fleetGroup, simulation.busGroup, simulation.ambulanceGroup, simulation.occupants.group, simulation.crowd.group, simulation.sideCharactersGroup);
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
     const cameraColliders = new THREE.Group();

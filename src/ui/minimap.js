@@ -44,7 +44,7 @@ export class Minimap {
       g.fillStyle = color; g.fill('evenodd');
       if (stroke) { g.strokeStyle = stroke; g.lineWidth = 1.2; g.stroke(); }
     };
-    draw(this.data.campus.polygons, '#b2bf93', '#d9dec2');
+    draw(this.data.campus.polygons, '#b2bf93', '#dfb65c');
     for (const green of this.data.greens) draw(green.polygons, GREEN[green.kind] || '#a4b980');
     for (const water of this.data.water) draw(water.polygons, '#559b9f', '#377e82');
     for (const road of this.data.roads.filter(isWalking)) draw(road.polygons, '#ddcba5');

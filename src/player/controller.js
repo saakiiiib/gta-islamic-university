@@ -4,6 +4,7 @@ import { PLAYER_CONFIG } from '../config.js';
 import { CollisionWorld, isWaterBlocked } from './collision.js';
 import { createCharacterRig, animateStudent, disposeCharacterRig } from './character.js';
 import { resolveVanCapsule } from './vanCollisions.js';
+import { pointInRing } from '../map/geometry.js';
 
 export function movementDirection(input = {}, cameraYaw = 0) {
   const analog = Number.isFinite(input.moveX) && Number.isFinite(input.moveZ);
@@ -175,6 +176,15 @@ export class PlayerController {
       if (bounds) {
         nextX = MathUtils.clamp(nextX, bounds.minX + cfg.radius, bounds.maxX - cfg.radius);
         nextZ = MathUtils.clamp(nextZ, bounds.minZ + cfg.radius, bounds.maxZ - cfg.radius);
+      }
+      if (this.mapData.trimmed && this.mapData.campus?.polygons?.[0]?.[0]) {
+        const ring = this.mapData.campus.polygons[0][0];
+        const isAllowed = (px, pz) => pointInRing([px, pz], ring) || (px >= 290 && px <= 338 && pz >= -90 && pz <= -55);
+        if (!isAllowed(nextX, nextZ)) {
+          if (isAllowed(nextX, priorZ)) nextZ = priorZ;
+          else if (isAllowed(priorX, nextZ)) nextX = priorX;
+          else { nextX = priorX; nextZ = priorZ; this.velocity.x = this.velocity.z = 0; }
+        }
       }
       if (isWaterBlocked(nextX, nextZ, this.mapData, cfg.radius)) {
         if (!isWaterBlocked(nextX, priorZ, this.mapData, cfg.radius)) nextZ = priorZ;

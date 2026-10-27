@@ -103,7 +103,20 @@ function wayRing(way, positions, warnings) {
   return ringArea(ring) > 0.01 ? ring : null;
 }
 
-export function buildMapData(parsed, config = MAP_CONFIG) {
+export function isCampusPoint(p, campusRing) {
+  if (!p) return false;
+  if (pointInRing(p, campusRing)) return true;
+  // Main Gate exterior arrival zone & highway plaza
+  return p[0] >= 290 && p[0] <= 348 && p[1] >= -98 && p[1] <= -52;
+}
+
+export function isCampusPolygon(polygons, campusRing) {
+  if (!polygons?.[0]?.[0]?.length) return false;
+  return polygons.some(poly => poly[0].some(pt => isCampusPoint(pt, campusRing)));
+}
+
+export function buildMapData(parsed, userConfig = {}) {
+  const config = { ...MAP_CONFIG, ...userConfig };
   const {nodes, ways, relations} = parsed;
   if (!(nodes instanceof Map) || !(ways instanceof Map)) throw new Error('Invalid parsed OSM map.');
   const diagnostics = {counts: {}, warnings: [], repairs: []};
@@ -185,7 +198,8 @@ export function buildMapData(parsed, config = MAP_CONFIG) {
     if (tags.waterway) {
       const width = parseMetres(tags.width) || 3;
       data.water.push({id: way.id, name: named(tags), tags, kind: tags.waterway, width,
-        paths, polygons: bufferPaths(paths, width, bounds)});
+        paths, 
+        polygons: bufferPaths(paths, width, bounds)});
     }
     const isBridge = tags.bridge === 'yes' || way.id === '1317423268';
     if (isBridge) {
@@ -197,6 +211,7 @@ export function buildMapData(parsed, config = MAP_CONFIG) {
       const kind = tags.highway, width = parseMetres(tags.width) || ({service: 6, unclassified: 6, path: 2.2,
         footway: 2.2, pedestrian: 2.2, cycleway: 2.2, tertiary: 8, trunk: 7}[kind] || 6);
       data.roads.push({id: way.id, name: named(tags), tags, kind, width, paths,
+        
         polygons: bufferPaths(paths, width, bounds)});
     }
   }
@@ -217,6 +232,12 @@ export function buildMapData(parsed, config = MAP_CONFIG) {
   diagnostics.counts = {sourceNodes: nodes.size, sourceWays: ways.size, sourceRelations: relations.size,
     buildings: data.buildings.length, roads: data.roads.length, greens: data.greens.length, water: data.water.length,
     bridges: data.bridges.length, trees: data.trees.length, treeRows: data.treeRows.length};
+  if (config.trimToCampus) {
+    data.trimmed = true;
+    data.buildings = data.buildings.filter(b => isCampusPolygon(b.polygons, campusRing));
+    data.water = data.water.filter(w => w.paths ? w.paths.some(p => p.some(pt => isCampusPoint(pt, campusRing))) : isCampusPolygon(w.polygons, campusRing));
+    data.roads = data.roads.filter(r => r.paths ? r.paths.some(p => p.some(pt => isCampusPoint(pt, campusRing))) : isCampusPolygon(r.polygons, campusRing));
+  }
   Object.assign(data, buildPlaceMetadata(data, nodes, positions));
   return data;
 }
@@ -233,7 +254,7 @@ export async function loadMap(url, onProgress = () => {}, options = {}) {
   const text = new TextDecoder().decode(resource.buffer);
   onProgress('Projecting campus coordinates and joining mapped footprints…');
   await yieldFrame();
-  const data = buildMapData(parseOsm(text));
+  const data = buildMapData(parseOsm(text), { ...MAP_CONFIG, ...options });
   data.sourceSha256 = await sha256(resource.buffer) ?? options.sha256 ?? null;
   onProgress(`Loaded ${data.buildings.length} building footprints and ${data.roads.length} mapped roads.`);
   return data;
