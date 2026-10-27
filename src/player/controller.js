@@ -2,7 +2,7 @@ import { Vector3, MathUtils } from 'three';
 import { Capsule } from 'three/addons/math/Capsule.js';
 import { PLAYER_CONFIG } from '../config.js';
 import { CollisionWorld, isWaterBlocked } from './collision.js';
-import { createStudent, animateStudent } from './character.js';
+import { createStudent, createCharacterRig, animateStudent } from './character.js';
 import { resolveVanCapsule } from './vanCollisions.js';
 
 export function movementDirection(input = {}, cameraYaw = 0) {
@@ -16,12 +16,13 @@ export function movementDirection(input = {}, cameraYaw = 0) {
 }
 
 export class PlayerController {
-  constructor({ collisionGroup, sceneryCollisionGroup, mapData, config = PLAYER_CONFIG }) {
+  constructor({ collisionGroup, sceneryCollisionGroup, mapData, config = PLAYER_CONFIG, characterType = 'student' }) {
+    this.characterType = characterType;
     this.config = { ...PLAYER_CONFIG, ...config };
     this.mapData = mapData ?? {};
     this.world = new CollisionWorld(collisionGroup);
     this.sceneryWorld = sceneryCollisionGroup ? new CollisionWorld(sceneryCollisionGroup) : null;
-    this.rig = createStudent();
+    this.rig = createCharacterRig(this.characterType);
     this.group = this.rig.group;
     this.position = new Vector3();
     this.velocity = new Vector3();
@@ -242,6 +243,22 @@ export class PlayerController {
   animate(dt) {
     this.animationTime += Math.max(0, Math.min(dt, 0.1));
     animateStudent(this.rig, this.state, this.animationTime, dt);
+  }
+
+
+  setCharacterType(type) {
+    if (this.characterType === type) return;
+    this.characterType = type;
+    const oldGroup = this.group;
+    this.rig = createCharacterRig(this.characterType);
+    this.group = this.rig.group;
+    this.group.position.copy(this.position);
+    this.group.rotation.set(0, this.yaw, 0);
+    this.group.visible = oldGroup.visible;
+    if (oldGroup.parent) {
+      oldGroup.parent.add(this.group);
+      oldGroup.parent.remove(oldGroup);
+    }
   }
 
   dispose() {

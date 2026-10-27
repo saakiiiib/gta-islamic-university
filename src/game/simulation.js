@@ -1,3 +1,4 @@
+import { CampusSideCharacters } from '../world/sideCharacters.js';
 import { PlayerController } from '../player/controller.js';
 import { CampusQueries } from '../navigation/campusQueries.js';
 import { buildPedestrianGraph } from '../navigation/graph.js';
@@ -24,6 +25,8 @@ export class CampusSimulation {
     this.busGroup = this.bus.group;
     this.ambulance = new AmbulanceController(mapData, this.queries);
     this.ambulanceGroup = this.ambulance.group;
+    this.sideCharacters = new CampusSideCharacters(this.queries);
+    this.sideCharactersGroup = this.sideCharacters.group;
     this.driverController = new DriverContinuation(mapData, this.queries, this.vans);
     this.session = new VehicleSession(this.player, this.vans, this.queries, {
       onDepart: van => this.driverController.depart(van),
@@ -75,7 +78,8 @@ export class CampusSimulation {
           onImpact: impact => this.impacts.handle(impact),
         });
       }
-      if (this.ambulance) {
+      if (this.sideCharacters) this.sideCharacters.update(duration);
+    if (this.ambulance) {
         const ambEvent = this.ambulance.update(step, { crowd: this.crowd });
         if (ambEvent) this.events.push(ambEvent);
       }
@@ -134,5 +138,7 @@ export class CampusSimulation {
     this.fleetGroup.clear();
     if (this.busGroup) this.busGroup.clear();
     if (this.ambulanceGroup) this.ambulanceGroup.clear();
+    if (this.sideCharacters) this.sideCharacters.dispose();
+    if (this.sideCharactersGroup) this.sideCharactersGroup.clear();
   }
 }

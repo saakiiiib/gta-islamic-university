@@ -271,6 +271,11 @@ export class AmbulanceController {
     this.treatmentTimer = 0;
     this.strobeTimer = 0;
     this.graph = buildVehicleGraph(mapData);
+    this.maxDurability = 120;
+    this.durability = this.maxDurability;
+    this.impactStrength = 0;
+    this.impactRoll = 0;
+    this.impactAge = 0;
 
     this.spawn = { ...MEDICAL_CENTRE_BAY };
     this.reset();
@@ -286,6 +291,8 @@ export class AmbulanceController {
     this.pathIndex = 0;
     this.treatmentTimer = 0;
     this.strobeTimer = 0;
+    this.durability = this.maxDurability;
+    this.impactStrength = this.impactRoll = this.impactAge = 0;
     this.setBeacons(false);
     hornAudio.stopSiren();
     this.syncVisuals(0);
@@ -478,9 +485,43 @@ export class AmbulanceController {
     return false;
   }
 
+  get disabled() {
+    return this.durability <= 0;
+  }
+
+  applyDamage(amount, { speed = 0, normal = { x: 0, z: 0 } } = {}) {
+    if (!Number.isFinite(amount) || amount <= 0) return;
+    this.durability = Math.max(0, this.durability - amount);
+    this.impactAge = 0;
+    this.impactStrength = Math.min(0.2, Math.abs(speed) * 0.03);
+    const local = worldToLocal(this.position.x + normal.x, this.position.z + normal.z, this.position, this.yaw);
+    this.impactRoll = Math.sign(local[0]) * this.impactStrength * 0.5;
+    if (this.disabled) {
+      this.speed = 0;
+      hornAudio.stopSiren();
+    }
+  }
+
+  distanceFrom(x, z) {
+    const [u, v] = worldToLocal(x, z, this.position, this.yaw);
+    const cfg = this.config;
+    return Math.hypot(Math.max(0, Math.abs(u) - cfg.halfWidth), Math.max(0, -cfg.front - v, v - cfg.rear));
+  }
+
+  get footprint() {
+    return rectangleFootprint(this.position, this.yaw, this.config);
+  }
+
   syncVisuals(dt) {
     this.group.position.copy(this.position);
     this.group.rotation.set(0, this.yaw, 0);
+
+    this.impactAge += Math.max(0, Math.min(dt, 0.1));
+    const rebound = Math.sin(this.impactAge * 20) * Math.exp(-this.impactAge * 4.5);
+    if (this.model.body) {
+      this.model.body.rotation.z = this.impactRoll * rebound;
+      this.model.body.position.y = rebound * this.impactStrength * 0.3;
+    }
 
     if (this.model.steering) {
       this.model.steering.rotation.y = this.steering;

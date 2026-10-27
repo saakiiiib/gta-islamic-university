@@ -1,3 +1,4 @@
+import './landing.css';
 import './style.css';
 import './ui/reactions.css';
 import './ui/touch.css';
@@ -74,6 +75,7 @@ async function play() {
   reactions?.setSuspended(inspectionSession.active);
   if (!inspectionSession.active) reactions?.unlock();
   if (firstStart) { simulation.reset(); simulation.player.teleport(MAIN_GATE_CONFIG.exteriorSpawn, MAIN_GATE_CONFIG.exteriorSpawn.yaw); chase.setDriving(false); chase.reset(MAIN_GATE_CONFIG.exteriorSpawn); }
+  const landing = $('landing'); if (landing) landing.hidden = true;
   $('start-screen').hidden = true; $('pause-screen').hidden = true; $('play-hud').hidden = false;
   $('pause-button').disabled = false;
   $('view-toolbar').hidden = false;
@@ -240,7 +242,8 @@ async function initialize() {
     renderer.shadowMap.autoUpdate = !device.touch; renderer.shadowMap.needsUpdate = true;
     scene = new THREE.Scene(); scene.background = new THREE.Color(0xb3d5e6);
     gameplayFog = new THREE.Fog(0xb3d5e6, 300, 1500); scene.fog = gameplayFog;
-    scene.add(world.group, player.group, simulation.fleetGroup, simulation.busGroup, simulation.ambulanceGroup, simulation.occupants.group, simulation.crowd.group);
+    scene.add(world.group, player.group, simulation.fleetGroup, simulation.busGroup, simulation.ambulanceGroup, simulation.occupants.group, simulation.crowd.group, simulation.sideCharactersGroup);
+    simulation.player.setCharacterType('hujur');
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
     const cameraColliders = new THREE.Group();
     cameraColliders.add(world.collisionGroup);
@@ -287,6 +290,9 @@ async function initialize() {
     camera.lookAt(focus.x, 2.5, focus.z);
     progress(100, `${mapData.buildings.length} buildings · ${mapData.roads.length} routes · one real campus.`);
     $('start-label').textContent = 'STEP INTO CAMPUS'; $('start-button').disabled = false;
+    const enterBtn = $('enterButton'); if (enterBtn) enterBtn.disabled = false;
+    const enterLabel = $('enterButtonLabel'); if (enterLabel) enterLabel.textContent = 'EXPLORE CAMPUS';
+    const loadingPanel = $('loadingPanel'); if (loadingPanel) loadingPanel.hidden = true;
     state = 'ready'; document.body.dataset.gameState = state;
     $('announcer').textContent = 'Campus ready. Select Step into campus to play.';
     console.info('Campus data loaded', mapData.diagnostics.counts);
@@ -317,12 +323,63 @@ async function initialize() {
       : message;
     $('error-message').hidden = false;
     $('start-label').textContent = 'UNABLE TO START';
+    const enterErrLabel = $('enterButtonLabel'); if (enterErrLabel) enterErrLabel.textContent = 'UNABLE TO START';
     progress(0, 'Campus loading stopped. See the message above.');
     console.error('Campus initialization failed', error);
   }
 }
 
 $('start-button').addEventListener('click', play);
+const enterButton = $('enterButton');
+if (enterButton) enterButton.addEventListener('click', play);
+
+const motionToggle = $('motionToggle');
+const landingPage = $('landing');
+if (motionToggle && landingPage) {
+  motionToggle.addEventListener('click', () => {
+    const paused = landingPage.classList.toggle('motion-paused');
+    motionToggle.setAttribute('aria-pressed', String(paused));
+    motionToggle.setAttribute('aria-label', paused ? 'Resume background animation' : 'Pause background animation');
+    motionToggle.title = paused ? 'Resume background animation' : 'Pause background animation';
+    const sym = motionToggle.querySelector('.pause-symbol');
+    if (sym) sym.textContent = paused ? '▶' : 'Ⅱ';
+  });
+}
+
+const controlsButton = $('controlsButton');
+const controlsDialog = $('controlsDialog');
+if (controlsButton && controlsDialog) {
+  controlsButton.addEventListener('click', () => {
+    if (typeof controlsDialog.showModal === 'function') controlsDialog.showModal();
+    else controlsDialog.setAttribute('open', '');
+  });
+}
+document.querySelectorAll('[data-close-dialog]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const dialog = btn.closest('dialog');
+    if (dialog) dialog.close();
+  });
+});
+if (controlsDialog) {
+  controlsDialog.addEventListener('click', event => {
+    if (event.target === controlsDialog) controlsDialog.close();
+  });
+}
+
+document.querySelectorAll('.char-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.char-pill').forEach(p => {
+      p.classList.remove('active');
+      p.setAttribute('aria-pressed', 'false');
+    });
+    pill.classList.add('active');
+    pill.setAttribute('aria-pressed', 'true');
+    const charType = pill.dataset.char;
+    if (simulation?.player) {
+      simulation.player.setCharacterType(charType);
+    }
+  });
+});
 $('resume-button').addEventListener('click', play);
 $('pause-button').addEventListener('click', () => pause());
 $('reset-button').addEventListener('click', () => { resetPlayer(); play(); });

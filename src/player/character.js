@@ -1,3 +1,4 @@
+import { createHujurCharacter, createNiqabCharacter, animateCharacterWalk } from './campusCharacters.js';
 import * as THREE from 'three';
 
 /** An original, metre-scaled student. The root origin is at the soles. */
@@ -65,7 +66,46 @@ export function createStudent({ palette = {} } = {}) {
   return { group, body, arms, legs, knees, head, hair, pose: null };
 }
 
+
+export function createCharacterRig(type = 'hujur', options = {}) {
+  if (type === 'student') {
+    return createStudent(options);
+  }
+  const isNiqab = type === 'niqab';
+  const visual = isNiqab
+    ? createNiqabCharacter({ scale: 0.81, ...options })
+    : createHujurCharacter({ scale: 0.81, ...options });
+  visual.rotation.y = Math.PI;
+
+  const group = new THREE.Group();
+  group.name = isNiqab ? 'NiqabStudent' : 'HujurStudent';
+  group.add(visual);
+
+  const rigData = visual.userData.campusRig;
+  const arms = [rigData.leftArmPivot, rigData.rightArmPivot];
+  const legs = [rigData.leftLegPivot, rigData.rightLegPivot];
+  const knees = [rigData.leftLegPivot, rigData.rightLegPivot];
+  const body = rigData.torso;
+  const head = rigData.headPivot;
+
+  return {
+    group,
+    body,
+    arms,
+    legs,
+    knees,
+    head,
+    hair: head,
+    visual,
+    characterType: type,
+    pose: null,
+  };
+}
+
 export function animateStudent(rig, state, time, dt = .01667) {
+  if (rig.visual) {
+    animateCharacterWalk(rig.visual, Math.max(0, Math.min(dt, .1)), state.speed);
+  }
   const moving = state.speed > 0.08;
   const running = state.speed > 4.5;
   const delta = Math.max(0, Math.min(dt, .1));

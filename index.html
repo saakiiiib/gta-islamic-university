@@ -18,21 +18,96 @@
       <div class="header-right"><span class="live-dot"></span><span>KUSHTIA, BANGLADESH</span><button id="pause-button" type="button" title="Pause game (Escape)" aria-label="Pause game" disabled>Ⅱ</button></div>
     </header>
 
-    <section id="start-screen" class="screen start-screen" aria-labelledby="game-title">
-      <div class="intro">
-        <div class="edition"><span>GTA / ISLAMIC UNIVERSITY</span><span>LIVING CAMPUS · PHASE 3</span></div>
-        <p class="eyebrow">23°43′ N &nbsp; 89°09′ E &nbsp; / &nbsp; THE CAMPUS EDITION</p>
-        <h1 id="game-title">Small campus.<br><em>Big stories.</em></h1>
-        <p class="intro-copy">Students gathering. Electric vans on the move.<br>Explore the campus, meet the crowd, and ride behind the driver.</p>
-        <div class="intro-actions"><button class="primary-button" id="start-button" disabled><span id="start-label">BUILDING YOUR CAMPUS</span><span>↗</span></button><span class="desktop-note">BROWSER PROTOTYPE<br>KEYBOARD + MOUSE</span></div>
-        <p id="touch-instructions" class="touch-instructions" hidden>Landscape recommended. Left stick moves · Swipe right to look · Tap Sprint to toggle · Hold Go / Brake to drive.</p>
-        <div class="loading"><span id="loading-message">Opening the supplied OpenStreetMap file…</span><span id="loading-percent">0%</span><div class="loading-track"><i id="loading-fill"></i></div></div>
-        <p id="error-message" class="error" role="alert" hidden></p>
-        <div class="intro-facts"><span><b id="building-count">—</b> MAPPED BUILDINGS</span><span><b>1 : 1</b> METRE SCALE</span><span><b>100%</b> FREE TO EXPLORE</span></div>
+        <div class="page" id="landing">
+      <div class="scene" aria-hidden="true">
+        <div class="scene__grain"></div>
+        <div class="scene__photo"></div>
+        <div class="scene__colorwash"></div>
+        <div class="scene__shade"></div>
+        <div class="scene__edge"></div>
       </div>
-      <aside class="map-note"><span class="small-cross">✦</span><div><b>A familiar place.<br>A new perspective.</b><p>Real routes & footprints from your OSM map.<br>Building heights and ground appearance estimated.</p></div></aside>
-      <span class="start-footer">CAMPUS IN MOTION &nbsp; / &nbsp; EXPLORE AT YOUR OWN PACE</span>
-    </section>
+
+      <header class="site-header">
+        <a class="brand" href="#landing" aria-label="Campus Story: Islamic University — home">
+          <span class="brand__mark" aria-hidden="true"><span>iu</span><i></i></span>
+          <span class="brand__words"><strong>CAMPUS STORY</strong><small>ISLAMIC UNIVERSITY</small></span>
+        </a>
+        <div class="header-actions">
+          <span class="location"><span class="location__dot" aria-hidden="true"></span> KUSHTIA, BANGLADESH</span>
+          <button class="round-button" id="motionToggle" type="button" title="Pause background animation" aria-label="Pause background animation" aria-pressed="false"><span class="pause-symbol" aria-hidden="true">Ⅱ</span></button>
+        </div>
+      </header>
+
+      <main class="hero">
+        <section class="hero__content" aria-labelledby="heroTitle">
+          <p class="eyebrow"><span class="eyebrow__rule" aria-hidden="true"></span>23°43′ N &nbsp; 89°09′ E <span class="eyebrow__dot">✦</span> <span class="eyebrow__secondary">THE CAMPUS EDITION</span></p>
+          <h1 id="heroTitle">Campus Story:<br/><strong>Islamic University</strong></h1>
+          <p class="hero__description">Explore an authentic 3D living campus of Islamic University, Kushtia. Meet scholars and students, explore the Main Gate exterior, ride electric vans, and drive the iconic IU Red Bus.</p>
+
+          <div class="character-select" aria-label="Select Player Character">
+            <span class="character-select__label">CHOOSE YOUR CHARACTER:</span>
+            <div class="character-pills">
+              <button type="button" class="char-pill active" data-char="hujur" aria-pressed="true">
+                <span class="char-pill__icon">👳</span>
+                <span class="char-pill__name">Hujur Scholar</span>
+              </button>
+              <button type="button" class="char-pill" data-char="niqab" aria-pressed="false">
+                <span class="char-pill__icon">🧕</span>
+                <span class="char-pill__name">Niqab Student</span>
+              </button>
+              <button type="button" class="char-pill" data-char="student" aria-pressed="false">
+                <span class="char-pill__icon">🎓</span>
+                <span class="char-pill__name">Campus Student</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero__actions">
+            <button class="primary-button" id="enterButton" type="button" disabled>
+              <span id="enterButtonLabel">BUILDING YOUR CAMPUS</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11"/></svg>
+            </button>
+            <button class="text-button" id="controlsButton" type="button">HOW TO PLAY <span aria-hidden="true">↗</span></button>
+          </div>
+          <p id="touch-instructions" class="touch-instructions" hidden>Landscape recommended. Left stick moves · Swipe right to look · Tap Sprint to toggle · Hold Go / Brake to drive.</p>
+          <p id="error-message" class="error" role="alert" hidden></p>
+          <div class="loading" id="loadingPanel" aria-live="polite">
+            <div class="loading__caption"><span id="loadingMessage">Reading campus map…</span><span id="loadingPercent">0%</span></div>
+            <div class="loading__track"><div class="loading__bar" id="loadingBar"></div></div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-motto"><span>CAMPUS IN MOTION</span><span class="footer-separator"></span><span>EXPLORE AT YOUR OWN PACE</span></div>
+        <div class="footer-meta"><span>ISLAMIC UNIVERSITY, KUSHTIA</span><span>·</span><span>1:1 METRE SCALE</span></div>
+      </footer>
+
+      <dialog class="modal" id="controlsDialog" aria-labelledby="controlsHeading">
+        <div class="modal__top"><span class="modal__eyebrow">CAMPUS CONTROLS</span><button type="button" class="modal__close" data-close-dialog aria-label="Close">×</button></div>
+        <h2 id="controlsHeading">How to play</h2>
+        <p>Explore a living re-creation of Islamic University. Meet people, wander the roads, and discover your own campus stories.</p>
+        <div class="control-grid">
+          <div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>Move / Steer</span></div>
+          <div><kbd>Mouse</kbd><span>Look around</span></div>
+          <div><kbd>Shift</kbd><span>Sprint</span></div>
+          <div><kbd>Space</kbd><span>Jump / Brake</span></div>
+          <div><kbd>E</kbd><span>Enter / Exit Van or Bus</span></div>
+          <div><kbd>H</kbd><span>Vehicle Horn</span></div>
+          <div><kbd>I</kbd><span>Inspect Campus</span></div>
+          <div><kbd>Esc</kbd><span>Pause</span></div>
+        </div>
+        <button class="modal__action" type="button" data-close-dialog>BACK TO MENU</button>
+      </dialog>
+    </div>
+
+    <!-- Hidden fallback hooks for legacy selectors -->
+    <div id="start-screen" hidden>
+      <button id="start-button" hidden><span id="start-label"></span></button>
+      <div id="loading-track" hidden><i id="loading-fill"></i></div>
+      <span id="loading-percent" hidden></span>
+      <span id="loading-message" hidden></span>
+    </div>
 
     <section id="pause-screen" class="screen pause-screen" hidden aria-labelledby="pause-title">
       <div class="pause-card"><p class="eyebrow">TAKE A MOMENT.</p><h2 id="pause-title">Right where<br>you left off.</h2><p id="pause-reason">Your campus is waiting.</p><button class="primary-button" id="resume-button">BACK TO CAMPUS <span>↗</span></button><button class="text-button" id="reset-button">Return to Main Gate <span>↺</span></button><p class="pause-hint">WASD move · Shift sprint · Space jump<br>E enter / exit van · Driving: W/S drive / reverse<br>A/D steer · Space brake · R reset campus<br>Mouse / arrows look · I inspect · L labels · G alignment</p></div>

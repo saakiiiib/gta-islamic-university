@@ -26,7 +26,7 @@ export class ImpactSystem {
     if (magnitude < 1.2 || (this.staticCooldown.get(van.id ?? 0) ?? -1) > this.time) return false;
     this.staticCooldown.set(van.id ?? 0, this.time + .9);
     van.applyDamage(damage.van * .75, { speed: magnitude, normal });
-    if (other) other.applyDamage(damage.van * .6, { speed: magnitude, normal });
+    if (other?.applyDamage) other.applyDamage(damage.van * .6, { speed: magnitude, normal });
     this.events.push({ type: 'worldImpact', vanId: van.id ?? 0, position: { ...van.position }, speed: magnitude, severity: Math.min(1, magnitude / 8) });
     if (this.events.length > 32) this.events.shift();
     return true;
