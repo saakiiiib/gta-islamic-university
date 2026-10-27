@@ -8,6 +8,7 @@ import { facadeGeometry, tintGeometry, chooseEntries } from './facades.js';
 import { planVegetation } from './vegetation.js';
 import { horizontalUVs, facadeUVs, ensureBatchUVs, disposeWorldTextures } from './assets.js';
 import { buildScenery } from './scenery.js';
+import { buildMainGate } from './mainGate.js';
 
 export { bridgeHeightAt } from './bridge.js';
 
@@ -193,6 +194,10 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
   addTrees(mapData, group, materials, vegetation);
   const scenery = buildScenery(mapData, { vegetation });
   group.add(scenery.group);
+  const mainGate = buildMainGate({ mapData });
+  group.add(mainGate.group);
+  scenery.collisionGroup.add(mainGate.collisionGroup);
+  if (scenery.obstacles && mainGate.obstacles) scenery.obstacles.push(...mainGate.obstacles);
   const footprintDebug = new THREE.Group(); footprintDebug.name = 'osm-alignment-debug'; footprintDebug.visible = false;
   const debugLines = (rings, elevation, material) => {
     if (!rings.length) return;
@@ -215,7 +220,7 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
       materials.water.color.setHex(LAND_COLORS.water).multiplyScalar(lightness);
     },
     dispose() {
-      disposeWorldTextures(world); scenery.dispose();
+      disposeWorldTextures(world); scenery.dispose(); mainGate?.dispose();
       const geometries = new Set();
       group.traverse(object => { if (object.geometry) geometries.add(object.geometry); });
       collisionGroup.traverse(object => { if (object.geometry) geometries.add(object.geometry); });

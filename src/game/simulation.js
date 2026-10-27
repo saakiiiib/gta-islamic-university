@@ -7,6 +7,8 @@ import { PedestrianSystem } from '../npc/pedestrians.js';
 import { VanOccupants } from '../vehicle/occupants.js';
 import { ImpactSystem } from './impacts.js';
 import { DriverContinuation } from '../vehicle/driver.js';
+import { DoubleDeckerBus } from '../vehicle/busModel.js';
+import { MAIN_GATE_CONFIG } from '../world/mainGate.js';
 
 /** All moving campus entities share this fixed-step, explicitly suspended simulation. */
 export class CampusSimulation {
@@ -16,11 +18,17 @@ export class CampusSimulation {
     this.player = new PlayerController({ collisionGroup, sceneryCollisionGroup: scenery?.collisionGroup, mapData });
     const fleet = createVanFleet(mapData, this.queries);
     this.vans = fleet.vans; this.fleetGroup = fleet.group;
+    this.bus = new DoubleDeckerBus({ queries: this.queries, spawn: { ...MAIN_GATE_CONFIG.busParking, y: 0 } });
+    this.busGroup = this.bus.group;
     this.driverController = new DriverContinuation(mapData, this.queries, this.vans);
-    this.session = new VehicleSession(this.player, this.vans, this.queries, { onDepart: van => this.driverController.depart(van) });
+    this.session = new VehicleSession(this.player, this.vans, this.queries, {
+      onDepart: van => this.driverController.depart(van),
+      bus: this.bus,
+    });
     this.player.update(1 / 60); this.player.rig.pose = null; this.player.animate(0);
     this.graph = buildPedestrianGraph(mapData, this.queries);
-    this.crowd = new PedestrianSystem(mapData, this.queries, this.graph, { count: 30, render: renderCrowd, avoid: this.vans.map(v => ({ ...v.position, radius: 5 })) });
+    const avoidList = [...this.vans.map(v => ({ ...v.position, radius: 5 })), { ...this.bus.position, radius: 7 }];
+    this.crowd = new PedestrianSystem(mapData, this.queries, this.graph, { count: 30, render: renderCrowd, avoid: avoidList });
     this.impacts = new ImpactSystem(this.crowd);
     this.occupants = new VanOccupants(this.vans, this.player, { render: renderCrowd });
     this.driverController.startServices?.();
@@ -28,7 +36,7 @@ export class CampusSimulation {
   setSuspended(suspended) { this.suspended = !!suspended; }
   update(dt, input = {}, cameraYaw = 0) {
     if (this.suspended || !Number.isFinite(dt) || dt <= 0) return {};
-    if (input.reset) { this.reset(); return { reset: true, changed: true, message: 'Back at Main Gate. Campus traffic restored and eight vans repaired.' }; }
+    if (input.reset) { this.reset(); return { reset: true, changed: true, message: 'Back at Main Gate. Campus traffic and red bus ready.' }; }
     let event = {};
     if (input.interact) {
       event = this.session.interact(this.crowd.agents);
@@ -37,8 +45,21 @@ export class CampusSimulation {
     const duration = Math.min(dt, .1), ticks = Math.ceil(duration * 60);
     for (let i = 0; i < ticks; i++) {
       const step = duration / ticks;
-      this.impacts.update(step); this.crowd.update(step, this.vans);
-      if (this.session.driving) this.session.van.update(step, input, { pedestrians: this.crowd.agents, vans: this.vans, onImpact: impact => this.impacts.handle(impact) });
+      this.impacts.update(step); this.crowd.update(step, this.session.allVehicles);
+      if (this.session.driving) {
+        this.session.van.update(step, input, {
+          pedestrians: this.crowd.agents,
+          vans: this.session.allVehicles,
+          onImpact: impact => this.impacts.handle(impact),
+        });
+      }
+      if (this.bus && this.session.van !== this.bus) {
+        this.bus.update(step, {}, {
+          pedestrians: this.crowd.agents,
+          vans: this.vans,
+          onImpact: impact => this.impacts.handle(impact),
+        });
+      }
       this.driverController.update(step, { pedestrians: this.crowd.agents, onImpact: impact => this.impacts.handle(impact), player: this.session.driving ? null : this.player });
       if (!this.session.driving) this.player.update(step, { ...input, jump: i === 0 && input.jump }, cameraYaw);
       const events = [...this.crowd.drainEvents(), ...this.impacts.drainEvents()];
@@ -53,15 +74,33 @@ export class CampusSimulation {
     if (this.suspended) return;
     if (!this.session.driving) this.player.animate(dt);
     for (const van of this.vans) van.syncVisuals(dt);
+    if (this.bus) this.bus.syncVisuals(dt);
     this.occupants.update(dt, this.session); this.crowd.animate(dt);
   }
   reset() {
-    this.driverController.reset(); this.session.reset(this.map.spawn); this.crowd.resetActivity?.(); this.crowd.clearAround(this.vans); this.impacts.reset(); this.events.length = 0; this.lastCollision = null;
+    this.driverController.reset();
+    this.session.reset(this.map.spawn);
+    if (this.bus) this.bus.reset();
+    this.crowd.resetActivity?.();
+    this.crowd.clearAround(this.session.allVehicles);
+    this.impacts.reset();
+    this.events.length = 0;
+    this.lastCollision = null;
     this.driverController.startServices?.();
-    this.occupants.update(0, this.session); this.yieldingForPedestrian = false;
+    this.occupants.update(0, this.session);
+    this.yieldingForPedestrian = false;
   }
   drainEvents() { return this.events.splice(0); }
   get van() { return this.session.driving ? this.session.van : this.session.nearestVan() ?? this.vans[0]; }
   get entity() { return this.session.entity; }
-  dispose() { this.driverController.dispose(); this.occupants.dispose(); this.player.dispose(); for (const van of this.vans) van.dispose(); this.crowd.dispose(); this.fleetGroup.clear(); }
+  dispose() {
+    this.driverController.dispose();
+    this.occupants.dispose();
+    this.player.dispose();
+    for (const van of this.vans) van.dispose();
+    if (this.bus) this.bus.dispose();
+    this.crowd.dispose();
+    this.fleetGroup.clear();
+    if (this.busGroup) this.busGroup.clear();
+  }
 }

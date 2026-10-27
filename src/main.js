@@ -14,6 +14,7 @@ import { ReactionAudio } from './audio/reactions.js';
 import { TouchControls } from './player/touch.js';
 import { deviceProfile, renderPixelRatio } from './platform/device.js';
 import { applyWorldAssets } from './world/assets.js';
+import { MAIN_GATE_CONFIG } from './world/mainGate.js';
 import { CampusVisibility } from './activity/visibility.js';
 
 const $ = id => document.getElementById(id);
@@ -72,22 +73,22 @@ async function play() {
   simulation.setSuspended(inspectionSession.active);
   reactions?.setSuspended(inspectionSession.active);
   if (!inspectionSession.active) reactions?.unlock();
-  if (firstStart) { simulation.reset(); chase.setDriving(false); chase.reset(mapData.spawn); }
+  if (firstStart) { simulation.reset(); simulation.player.teleport(MAIN_GATE_CONFIG.exteriorSpawn, MAIN_GATE_CONFIG.exteriorSpawn.yaw); chase.setDriving(false); chase.reset(MAIN_GATE_CONFIG.exteriorSpawn); }
   $('start-screen').hidden = true; $('pause-screen').hidden = true; $('play-hud').hidden = false;
   $('pause-button').disabled = false;
   $('view-toolbar').hidden = false;
   syncTouch();
   canvas.focus({ preventScroll: true });
-  $('announcer').textContent = device.touch ? 'Use the left stick to move, swipe the right side to look, and approach a van to tap Enter.' : 'Explore campus. WASD moves, Shift sprints, Space jumps. Approach the parked electric van and press E to drive.';
+  $('announcer').textContent = device.touch ? 'Use the left stick to move, swipe the right side to look, and approach a van to tap Enter.' : 'Explore campus. WASD moves, Shift sprints, Space jumps. Walk through the Main Gate and drive the IU Red Bus or vans.';
   if (inspectionSession.active) { syncView(); return; }
   const locked = await input.requestPointerLock();
   if (device.touch && state === 'playing') hud.toast(firstStart ? 'Left stick: move · Swipe right: look · Approach the van and tap Enter.' : 'Touch controls ready.', 5000);
   else if (!locked && state === 'playing') hud.toast(firstStart ? 'WASD to move. Right-drag to look. The electric van is parked ahead; approach and press E.' : 'Hold right mouse and drag to look around.', 6500);
-  else if (firstStart) hud.toast('The electric van is parked ahead. Approach it and press E to drive.', 5500);
+  else if (firstStart) hud.toast('Walk through the Main Gate into campus. The iconic IU Red Bus is parked ahead!', 5500);
 }
 function resetPlayer() {
   if (inspectionSession.active) { inspectionSession.exit(); syncView(); }
-  simulation.reset(); simulation.setSuspended(false); chase.setDriving(false); chase.reset(mapData.spawn); accumulator = 0;
+  simulation.reset(); simulation.setSuspended(false); chase.setDriving(false); chase.reset(MAIN_GATE_CONFIG.exteriorSpawn); accumulator = 0;
   reactions?.reset();
   input.clear(); syncTouch();
   hud.toast('Back at Main Gate. Eight vans repaired; campus traffic restored.');
@@ -229,7 +230,7 @@ async function initialize() {
     renderer.shadowMap.autoUpdate = !device.touch; renderer.shadowMap.needsUpdate = true;
     scene = new THREE.Scene(); scene.background = new THREE.Color(0xb3d5e6);
     gameplayFog = new THREE.Fog(0xb3d5e6, 300, 1500); scene.fog = gameplayFog;
-    scene.add(world.group, player.group, simulation.fleetGroup, simulation.occupants.group, simulation.crowd.group);
+    scene.add(world.group, player.group, simulation.fleetGroup, simulation.busGroup, simulation.occupants.group, simulation.crowd.group);
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
     const cameraColliders = new THREE.Group();
     cameraColliders.add(world.collisionGroup);

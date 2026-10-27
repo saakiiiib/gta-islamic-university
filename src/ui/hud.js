@@ -13,7 +13,7 @@ export class HUD {
     this.accumulated = 0;
     const p = player.position;
     const driving = !!player.driving;
-    this.map.draw(p, player.yaw, { vans: simulation?.vans, van: simulation?.van, pedestrians: simulation?.crowd.agents, driving });
+    this.map.draw(p, player.yaw, { vans: simulation?.session?.allVehicles ?? simulation?.vans, van: simulation?.van, pedestrians: simulation?.crowd.agents, driving });
     $('location-name').textContent = nearestPlace(p, this.data);
     $('coordinates').textContent = `${Math.abs(p.x).toFixed(0)} ${p.x >= 0 ? 'E' : 'W'} · ${Math.abs(p.z).toFixed(0)} ${p.z <= 0 ? 'N' : 'S'}`;
     $('speed').textContent = inspection ? '0' : driving ? (player.speed * 3.6).toFixed(0) : player.speed.toFixed(1);
