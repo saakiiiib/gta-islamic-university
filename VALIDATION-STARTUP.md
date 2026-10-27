@@ -38,6 +38,10 @@ The new cache uses verified content checksums for map/visual bytes and versions 
 
 ## Delivery and limits
 
-Publishing remains `main → /docs` at the existing GitHub Pages URL. Deployment is verified separately against the release commit and hosted files; the final delivery report states its result. The release ZIP includes source, lockfile, map, prepared data, documentation, production `dist` and `docs`, excluding dependencies and Git internals.
+Publishing remains `main → /docs` at the existing GitHub Pages URL. Release `dde1372a2d227db2563d2c0a364e46acdecf5e2b` deployed successfully in [Pages run 40585009805](https://github.com/saakiiiib/gta-islamic-university/actions/runs/40585009805). All **56 hosted files** matched the generated release, including HTML, both JavaScript chunks, preparation, textures, model dependencies, recorded audio and unchanged map data. See [hosted file verification](validation/startup/hosted-assets.json).
+
+The live desktop and phone-sized portrait smoke checks selected Female while loading, retained Niqab, loaded verified preparation and entered gameplay with thirty pedestrians/eight vans. Both had no uncaught page errors or horizontal overflow. Entry was ready in 9.37 s desktop and 7.00 s phone-sized Chrome emulation over the available Internet connection; these individual observations are separate from the controlled local benchmark. See [hosted browser results](validation/startup/hosted-browser.json).
+
+The release ZIP includes source, lockfile, map, prepared data, documentation, production `dist` and `docs`, excluding dependencies and Git internals.
 
 Physical Android hardware and actual iPhone Safari were unavailable. Touch results use Chrome emulation and do not establish physical-phone frame rates. No new runtime service or asset-service requests are required. Vehicles, NPC logic, physics, camera behaviour, campus layout and final texture resolutions remain unchanged.
