@@ -4,6 +4,7 @@ import { buildActivityHubs } from '../activity/hubs.js';
 import { pointInMultiPolygon, pointInRing, pointToSegmentDistance } from '../map/geometry.js';
 import { hashId } from './appearance.js';
 import { tintGeometry } from './facades.js';
+import { placementIndexes } from './placementIndex.js';
 
 export const PROP_DIMENSIONS = Object.freeze({
   bench: { width: 1.25, depth: .55, height: .96 }, lamp: { width: .28, depth: .28, height: 4.2 },
@@ -28,21 +29,22 @@ function featureDistance(point, feature) {
 /** Furniture never consumes an existing walking corridor; the extra 1.5 m is
  * outside its footprint, not an assumed reduction in a mapped path's width. */
 export function sceneryAllowed(prop, map, placed = []) {
+  const index = placementIndexes(map);
   const ring = prop.polygon ?? propFootprint(prop.kind, prop.x, prop.z, prop.yaw);
   const points = [...ring.slice(0, -1), [prop.x, prop.z]];
   for (let i = 1; i < ring.length; i++) points.push([(ring[i - 1][0] + ring[i][0]) / 2, (ring[i - 1][1] + ring[i][1]) / 2]);
   for (const p of points) {
     if (map.campus?.polygons && prop.kind !== 'fence' && !pointInMultiPolygon(p, map.campus.polygons)) return false;
     if (p[0] < map.bounds.minX || p[0] > map.bounds.maxX || p[1] < map.bounds.minZ || p[1] > map.bounds.maxZ) return false;
-    for (const road of map.roads ?? []) if (featureDistance(p, road) < 1.5) return false;
-    for (const feature of [...(map.bridges ?? []), ...(map.water ?? [])]) if (featureDistance(p, feature) < 2) return false;
-    for (const b of map.buildings ?? []) {
+    for (const road of index.roads.near(p, 1.5)) if (featureDistance(p, road) < 1.5) return false;
+    for (const feature of index.waters.near(p, 2)) if (featureDistance(p, feature) < 2) return false;
+    for (const b of index.buildings.near(p, 1.2)) {
       if (featureDistance(p, b) < 1.2 || b.polygons.some(polygon => polygon.slice(1).some(hole => pointInRing(p, hole)))) return false;
     }
-    for (const entrance of map.entrances ?? []) if (Math.hypot(p[0] - entrance.x, p[1] - entrance.z) < 5) return false;
-    for (const tree of map.trees ?? []) if (Math.hypot(p[0] - tree.x, p[1] - tree.z) < 2) return false;
-    for (const row of map.treeRows ?? []) for (const path of row.paths ?? []) for (let i = 1; i < path.length; i++) if (pointToSegmentDistance(p, path[i - 1], path[i]) < 2) return false;
-    for (const green of map.greens ?? []) if (/pitch|recreation_ground/.test(green.kind) && featureDistance(p, green) < 2) return false;
+    for (const entrance of index.entrances.near(p, 5)) if (Math.hypot(p[0] - entrance.x, p[1] - entrance.z) < 5) return false;
+    for (const tree of index.trees.near(p, 2)) if (Math.hypot(p[0] - tree.x, p[1] - tree.z) < 2) return false;
+    for (const row of index.rows.near(p, 2)) for (const path of row.paths ?? []) for (let i = 1; i < path.length; i++) if (pointToSegmentDistance(p, path[i - 1], path[i]) < 2) return false;
+    for (const green of index.pitches.near(p, 2)) if (featureDistance(p, green) < 2) return false;
     for (const other of placed) {
       if (pointInRing(p, other.polygon)) return false;
       for (let i = 1; i < other.polygon.length; i++) if (pointToSegmentDistance(p, other.polygon[i - 1], other.polygon[i]) < 1.5) return false;
@@ -130,7 +132,7 @@ function prototype(kind) {
 }
 
 export function buildScenery(map, options = {}) {
-  const props = planScenery(map, options), group = new THREE.Group(), collisionGroup = new THREE.Group();
+  const props = options.preparedProps ? structuredClone(options.preparedProps) : planScenery(map, options), group = new THREE.Group(), collisionGroup = new THREE.Group();
   group.name = 'illustrative-campus-furniture'; collisionGroup.name = 'scenery-colliders'; collisionGroup.visible = false;
   const material = new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: .82, metalness: .12 });
   const prototypes = new Map(), buckets = new Map(), colliderMaterial = new THREE.MeshBasicMaterial();

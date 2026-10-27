@@ -1,0 +1,36 @@
+
+> gta-islamic-university@0.1.0 build:pages
+> npm run build && node scripts/prepare-pages.mjs
+
+
+> gta-islamic-university@0.1.0 prebuild
+> npm run prepare:campus
+
+
+> gta-islamic-university@0.1.0 prepare:campus
+> node scripts/prepare-campus.mjs
+
+Campus preparation already matches source and unchanged map.
+
+> gta-islamic-university@0.1.0 build
+> vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 117 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               13.46 kB │ gzip:   4.19 kB
+dist/assets/campus-story-bg-BOO51Omh.webp    568.76 kB
+dist/assets/campus-prepared-DDCEcfbA.json  1,691.77 kB │ gzip: 562.51 kB
+dist/assets/index-DC42vP5y.css                34.73 kB │ gzip:   7.96 kB
+dist/assets/index-DXftHsnV.js                  4.54 kB │ gzip:   2.00 kB
+dist/assets/main-CQZzJ2yL.js                 993.93 kB │ gzip: 281.18 kB
+
+✓ built in 1.21s
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+GitHub Pages output prepared in docs/. Publish main → /docs.

@@ -1,6 +1,7 @@
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import { MAP_CONFIG } from '../config.js';
 import { buildPlaceMetadata } from './places.js';
+import { fetchResource, sha256, yieldFrame } from '../loading/resources.js';
 import {project, ringBounds, ringArea, pointInRing, clipPolygons, intersectsBounds, clipLineString, bufferPaths} from './geometry.js';
 
 export {project, pointInPolygon, pointInMultiPolygon, pointToSegmentDistance} from './geometry.js';
@@ -220,13 +221,20 @@ export function buildMapData(parsed, config = MAP_CONFIG) {
   return data;
 }
 
-export async function loadMap(url, onProgress = () => {}) {
+export async function loadMap(url, onProgress = () => {}, options = {}) {
   onProgress('Loading supplied OpenStreetMap extract…');
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`Cannot load map.osm (${response.status}). Place the supplied map in public/data/map.osm.`);
-  const text = await response.text();
+  let resource;
+  try {
+    resource = await fetchResource(url, { sha256: options.sha256, expectedBytes: options.expectedBytes, timeoutMs: options.timeoutMs ?? 45_000,
+      onProgress: options.onDownload, fetchImpl: options.fetchImpl });
+  } catch (error) {
+    throw new Error(`Cannot load map.osm. Check the connection and retry. ${error.message}`, { cause: error });
+  }
+  const text = new TextDecoder().decode(resource.buffer);
   onProgress('Projecting campus coordinates and joining mapped footprints…');
+  await yieldFrame();
   const data = buildMapData(parseOsm(text));
+  data.sourceSha256 = await sha256(resource.buffer) ?? options.sha256 ?? null;
   onProgress(`Loaded ${data.buildings.length} building footprints and ${data.roads.length} mapped roads.`);
   return data;
 }

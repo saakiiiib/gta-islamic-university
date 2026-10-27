@@ -1,4 +1,14 @@
-# GTA Islamic University — Living Campus (Phase 3)
+# Campus Story: Islamic University
+
+The landing page offers **Male** (the existing Hujur Scholar, selected on every fresh visit) and **Female** (the existing Niqab Student). Choices made during loading are retained. The original Campus Student implementation remains available internally; it is hidden from the menu. Select **Enter Campus** when the opening view is ready. Controls help is available beside the entry button.
+
+## Faster startup
+
+The menu initializes independently of Three.js. Production builds prepare the unchanged campus road surfaces, vegetation/furniture placements and connected navigation once, rather than recomputing them on every visit. Preparation is checked against the source-map checksum, schema and payload checksum; missing or invalid preparation falls back to the source generators. `npm run dev` and `npm run build` automatically refresh this preparation when relevant sources change. `npm run prepare:campus` can also be run explicitly.
+
+Map and visual downloads overlap CPU preparation. The selected character, gameplay systems, complete opening-view materials and first rendered frame are prepared before entry is enabled. Remaining visual enhancements complete in the background at the original desktop/mobile resolution. Progress describes the current stage with actual downloaded bytes or an indeterminate indicator for CPU/GPU work. Failed optional artwork retains its visible fallback; required map errors provide a retry button.
+
+Checksum-versioned browser caching accelerates later visits and rejects corrupt cached bytes. Network URLs are versioned too, avoiding stale files after deployment. Private/unavailable storage falls back to normal requests. There is no service worker, PWA or installation step. Models, animations, voices, campus geography, Main Gate, red bus, ambulance and controls are preserved. See [startup validation](VALIDATION-STARTUP.md) for timings, screenshots and testing limits.
 
 A playable third-person browser prototype of Islamic University, Kushtia, Bangladesh. The existing campus layout is preserved from the supplied `map.osm`, using Three.js, JavaScript ES modules and Vite. Eight electric cargo vans, visible drivers/passengers and thirty reacting students bring activity to the existing routes. Map data and the four supplied human voice recordings are bundled locally. No speech synthesis, remote voice service, paid API or backend is used.
 
@@ -12,7 +22,7 @@ Locally bundled CC0 photographs supply asphalt, concrete, brick, grass and appro
 
 Desktop loads approximately 2.73 MB of new visual assets; phones load approximately 0.60 MB. Furniture uses spatial instancing and distance culling, and distant crowd animation is simplified. F3 reports nearby actors within 80 m and camera/occlusion-based visible estimates within 160 m, separately from total population. It also shows moving/parked/yielding vans and current activity counts. These visibility figures are estimates, not a claim that every actor is unobstructed or easy to notice.
 
-Open [the same GitHub Pages game](https://saakiiiib.github.io/gta-islamic-university/) in Chrome on Android or Safari on iPhone. Tap **Step into campus**; touch controls appear automatically. Landscape is recommended. No installation or separate mobile version is required.
+Open [the same GitHub Pages game](https://saakiiiib.github.io/gta-islamic-university/) in Chrome on Android or Safari on iPhone. Tap **Enter Campus**; touch controls appear automatically. Landscape is recommended. No installation or separate mobile version is required.
 
 ## Phone controls
 

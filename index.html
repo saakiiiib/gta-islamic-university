@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#183b32">
   <meta name="description" content="Explore a playable, map-derived 3D Islamic University campus in Kushtia, Bangladesh.">
-  <title>GTA Islamic University — Campus Stories</title>
+  <title>Campus Story: Islamic University</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
 <body>
@@ -38,24 +38,22 @@
         </div>
       </header>
 
-      <main class="hero">
+      <div class="hero">
         <section class="hero__content" aria-labelledby="heroTitle">
-          <p class="eyebrow"><span class="eyebrow__rule" aria-hidden="true"></span>23°43′ N &nbsp; 89°09′ E <span class="eyebrow__dot">✦</span> <span class="eyebrow__secondary">THE CAMPUS EDITION</span></p>
-          <h1 id="heroTitle">Campus Story:<br/><strong>Islamic University</strong></h1>
-          <p class="hero__description">Explore an authentic 3D living campus of Islamic University, Kushtia. Meet scholars and students, explore the Main Gate exterior, ride electric vans, and drive the iconic IU Red Bus.</p>
+          <h1 id="heroTitle">Campus Story: <strong>Islamic University</strong></h1>
 
           <div class="character-select" aria-label="Select Player Character">
-            <span class="character-select__label">CHOOSE YOUR CHARACTER:</span>
+            <span class="character-select__label">CHOOSE YOUR CHARACTER</span>
             <div class="character-pills">
               <button type="button" class="char-pill active" data-char="hujur" aria-pressed="true">
-                <span class="char-pill__icon">👳</span>
-                <span class="char-pill__name">Hujur Scholar</span>
+                <span class="char-pill__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg></span>
+                <span class="char-pill__name">Male</span>
               </button>
               <button type="button" class="char-pill" data-char="niqab" aria-pressed="false">
-                <span class="char-pill__icon">🧕</span>
-                <span class="char-pill__name">Niqab Student</span>
+                <span class="char-pill__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg></span>
+                <span class="char-pill__name">Female</span>
               </button>
-              <button type="button" class="char-pill" data-char="student" aria-pressed="false">
+              <button type="button" class="char-pill" data-char="student" aria-pressed="false" hidden disabled tabindex="-1" aria-hidden="true">
                 <span class="char-pill__icon">🎓</span>
                 <span class="char-pill__name">Campus Student</span>
               </button>
@@ -64,21 +62,23 @@
 
           <div class="hero__actions">
             <button class="primary-button" id="enterButton" type="button" disabled>
-              <span id="enterButtonLabel">BUILDING YOUR CAMPUS</span>
+              <span id="enterButtonLabel">ENTER CAMPUS</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11"/></svg>
             </button>
             <button class="text-button" id="controlsButton" type="button">HOW TO PLAY <span aria-hidden="true">↗</span></button>
           </div>
           <p id="touch-instructions" class="touch-instructions" hidden>Landscape recommended. Left stick moves · Swipe right to look · Tap Sprint to toggle · Hold Go / Brake to drive.</p>
           <p id="error-message" class="error" role="alert" hidden></p>
+          <button id="retry-loading" class="text-button" type="button" hidden>RETRY LOADING ↻</button>
           <div class="loading" id="loadingPanel" aria-live="polite">
             <div class="loading__caption"><span id="loadingMessage">Reading campus map…</span><span id="loadingPercent">0%</span></div>
-            <div class="loading__track"><div class="loading__bar" id="loadingBar"></div></div>
+            <div class="loading__track" id="loadingProgress" role="progressbar" aria-label="Current loading stage" aria-valuemin="0" aria-valuemax="100"><div class="loading__bar" id="loadingBar"></div></div>
           </div>
         </section>
-      </main>
+      </div>
 
       <footer class="site-footer">
+        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a>
         <div class="footer-motto"><span>CAMPUS IN MOTION</span><span class="footer-separator"></span><span>EXPLORE AT YOUR OWN PACE</span></div>
         <div class="footer-meta"><span>ISLAMIC UNIVERSITY, KUSHTIA</span><span>·</span><span>1:1 METRE SCALE</span></div>
       </footer>
@@ -86,7 +86,6 @@
       <dialog class="modal" id="controlsDialog" aria-labelledby="controlsHeading">
         <div class="modal__top"><span class="modal__eyebrow">CAMPUS CONTROLS</span><button type="button" class="modal__close" data-close-dialog aria-label="Close">×</button></div>
         <h2 id="controlsHeading">How to play</h2>
-        <p>Explore a living re-creation of Islamic University. Meet people, wander the roads, and discover your own campus stories.</p>
         <div class="control-grid">
           <div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>Move / Steer</span></div>
           <div><kbd>Mouse</kbd><span>Look around</span></div>
@@ -156,6 +155,6 @@
     <footer class="attribution"><span>MAP DATA</span> <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a><span class="attribution-detail"> · ODbL 1.0</span></footer>
     <div id="announcer" class="sr-only" aria-live="polite"></div>
   </main>
-  <script type="module" src="./src/main.js"></script>
+  <script type="module" src="./src/landing.js"></script>
 </body>
 </html>

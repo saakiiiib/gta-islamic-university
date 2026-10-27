@@ -1,5 +1,6 @@
 import { pointInMultiPolygon, pointInRing, pointToSegmentDistance, ringBounds } from '../map/geometry.js';
 import { hashId } from './appearance.js';
+import { placementIndexes } from './placementIndex.js';
 
 function distanceToFeature(point, feature) {
   if (pointInMultiPolygon(point, feature.polygons ?? [])) return 0;
@@ -9,13 +10,14 @@ function distanceToFeature(point, feature) {
 }
 
 export function vegetationAllowed(point, green, map, radius = 2.8) {
+  const index = placementIndexes(map);
   if (!pointInMultiPolygon(point, green.polygons)) return false;
   // Keep the entire canopy inside a surveyed green polygon, away from its holes.
   for (const polygon of green.polygons) for (const ring of polygon) for (let i = 1; i < ring.length; i++) if (pointToSegmentDistance(point, ring[i - 1], ring[i]) < radius) return false;
-  for (const building of map.buildings ?? []) {
+  for (const building of index.buildings.near(point)) {
     if (building.polygons.some(p => p.slice(1).some(r => pointInRing(point, r)))) return false;
   }
-  for (const feature of [...(map.roads ?? []), ...(map.bridges ?? []), ...(map.buildings ?? []), ...(map.water ?? []), ...(map.greens ?? []).filter(g => /pitch|recreation_ground/.test(g.kind))]) {
+  for (const feature of index.vegetationExclusions.near(point, radius)) {
     if (distanceToFeature(point, feature) < radius) return false;
   }
   return true;

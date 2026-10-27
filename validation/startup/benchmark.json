@@ -1,0 +1,140 @@
+{
+  "baseline": "5f2c051241f7ada24a29dfb2fb42fed601d92fbb",
+  "environment": "Temporary headless Chrome, desktop 1365×768, local HTTP servers; alternating build order, three fresh-context pairs per build. This is not a physical-phone or Internet-speed benchmark.",
+  "results": [
+    {
+      "run": 1,
+      "build": "before",
+      "visit": "cold",
+      "buttonReadyMs": 15989,
+      "stableFrameMs": 19274,
+      "longestTaskMs": 7572,
+      "transferredBytes": 5101680
+    },
+    {
+      "run": 1,
+      "build": "before",
+      "visit": "warm",
+      "buttonReadyMs": 13996,
+      "stableFrameMs": 15841,
+      "longestTaskMs": 7877,
+      "transferredBytes": 0
+    },
+    {
+      "run": 1,
+      "build": "after",
+      "visit": "cold",
+      "buttonReadyMs": 6760,
+      "stableFrameMs": 6832,
+      "longestTaskMs": 3221,
+      "transferredBytes": 4046073
+    },
+    {
+      "run": 1,
+      "build": "after",
+      "visit": "warm",
+      "buttonReadyMs": 5952,
+      "stableFrameMs": 6016,
+      "longestTaskMs": 2749,
+      "transferredBytes": 2100
+    },
+    {
+      "run": 2,
+      "build": "after",
+      "visit": "cold",
+      "buttonReadyMs": 6125,
+      "stableFrameMs": 6199,
+      "longestTaskMs": 2605,
+      "transferredBytes": 4046073
+    },
+    {
+      "run": 2,
+      "build": "after",
+      "visit": "warm",
+      "buttonReadyMs": 6080,
+      "stableFrameMs": 6160,
+      "longestTaskMs": 2687,
+      "transferredBytes": 2100
+    },
+    {
+      "run": 2,
+      "build": "before",
+      "visit": "cold",
+      "buttonReadyMs": 12950,
+      "stableFrameMs": 14678,
+      "longestTaskMs": 6771,
+      "transferredBytes": 5101680
+    },
+    {
+      "run": 2,
+      "build": "before",
+      "visit": "warm",
+      "buttonReadyMs": 10522,
+      "stableFrameMs": 12014,
+      "longestTaskMs": 5437,
+      "transferredBytes": 0
+    },
+    {
+      "run": 3,
+      "build": "before",
+      "visit": "cold",
+      "buttonReadyMs": 12439,
+      "stableFrameMs": 14471,
+      "longestTaskMs": 6227,
+      "transferredBytes": 5101680
+    },
+    {
+      "run": 3,
+      "build": "before",
+      "visit": "warm",
+      "buttonReadyMs": 10830,
+      "stableFrameMs": 12325,
+      "longestTaskMs": 5583,
+      "transferredBytes": 0
+    },
+    {
+      "run": 3,
+      "build": "after",
+      "visit": "cold",
+      "buttonReadyMs": 7615,
+      "stableFrameMs": 7687,
+      "longestTaskMs": 3894,
+      "transferredBytes": 4046073
+    },
+    {
+      "run": 3,
+      "build": "after",
+      "visit": "warm",
+      "buttonReadyMs": 5993,
+      "stableFrameMs": 6054,
+      "longestTaskMs": 2791,
+      "transferredBytes": 2100
+    }
+  ],
+  "summary": {
+    "before": {
+      "cold": {
+        "readyMedianMs": 12950,
+        "stableFrameMedianMs": 14678,
+        "longestTaskMedianMs": 6771
+      },
+      "warm": {
+        "readyMedianMs": 10830,
+        "stableFrameMedianMs": 12325,
+        "longestTaskMedianMs": 5583
+      }
+    },
+    "after": {
+      "cold": {
+        "readyMedianMs": 6760,
+        "stableFrameMedianMs": 6832,
+        "longestTaskMedianMs": 3221
+      },
+      "warm": {
+        "readyMedianMs": 5993,
+        "stableFrameMedianMs": 6054,
+        "longestTaskMedianMs": 2749
+      }
+    }
+  }
+}

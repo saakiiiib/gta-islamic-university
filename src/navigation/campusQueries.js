@@ -38,7 +38,7 @@ function discIntersectsPolygon(point, radius, polygon) {
 
 class PolygonIndex {
   constructor(polygons, cellSize = 32) {
-    this.cells = new Map(); this.cellSize = cellSize;
+    this.cells = new Map(); this.cellSize = cellSize; this.ranges = new Map();
     polygons.forEach(polygon => {
       const b = ringBounds(polygon[0]);
       for (let x = Math.floor(b.minX / cellSize); x <= Math.floor(b.maxX / cellSize); x++) for (let z = Math.floor(b.minZ / cellSize); z <= Math.floor(b.maxZ / cellSize); z++) {
@@ -47,11 +47,21 @@ class PolygonIndex {
     });
   }
   near(bounds) {
-    const found = new Set(), size = this.cellSize;
-    for (let x = Math.floor(bounds.minX / size); x <= Math.floor(bounds.maxX / size); x++) for (let z = Math.floor(bounds.minZ / size); z <= Math.floor(bounds.maxZ / size); z++) {
+    const size = this.cellSize;
+    const x0 = Math.floor(bounds.minX / size), x1 = Math.floor(bounds.maxX / size), z0 = Math.floor(bounds.minZ / size), z1 = Math.floor(bounds.maxZ / size);
+    // Most walking/van queries occupy one cell. Reusing immutable candidates
+    // avoids allocating a Set and many duplicate keys for every footstep.
+    if (x0 === x1 && z0 === z1) return this.cells.get(`${x0},${z0}`) ?? [];
+    const key = `${x0},${x1},${z0},${z1}`;
+    if (this.ranges.has(key)) return this.ranges.get(key);
+    const found = new Set();
+    for (let x = x0; x <= x1; x++) for (let z = z0; z <= z1; z++) {
       for (const p of this.cells.get(`${x},${z}`) ?? []) found.add(p);
     }
-    return found;
+    const candidates = [...found];
+    if (this.ranges.size >= 256) this.ranges.delete(this.ranges.keys().next().value);
+    this.ranges.set(key, candidates);
+    return candidates;
   }
 }
 

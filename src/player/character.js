@@ -1,5 +1,7 @@
-import { createHujurCharacter, createNiqabCharacter, animateCharacterWalk } from './campusCharacters.js';
+import { createHujurCharacter, createNiqabCharacter, animateCharacterWalk, disposeCampusCharacter } from './campusCharacters.js';
 import * as THREE from 'three';
+
+const RELEASED_RIGS = new WeakSet();
 
 /** An original, metre-scaled student. The root origin is at the soles. */
 export function createStudent({ palette = {} } = {}) {
@@ -100,6 +102,23 @@ export function createCharacterRig(type = 'hujur', options = {}) {
     characterType: type,
     pose: null,
   };
+}
+
+/** Dispose the resources owned by a rig; cached campus materials and primitive
+ * buffers are released only when their final character stops using them. */
+export function disposeCharacterRig(rig) {
+  if (!rig || RELEASED_RIGS.has(rig)) return;
+  RELEASED_RIGS.add(rig);
+  if (rig.visual) disposeCampusCharacter(rig.visual);
+  else {
+    const geometries = new Set(), materials = new Set();
+    rig.group.traverse(object => {
+      if (object.geometry) geometries.add(object.geometry);
+      for (const material of Array.isArray(object.material) ? object.material : object.material ? [object.material] : []) materials.add(material);
+    });
+    geometries.forEach(geometry => geometry.dispose());
+    materials.forEach(material => material.dispose());
+  }
 }
 
 export function animateStudent(rig, state, time, dt = .01667) {

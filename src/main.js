@@ -1,7 +1,4 @@
-import './landing.css';
-import './style.css';
-import './ui/reactions.css';
-import './ui/touch.css';
+import { landing } from './landing.js';
 import * as THREE from 'three';
 import { loadMap } from './map/index.js';
 import { buildWorld } from './world/index.js';
@@ -14,7 +11,9 @@ import { TravelCamera } from './vehicle/camera.js';
 import { ReactionAudio } from './audio/reactions.js';
 import { TouchControls } from './player/touch.js';
 import { deviceProfile, renderPixelRatio } from './platform/device.js';
-import { applyWorldAssets } from './world/assets.js';
+import { createWorldAssetPipeline } from './world/assets.js';
+import { loadCampusPreparation } from './world/prepared.js';
+import { CAMPUS_MAP_SHA256, CAMPUS_MAP_BYTES } from './generated/campus-source.js';
 import { MAIN_GATE_CONFIG } from './world/mainGate.js';
 import { CampusVisibility } from './activity/visibility.js';
 
@@ -29,23 +28,19 @@ let simulation;
 let reactions;
 let touch, shadowElapsed = Infinity;
 let visibility;
+let assetPipeline, startupStage = 'map', latestAssetProgress;
 let accumulator = 0, lastTime = performance.now(), fps = 60;
 const STEP = 1 / 60;
 const sunOffset = new THREE.Vector3(-55, 110, -40);
 
-function progress(percent, message) {
-  const fill = $('loadingBar') || $('loading-fill');
-  if (fill) fill.style.width = `${percent}%`;
-  const pct = $('loadingPercent') || $('loading-percent');
-  if (pct) pct.textContent = `${percent}%`;
-  const msg = $('loadingMessage') || $('loading-message');
-  if (msg) msg.textContent = message;
-  const legacyFill = $('loading-fill');
-  if (legacyFill) legacyFill.style.width = `${percent}%`;
-  const legacyPct = $('loading-percent');
-  if (legacyPct) legacyPct.textContent = `${percent}%`;
-  const legacyMsg = $('loading-message');
-  if (legacyMsg) legacyMsg.textContent = message;
+const paint = () => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+function progress(message, counts) { landing.progress(message, counts); }
+async function warmOpeningFrame() {
+  // Parallel shader compilation avoids the first Enter click paying for linking.
+  await paint();
+  if (renderer.compileAsync) await renderer.compileAsync(scene, camera);
+  renderer.render(scene, camera);
+  await paint();
 }
 function resize() {
   if (!renderer) return;
@@ -77,6 +72,7 @@ function pause(reason = 'escape') {
 }
 async function play() {
   if (!['ready', 'paused'].includes(state) || document.hidden) return;
+  if (state === 'ready' && !landing.ready) return;
   const firstStart = state === 'ready';
   state = inspectionSession.active ? 'inspection' : 'playing'; accumulator = 0; lastTime = performance.now();
   inspectionSession.resume();
@@ -84,7 +80,7 @@ async function play() {
   reactions?.setSuspended(inspectionSession.active);
   if (!inspectionSession.active) reactions?.unlock();
   if (firstStart) { simulation.reset(); simulation.player.teleport(MAIN_GATE_CONFIG.exteriorSpawn, MAIN_GATE_CONFIG.exteriorSpawn.yaw); chase.setDriving(false); chase.reset(MAIN_GATE_CONFIG.exteriorSpawn); }
-  const landing = $('landing'); if (landing) landing.hidden = true;
+  const landingElement = $('landing'); if (landingElement) landingElement.hidden = true;
   $('start-screen').hidden = true; $('pause-screen').hidden = true; $('play-hud').hidden = false;
   $('pause-button').disabled = false;
   $('view-toolbar').hidden = false;
@@ -232,17 +228,29 @@ function tick(t) {
 
 async function initialize() {
   try {
-    progress(5, 'Reading the supplied campus map…');
-    mapData = await loadMap(`${import.meta.env.BASE_URL}data/map.osm`, message => progress(24, message));
-    progress(42, 'Creating roads, courtyards, gardens and water…');
-    // Yield so loading feedback reaches the screen before geometry construction.
-    await new Promise(resolve => requestAnimationFrame(resolve));
-    world = buildWorld(mapData, { onProgress: message => progress(62, message) });
-    progress(70, 'Loading campus materials and furniture…');
-    await applyWorldAssets(world, { baseURL: import.meta.env.BASE_URL, mobile: device.touch });
-    progress(76, 'Preparing movement and collision geometry…');
-    progress(82, 'Starting campus traffic and gathering thirty students…');
-    simulation = new CampusSimulation(mapData, world.collisionGroup, { scenery: world.scenery }); player = simulation.player;
+    performance.mark('campus-start');
+    assetPipeline = createWorldAssetPipeline({ baseURL: import.meta.env.BASE_URL, mobile: device.touch, onProgress: data => {
+      latestAssetProgress = data;
+      if (startupStage === 'materials') progress('Finishing opening-view materials…', data);
+    } });
+    progress('Reading the supplied campus map…');
+    mapData = await loadMap(`${import.meta.env.BASE_URL}data/map.osm`, message => progress(message), {
+      sha256: CAMPUS_MAP_SHA256,
+      expectedBytes: CAMPUS_MAP_BYTES,
+      onDownload: data => progress('Downloading the supplied campus map…', data),
+    });
+    startupStage = 'preparation';
+    const preparedData = await loadCampusPreparation(mapData, { onProgress: message => progress(message) });
+    performance.mark('campus-map-ready');
+    progress('Creating roads, courtyards, gardens and water…');
+    await paint();
+    world = buildWorld(mapData, { preparedData, onProgress: message => progress(message) });
+    performance.mark('campus-world-ready');
+    progress('Starting traffic, characters and collision systems…');
+    await paint();
+    simulation = new CampusSimulation(mapData, world.collisionGroup, { scenery: world.scenery, preparedData, characterType: landing.selection.value }); player = simulation.player;
+    simulation.setSuspended(true);
+    player.teleport(MAIN_GATE_CONFIG.exteriorSpawn, MAIN_GATE_CONFIG.exteriorSpawn.yaw);
     visibility = new CampusVisibility([player.world, player.sceneryWorld]);
     renderer = new THREE.WebGLRenderer({ canvas, antialias: device.antialias, powerPreference: 'high-performance' });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -252,13 +260,12 @@ async function initialize() {
     scene = new THREE.Scene(); scene.background = new THREE.Color(0xb3d5e6);
     gameplayFog = new THREE.Fog(0xb3d5e6, 300, 1500); scene.fog = gameplayFog;
     scene.add(world.group, player.group, simulation.fleetGroup, simulation.busGroup, simulation.ambulanceGroup, simulation.occupants.group, simulation.crowd.group, simulation.sideCharactersGroup);
-    simulation.player.setCharacterType('hujur');
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
     const cameraColliders = new THREE.Group();
     cameraColliders.add(world.collisionGroup);
     if (world.scenery?.collisionGroup) cameraColliders.add(world.scenery.collisionGroup);
     chase = new TravelCamera(camera, cameraColliders);
-    chase.reset(mapData.spawn);
+    chase.reset(MAIN_GATE_CONFIG.exteriorSpawn);
     input = new InputController(canvas, { onPause: reason => {
       if (reason === 'escape' && state === 'inspection') toggleInspection();
       else if (reason === 'escape' && state === 'paused') play();
@@ -292,18 +299,31 @@ async function initialize() {
       reactions.setVolume(Number.isFinite(preferences.volume) ? preferences.volume : .55); reactions.setMuted(preferences.muted === true);
     } catch { reactions.setVolume(.55); }
     $('sound-volume').value = Math.round(reactions.volume * 100);
-    // The opening view looks inward from the actual Main Gate spawn.
-    const facing = new THREE.Vector3(-Math.sin(mapData.spawn.yaw), 0, -Math.cos(mapData.spawn.yaw));
-    const focus = player.position.clone().addScaledVector(facing, 20);
-    camera.position.copy(player.position).addScaledVector(facing, -28).add(new THREE.Vector3(0, 15, 0));
-    camera.lookAt(focus.x, 2.5, focus.z);
-    progress(100, `${mapData.buildings.length} buildings · ${mapData.roads.length} routes · one real campus.`);
+    // Prepare exactly the third-person view used by the first gameplay frame.
+    chase.reset(MAIN_GATE_CONFIG.exteriorSpawn);
+    startupStage = 'materials';
+    progress('Finishing opening-view materials…', latestAssetProgress);
+    await assetPipeline.applyEssential(world, { camera, renderer });
+    startupStage = 'shaders';
+    progress('Preparing the first playable frame…');
+    do {
+      player.setCharacterType(landing.selection.value);
+      const selected = landing.selection.value;
+      await warmOpeningFrame();
+      if (selected === landing.selection.value) break;
+    } while (true);
+    performance.mark('campus-ready');
+    performance.measure('campus-startup', 'campus-start', 'campus-ready');
+    canvas.dataset.readyMs = Math.round(performance.now());
+    canvas.dataset.prepared = String(Boolean(preparedData));
+    canvas.dataset.character = player.characterType;
+    progress('Campus ready.', { completed: 1, total: 1 });
     $('start-label').textContent = 'STEP INTO CAMPUS'; $('start-button').disabled = false;
-    const enterBtn = $('enterButton'); if (enterBtn) enterBtn.disabled = false;
-    const enterLabel = $('enterButtonLabel'); if (enterLabel) enterLabel.textContent = 'EXPLORE CAMPUS';
-    const loadingPanel = $('loadingPanel'); if (loadingPanel) loadingPanel.hidden = true;
+    landing.setReady(true);
     state = 'ready'; document.body.dataset.gameState = state;
-    $('announcer').textContent = 'Campus ready. Select Step into campus to play.';
+    $('announcer').textContent = 'Campus ready. Select Enter Campus to play.';
+    startupStage = 'background';
+    assetPipeline.startBackground(world, { renderer }).catch(error => console.warn('Optional campus detail:', error));
     console.info('Campus data loaded', mapData.diagnostics.counts);
     if (mapData.diagnostics.repairs.length) console.info('Documented source geometry repairs', mapData.diagnostics.repairs);
     // DOM diagnostics support QA without exposing or changing game controls.
@@ -327,13 +347,10 @@ async function initialize() {
   } catch (error) {
     state = 'error'; document.body.dataset.gameState = state;
     const message = error?.message || String(error);
-    $('error-message').textContent = /webgl|context/i.test(message)
-      ? 'This prototype needs WebGL 2. Enable browser hardware acceleration and try a modern Chrome, Edge, or Firefox browser.'
-      : message;
-    $('error-message').hidden = false;
+    landing.fail(/webgl|context/i.test(message)
+      ? new Error('This prototype needs WebGL 2. Enable browser hardware acceleration and try a modern browser.')
+      : error);
     $('start-label').textContent = 'UNABLE TO START';
-    const enterErrLabel = $('enterButtonLabel'); if (enterErrLabel) enterErrLabel.textContent = 'UNABLE TO START';
-    progress(0, 'Campus loading stopped. See the message above.');
     console.error('Campus initialization failed', error);
   }
 }
@@ -342,52 +359,18 @@ $('start-button').addEventListener('click', play);
 const enterButton = $('enterButton');
 if (enterButton) enterButton.addEventListener('click', play);
 
-const motionToggle = $('motionToggle');
-const landingPage = $('landing');
-if (motionToggle && landingPage) {
-  motionToggle.addEventListener('click', () => {
-    const paused = landingPage.classList.toggle('motion-paused');
-    motionToggle.setAttribute('aria-pressed', String(paused));
-    motionToggle.setAttribute('aria-label', paused ? 'Resume background animation' : 'Pause background animation');
-    motionToggle.title = paused ? 'Resume background animation' : 'Pause background animation';
-    const sym = motionToggle.querySelector('.pause-symbol');
-    if (sym) sym.textContent = paused ? '▶' : 'Ⅱ';
-  });
-}
-
-const controlsButton = $('controlsButton');
-const controlsDialog = $('controlsDialog');
-if (controlsButton && controlsDialog) {
-  controlsButton.addEventListener('click', () => {
-    if (typeof controlsDialog.showModal === 'function') controlsDialog.showModal();
-    else controlsDialog.setAttribute('open', '');
-  });
-}
-document.querySelectorAll('[data-close-dialog]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const dialog = btn.closest('dialog');
-    if (dialog) dialog.close();
-  });
-});
-if (controlsDialog) {
-  controlsDialog.addEventListener('click', event => {
-    if (event.target === controlsDialog) controlsDialog.close();
-  });
-}
-
-document.querySelectorAll('.char-pill').forEach(pill => {
-  pill.addEventListener('click', () => {
-    document.querySelectorAll('.char-pill').forEach(p => {
-      p.classList.remove('active');
-      p.setAttribute('aria-pressed', 'false');
-    });
-    pill.classList.add('active');
-    pill.setAttribute('aria-pressed', 'true');
-    const charType = pill.dataset.char;
-    if (simulation?.player) {
-      simulation.player.setCharacterType(charType);
-    }
-  });
+let selectionVersion = 0, selectionWarmup = Promise.resolve();
+landing.selection.subscribe(type => {
+  if (!player) return;
+  player.setCharacterType(type);
+  canvas.dataset.character = player.characterType;
+  if (state !== 'ready') return;
+  const version = ++selectionVersion;
+  landing.setReady(false);
+  progress('Preparing your selected character…');
+  selectionWarmup = selectionWarmup.then(warmOpeningFrame).then(() => {
+    if (version === selectionVersion && state === 'ready') landing.setReady(true);
+  }).catch(error => { state = 'error'; landing.fail(error); });
 });
 $('resume-button').addEventListener('click', play);
 $('pause-button').addEventListener('click', () => pause());
@@ -405,7 +388,7 @@ window.visualViewport?.addEventListener('resize', resize);
 window.addEventListener('keydown', event => {
   if (event.repeat || /INPUT|TEXTAREA|SELECT/.test(event.target?.tagName ?? '')) return;
   if (event.code === 'F3') { event.preventDefault(); hud?.toggleDebug(); }
-  if (event.code === 'Enter' && state === 'ready') { event.preventDefault(); play(); }
+  if (event.code === 'Enter' && state === 'ready' && (event.target === document.body || event.target === canvas)) { event.preventDefault(); play(); }
   if (['playing', 'inspection'].includes(state)) {
     if (event.code === 'KeyI') { event.preventDefault(); toggleInspection(); }
     if (event.code === 'KeyL') { event.preventDefault(); toggleLabels(); }

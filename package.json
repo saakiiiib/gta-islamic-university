@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare:campus": "node scripts/prepare-campus.mjs",
+    "predev": "npm run prepare:campus",
+    "prebuild": "npm run prepare:campus",
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "build:pages": "npm run build && node scripts/prepare-pages.mjs",

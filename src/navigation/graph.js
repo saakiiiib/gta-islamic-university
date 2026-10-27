@@ -28,7 +28,8 @@ function parameter(point, segment) {
 }
 
 /** Build mapped footpaths plus conservative, explicitly estimated roadside walks. */
-export function buildPedestrianGraph(map, queries) {
+export function buildPedestrianGraph(map, queries, preparedGraph = null) {
+  if (preparedGraph) return hydratePedestrianGraph(map, queries, preparedGraph);
   const sources = walkingRoutes(map);
   const segments = [];
   for (const road of sources) {
@@ -114,6 +115,23 @@ export function buildPedestrianGraph(map, queries) {
     const stack = [node.id]; seen.add(node.id);
     while (stack.length) for (const neighbor of nodes[stack.pop()].neighbors) if (!seen.has(neighbor.to)) { seen.add(neighbor.to); stack.push(neighbor.to); }
   }
+  return hydratePedestrianGraph(map, queries, {nodes, edges, diagnostics: {sourceSegments: segments.length, intersections,
+    rejectedEdges: rejected, duplicateEdges: duplicates, components,
+    byType: Object.fromEntries(['footpath', 'roadside', 'crossing'].map(type => [type, edges.filter(e => e.walkingKind === type).length]))}});
+}
+
+/** Restore runtime query closures from the identical build-time nodes/edges. */
+export function hydratePedestrianGraph(map, queries, prepared) {
+  const { nodes, edges, diagnostics } = structuredClone(prepared);
+  if (nodes.some(node => !Array.isArray(node.neighbors))) {
+    for (const node of nodes) node.neighbors = [];
+    for (const { a, b, ...detail } of edges) {
+      nodes[a].neighbors.push({ to: b, ...detail });
+      nodes[b].neighbors.push({ to: a, ...detail });
+    }
+  }
+  const campus = map.campus?.polygons;
+  const validPoint = p => (!campus?.length || pointInMultiPolygon(p, campus)) && queries.discClear(...p, .28);
   const corridor = edge => Math.min(.8, Math.max(.42, (edge.width ?? 1.6) / 2 - .28));
   const routeCells = new Map(), cellSize = 8;
   for (const edge of edges) {
@@ -136,9 +154,7 @@ export function buildPedestrianGraph(map, queries) {
     for (let i = 0; i <= count; i++) if (!isWalkable(a[0] + (b[0] - a[0]) * i / count, a[1] + (b[1] - a[1]) * i / count, radius)) return false;
     return true;
   }
-  return {nodes, edges, isWalkable, segmentWalkable, diagnostics: {sourceSegments: segments.length, intersections,
-    rejectedEdges: rejected, duplicateEdges: duplicates, components,
-    byType: Object.fromEntries(['footpath', 'roadside', 'crossing'].map(type => [type, edges.filter(e => e.walkingKind === type).length]))}};
+  return {nodes, edges, isWalkable, segmentWalkable, diagnostics};
 }
 
 function pointToEdge(x, z, a, b) {

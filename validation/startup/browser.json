@@ -1,0 +1,367 @@
+[
+  {
+    "mobile": false,
+    "visit": "cold",
+    "readyMs": 3267,
+    "state": "ready",
+    "character": "niqab",
+    "prepared": "true",
+    "error": "",
+    "phases": [
+      {
+        "ms": 23,
+        "message": "Reading campus map…"
+      },
+      {
+        "ms": 181,
+        "message": "Loading supplied OpenStreetMap extract…"
+      },
+      {
+        "ms": 215,
+        "message": "Downloading the supplied campus map…"
+      },
+      {
+        "ms": 251,
+        "message": "Projecting campus coordinates and joining mapped footprints…"
+      },
+      {
+        "ms": 570,
+        "message": "Loaded 189 building footprints and 42 mapped roads."
+      },
+      {
+        "ms": 570,
+        "message": "Loading prepared campus routes and landscape…"
+      },
+      {
+        "ms": 682,
+        "message": "Prepared campus routes and landscape ready"
+      },
+      {
+        "ms": 682,
+        "message": "Creating roads, courtyards, gardens and water…"
+      },
+      {
+        "ms": 1092,
+        "message": "Starting traffic, characters and collision systems…"
+      },
+      {
+        "ms": 2296,
+        "message": "Finishing opening-view materials…"
+      },
+      {
+        "ms": 2722,
+        "message": "Preparing the first playable frame…"
+      },
+      {
+        "ms": 3268,
+        "message": "Campus ready."
+      }
+    ],
+    "longTasksMs": [
+      194,
+      337,
+      1198,
+      258
+    ],
+    "transferredBytes": 4046064,
+    "visibleChoices": [
+      "Male",
+      "Female"
+    ],
+    "actorData": {
+      "engine": "three.js r186",
+      "readyMs": "3267",
+      "prepared": "true",
+      "character": "niqab",
+      "position": "315.25,0.00,-71.91",
+      "grounded": "true",
+      "cameraMode": "student",
+      "vehicleSpeed": "0.00",
+      "pedestrians": "30",
+      "vans": "8",
+      "durability": "100.0",
+      "inputMode": "desktop",
+      "pixelRatio": "1.00",
+      "cameraHeading": "2.187",
+      "nearbyNpcs": "18",
+      "visibleNpcs": "9",
+      "visibleVans": "3",
+      "movingVans": "3"
+    },
+    "errors": []
+  },
+  {
+    "mobile": false,
+    "visit": "warm",
+    "readyMs": 4455,
+    "state": "ready",
+    "character": "hujur",
+    "prepared": "true",
+    "error": "",
+    "phases": [
+      {
+        "ms": 63,
+        "message": "Reading campus map…"
+      },
+      {
+        "ms": 390,
+        "message": "Loading supplied OpenStreetMap extract…"
+      },
+      {
+        "ms": 431,
+        "message": "Downloading the supplied campus map…"
+      },
+      {
+        "ms": 435,
+        "message": "Projecting campus coordinates and joining mapped footprints…"
+      },
+      {
+        "ms": 812,
+        "message": "Loaded 189 building footprints and 42 mapped roads."
+      },
+      {
+        "ms": 814,
+        "message": "Loading prepared campus routes and landscape…"
+      },
+      {
+        "ms": 893,
+        "message": "Prepared campus routes and landscape ready"
+      },
+      {
+        "ms": 893,
+        "message": "Creating roads, courtyards, gardens and water…"
+      },
+      {
+        "ms": 1545,
+        "message": "Starting traffic, characters and collision systems…"
+      },
+      {
+        "ms": 3540,
+        "message": "Finishing opening-view materials…"
+      },
+      {
+        "ms": 4061,
+        "message": "Preparing the first playable frame…"
+      },
+      {
+        "ms": 4456,
+        "message": "Campus ready."
+      }
+    ],
+    "longTasksMs": [
+      344,
+      651,
+      2018,
+      275
+    ],
+    "transferredBytes": 2100,
+    "visibleChoices": [
+      "Male",
+      "Female"
+    ],
+    "actorData": {
+      "engine": "three.js r186",
+      "readyMs": "4455",
+      "prepared": "true",
+      "character": "hujur",
+      "position": "315.25,0.00,-71.91",
+      "grounded": "true",
+      "cameraMode": "student",
+      "vehicleSpeed": "0.00",
+      "pedestrians": "30",
+      "vans": "8",
+      "durability": "100.0",
+      "inputMode": "desktop",
+      "pixelRatio": "1.00",
+      "cameraHeading": "2.187",
+      "nearbyNpcs": "18",
+      "visibleNpcs": "8",
+      "visibleVans": "3",
+      "movingVans": "3"
+    },
+    "errors": []
+  },
+  {
+    "mobile": true,
+    "visit": "cold",
+    "readyMs": 6068,
+    "state": "ready",
+    "character": "niqab",
+    "prepared": "true",
+    "error": "",
+    "phases": [
+      {
+        "ms": 70,
+        "message": "Reading campus map…"
+      },
+      {
+        "ms": 543,
+        "message": "Loading supplied OpenStreetMap extract…"
+      },
+      {
+        "ms": 700,
+        "message": "Downloading the supplied campus map…"
+      },
+      {
+        "ms": 712,
+        "message": "Projecting campus coordinates and joining mapped footprints…"
+      },
+      {
+        "ms": 1203,
+        "message": "Loaded 189 building footprints and 42 mapped roads."
+      },
+      {
+        "ms": 1204,
+        "message": "Loading prepared campus routes and landscape…"
+      },
+      {
+        "ms": 1404,
+        "message": "Prepared campus routes and landscape ready"
+      },
+      {
+        "ms": 1404,
+        "message": "Creating roads, courtyards, gardens and water…"
+      },
+      {
+        "ms": 1981,
+        "message": "Starting traffic, characters and collision systems…"
+      },
+      {
+        "ms": 4664,
+        "message": "Finishing opening-view materials…"
+      },
+      {
+        "ms": 4924,
+        "message": "Preparing the first playable frame…"
+      },
+      {
+        "ms": 6070,
+        "message": "Campus ready."
+      }
+    ],
+    "longTasksMs": [
+      495,
+      575,
+      2689,
+      219,
+      655
+    ],
+    "transferredBytes": 2043684,
+    "visibleChoices": [
+      "Male",
+      "Female"
+    ],
+    "actorData": {
+      "engine": "three.js r186",
+      "readyMs": "6068",
+      "prepared": "true",
+      "character": "niqab",
+      "position": "317.50,0.00,-73.50",
+      "grounded": "true",
+      "cameraMode": "student",
+      "vehicleSpeed": "0.00",
+      "pedestrians": "30",
+      "vans": "8",
+      "durability": "100.0",
+      "inputMode": "touch",
+      "pixelRatio": "1.25",
+      "cameraHeading": "2.187",
+      "nearbyNpcs": "18",
+      "visibleNpcs": "0",
+      "visibleVans": "0",
+      "movingVans": "3"
+    },
+    "errors": []
+  },
+  {
+    "mobile": true,
+    "visit": "warm",
+    "readyMs": 3356,
+    "state": "ready",
+    "character": "hujur",
+    "prepared": "true",
+    "error": "",
+    "phases": [
+      {
+        "ms": 32,
+        "message": "Reading campus map…"
+      },
+      {
+        "ms": 248,
+        "message": "Loading supplied OpenStreetMap extract…"
+      },
+      {
+        "ms": 302,
+        "message": "Downloading the supplied campus map…"
+      },
+      {
+        "ms": 304,
+        "message": "Projecting campus coordinates and joining mapped footprints…"
+      },
+      {
+        "ms": 607,
+        "message": "Loaded 189 building footprints and 42 mapped roads."
+      },
+      {
+        "ms": 608,
+        "message": "Loading prepared campus routes and landscape…"
+      },
+      {
+        "ms": 674,
+        "message": "Prepared campus routes and landscape ready"
+      },
+      {
+        "ms": 674,
+        "message": "Creating roads, courtyards, gardens and water…"
+      },
+      {
+        "ms": 1101,
+        "message": "Starting traffic, characters and collision systems…"
+      },
+      {
+        "ms": 2682,
+        "message": "Finishing opening-view materials…"
+      },
+      {
+        "ms": 2924,
+        "message": "Preparing the first playable frame…"
+      },
+      {
+        "ms": 3357,
+        "message": "Campus ready."
+      }
+    ],
+    "longTasksMs": [
+      283,
+      427,
+      1583,
+      334
+    ],
+    "transferredBytes": 2100,
+    "visibleChoices": [
+      "Male",
+      "Female"
+    ],
+    "actorData": {
+      "engine": "three.js r186",
+      "readyMs": "3356",
+      "prepared": "true",
+      "character": "hujur",
+      "position": "317.50,0.00,-73.50",
+      "grounded": "true",
+      "cameraMode": "student",
+      "vehicleSpeed": "0.00",
+      "pedestrians": "30",
+      "vans": "8",
+      "durability": "100.0",
+      "inputMode": "touch",
+      "pixelRatio": "1.25",
+      "cameraHeading": "2.187",
+      "nearbyNpcs": "18",
+      "visibleNpcs": "0",
+      "visibleVans": "0",
+      "movingVans": "3"
+    },
+    "errors": []
+  }
+]

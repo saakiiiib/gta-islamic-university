@@ -1,0 +1,106 @@
+[
+  {
+    "mobile": false,
+    "checks": {
+      "walk": true,
+      "jump": true,
+      "pauseClears": true,
+      "occupants": true,
+      "driveSpeed": 4.365265813032025,
+      "movingExit": true,
+      "landing": true
+    },
+    "last": {
+      "state": "playing",
+      "position": [
+        261.28713507906605,
+        0.0000010000000046361812,
+        -75.91561030678314
+      ],
+      "vertical": 0,
+      "health": 95.0170824755865,
+      "yaw": 1.0616931477701046,
+      "speed": 2.288783399261119e-16,
+      "driving": false,
+      "vanSpeed": 3.197726233550467,
+      "playerVisible": true,
+      "drivers": 8,
+      "pointers": 0,
+      "moveX": 0,
+      "moveZ": 0,
+      "dpr": 1,
+      "touch": false,
+      "assets": {
+        "loaded": [
+          "Asphalt010",
+          "Concrete034",
+          "Bricks051",
+          "Grass004",
+          "painted_wooden_bench",
+          "CorrugatedSteel005"
+        ],
+        "failed": [],
+        "variant": "1024"
+      },
+      "audioClips": 4,
+      "audioState": "running",
+      "autonomous": true
+    },
+    "errors": [],
+    "notes": "Temporary headless desktop Chrome"
+  },
+  {
+    "mobile": true,
+    "checks": {
+      "simultaneousPointers": 2,
+      "moveAndLook": true,
+      "jump": true,
+      "sprint": true,
+      "pauseClears": true,
+      "occupants": true,
+      "driveSpeed": 4.408370556019888,
+      "movingExit": true,
+      "landing": true,
+      "portraitNoOverflow": true
+    },
+    "last": {
+      "state": "playing",
+      "position": [
+        260.5708230845784,
+        0.0000010000000046361812,
+        -76.32272460175608
+      ],
+      "vertical": -1.1102230246251565e-16,
+      "health": 95.19282282670365,
+      "yaw": 1.0616931477701046,
+      "speed": 6.66133814775094e-16,
+      "driving": false,
+      "vanSpeed": 3.2027135067959764,
+      "playerVisible": true,
+      "drivers": 8,
+      "pointers": 0,
+      "mode": "foot",
+      "moveX": 0,
+      "moveZ": 0,
+      "dpr": 1.25,
+      "touch": true,
+      "assets": {
+        "loaded": [
+          "Asphalt010",
+          "Concrete034",
+          "Bricks051",
+          "Grass004",
+          "painted_wooden_bench",
+          "CorrugatedSteel005"
+        ],
+        "failed": [],
+        "variant": "512"
+      },
+      "audioClips": 4,
+      "audioState": "running",
+      "autonomous": true
+    },
+    "errors": [],
+    "notes": "Chrome touch/iPhone viewport emulation; not physical iOS Safari"
+  }
+]

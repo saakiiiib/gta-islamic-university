@@ -2,7 +2,7 @@ import { Vector3, MathUtils } from 'three';
 import { Capsule } from 'three/addons/math/Capsule.js';
 import { PLAYER_CONFIG } from '../config.js';
 import { CollisionWorld, isWaterBlocked } from './collision.js';
-import { createStudent, createCharacterRig, animateStudent } from './character.js';
+import { createCharacterRig, animateStudent, disposeCharacterRig } from './character.js';
 import { resolveVanCapsule } from './vanCollisions.js';
 
 export function movementDirection(input = {}, cameraYaw = 0) {
@@ -247,26 +247,40 @@ export class PlayerController {
 
 
   setCharacterType(type) {
-    if (this.characterType === type) return;
-    this.characterType = type;
-    const oldGroup = this.group;
-    this.rig = createCharacterRig(this.characterType);
-    this.group = this.rig.group;
-    this.group.position.copy(this.position);
-    this.group.rotation.set(0, this.yaw, 0);
-    this.group.visible = oldGroup.visible;
-    if (oldGroup.parent) {
-      oldGroup.parent.add(this.group);
-      oldGroup.parent.remove(oldGroup);
+    if (this.characterType === type) return false;
+    const oldRig = this.rig, oldGroup = this.group;
+    const rig = createCharacterRig(type), group = rig.group;
+    // The rendered root can be seated in a van independently of the walking
+    // capsule. Preserve its actual transform, not just the physics position.
+    group.position.copy(oldGroup.position);
+    group.quaternion.copy(oldGroup.quaternion);
+    group.scale.copy(oldGroup.scale);
+    group.visible = oldGroup.visible;
+    group.renderOrder = oldGroup.renderOrder;
+    rig.phase = oldRig.phase;
+    rig.pose = oldRig.pose ? { ...oldRig.pose } : null;
+    rig.body.position.copy(oldRig.body.position);
+    rig.body.rotation.copy(oldRig.body.rotation);
+    rig.head.rotation.copy(oldRig.head.rotation);
+    for (const name of ['arms', 'legs', 'knees']) {
+      rig[name].forEach((limb, index) => limb.rotation.copy(oldRig[name][index].rotation));
     }
+    if (rig.visual && oldRig.visual) {
+      const next = rig.visual.userData.campusRig, previous = oldRig.visual.userData.campusRig;
+      next.phase = previous.phase;
+      next.blend = previous.blend;
+      rig.visual.userData.walkTime = oldRig.visual.userData.walkTime;
+    }
+    if (oldGroup.parent) oldGroup.parent.add(group);
+    oldGroup.removeFromParent();
+    this.characterType = type;
+    this.rig = rig;
+    this.group = group;
+    disposeCharacterRig(oldRig);
+    return true;
   }
 
   dispose() {
-    const materials = new Set();
-    this.group.traverse(object => {
-      object.geometry?.dispose();
-      if (object.material) materials.add(object.material);
-    });
-    for (const material of materials) material.dispose();
+    disposeCharacterRig(this.rig);
   }
 }

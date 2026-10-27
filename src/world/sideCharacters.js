@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { createHujurCharacter, createNiqabCharacter, animateCharacterWalk, moveCampusNPCTo } from '../player/campusCharacters.js';
+import { createHujurCharacter, createNiqabCharacter, animateCharacterWalk, moveCampusNPCTo, disposeCampusCharacter } from '../player/campusCharacters.js';
 
 /**
  * Authentic 3D Campus Side Characters placed at landmark locations across Islamic University:
@@ -153,13 +153,7 @@ export class CampusSideCharacters {
 
   dispose() {
     for (const char of this.characters) {
-      char.model.traverse(obj => {
-        obj.geometry?.dispose();
-        if (obj.material) {
-          if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose());
-          else obj.material.dispose();
-        }
-      });
+      disposeCampusCharacter(char.model);
     }
     this.characters.length = 0;
     this.group.clear();

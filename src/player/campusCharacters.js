@@ -14,12 +14,30 @@ import * as THREE from 'three';
 const PI = Math.PI;
 const cache = new Map();
 const SCARF_TEXTURES = new Map();
+const GEOMETRIES = new Map();
+const GEOMETRY_USERS = new WeakMap();
+const MATERIAL_ENTRIES = new WeakMap();
+const CHARACTER_MATERIALS = new WeakMap();
+const RELEASED_CHARACTERS = new WeakSet();
+
+// These meshes only animate through Object3D transforms. Reusing their immutable
+// buffers preserves every vertex while avoiding regeneration for each scholar.
+function sharedGeometry(key, create) {
+  if (!GEOMETRIES.has(key)) {
+    const geometry = create();
+    GEOMETRIES.set(key, geometry);
+    GEOMETRY_USERS.set(geometry, { key, references: 0 });
+  }
+  return GEOMETRIES.get(key);
+}
 
 function standard(color, roughness = 0.86, side = THREE.FrontSide) {
   return new THREE.MeshStandardMaterial({ color, roughness, metalness: 0, side });
 }
 
 function mesh(g, m, parent, x = 0, y = 0, z = 0, shadow = true) {
+  const ownership = GEOMETRY_USERS.get(g);
+  if (ownership) ownership.references++;
   const obj = new THREE.Mesh(g, m);
   obj.position.set(x, y, z);
   obj.castShadow = shadow;
@@ -29,20 +47,21 @@ function mesh(g, m, parent, x = 0, y = 0, z = 0, shadow = true) {
 }
 
 function ellipsoid(parent, mat, size, pos, detail = 16) {
-  const obj = mesh(new THREE.SphereGeometry(1, detail, Math.max(10, detail - 4)), mat, parent, ...pos);
+  const obj = mesh(sharedGeometry(`sphere:${detail}`, () => new THREE.SphereGeometry(1, detail, Math.max(10, detail - 4))), mat, parent, ...pos);
   obj.scale.set(...size);
   return obj;
 }
 
 function cylinder(parent, mat, top, bottom, length, segments, pos) {
-  return mesh(new THREE.CylinderGeometry(top, bottom, length, segments), mat, parent, ...pos);
+  return mesh(sharedGeometry(`cylinder:${top}:${bottom}:${length}:${segments}`, () => new THREE.CylinderGeometry(top, bottom, length, segments)), mat, parent, ...pos);
 }
 
 function roundLine(parent, mat, from, to, radius = 0.01, segs = 7) {
   const A = new THREE.Vector3(...from);
   const B = new THREE.Vector3(...to);
   const dir = B.clone().sub(A);
-  const line = mesh(new THREE.CylinderGeometry(radius, radius, dir.length(), segs), mat, parent, ...A.clone().add(B).multiplyScalar(0.5).toArray(), false);
+  const length = dir.length();
+  const line = mesh(sharedGeometry(`cylinder:${radius}:${radius}:${length}:${segs}`, () => new THREE.CylinderGeometry(radius, radius, length, segs)), mat, parent, ...A.clone().add(B).multiplyScalar(0.5).toArray(), false);
   line.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
   return line;
 }
@@ -119,7 +138,11 @@ function makeMaterials(type, opt) {
     beardColor: opt.beardColor,
     shoeColor: opt.shoeColor,
   });
-  if (cache.has(key)) return cache.get(key);
+  if (cache.has(key)) {
+    const entry = cache.get(key);
+    entry.references++;
+    return entry.materials;
+  }
 
   const tex = patternedScarf(opt.scarfColor);
   const m = {
@@ -136,8 +159,41 @@ function makeMaterials(type, opt) {
     agal: standard('#181819'),
     shadow: standard(0x33302d),
   };
-  cache.set(key, m);
+  const entry = { key, materials: m, references: 1 };
+  cache.set(key, entry);
+  MATERIAL_ENTRIES.set(m, entry);
   return m;
+}
+
+/** Release one character's buffers without invalidating another character's
+ * shared materials or the bounded scarf-texture cache. Safe to call twice. */
+export function disposeCampusCharacter(group) {
+  if (!group || RELEASED_CHARACTERS.has(group)) return;
+  RELEASED_CHARACTERS.add(group);
+  const entry = CHARACTER_MATERIALS.get(group);
+  const sharedMaterials = new Set(Object.values(entry?.materials ?? {}));
+  const geometries = new Map(), ownMaterials = new Set();
+  group.traverse(object => {
+    if (object.geometry) geometries.set(object.geometry, (geometries.get(object.geometry) ?? 0) + 1);
+    for (const material of Array.isArray(object.material) ? object.material : object.material ? [object.material] : []) {
+      if (!sharedMaterials.has(material)) ownMaterials.add(material);
+    }
+  });
+  for (const [geometry, count] of geometries) {
+    const ownership = GEOMETRY_USERS.get(geometry);
+    if (!ownership) geometry.dispose();
+    else if ((ownership.references -= count) <= 0) {
+      GEOMETRIES.delete(ownership.key);
+      GEOMETRY_USERS.delete(geometry);
+      geometry.dispose();
+    }
+  }
+  ownMaterials.forEach(material => material.dispose());
+  if (entry && --entry.references === 0) {
+    cache.delete(entry.key);
+    new Set(Object.values(entry.materials)).forEach(material => material.dispose());
+  }
+  CHARACTER_MATERIALS.delete(group);
 }
 
 function createRobe(body, m) {
@@ -235,7 +291,8 @@ function createScarf(headGroup, mats) {
   }
 }
 
-function newRig(group, robe, headPivot, armL, armR, legL, legR, kind) {
+function newRig(group, robe, headPivot, armL, armR, legL, legR, kind, materials) {
+  CHARACTER_MATERIALS.set(group, MATERIAL_ENTRIES.get(materials));
   group.userData.campusRig = {
     kind,
     torso: robe,
@@ -294,7 +351,7 @@ export function createHujurCharacter(options = {}) {
   createFace(headGroup, mats);
   createScarf(headGroup, mats);
 
-  newRig(group, body, headGroup, leftArm, rightArm, leftLeg, rightLeg, 'hujur');
+  newRig(group, body, headGroup, leftArm, rightArm, leftLeg, rightLeg, 'hujur', mats);
   return group;
 }
 
@@ -352,7 +409,7 @@ export function createNiqabCharacter(options = {}) {
      [0.36, -0.7, 0.13], [-0.36, -0.7, 0.13]],
     [[0, 0], [1, 0], [1, 1], [0, 1]]);
 
-  newRig(root, body, head, armL, armR, legL, legR, 'niqab');
+  newRig(root, body, head, armL, armR, legL, legR, 'niqab', m);
   return root;
 }
 

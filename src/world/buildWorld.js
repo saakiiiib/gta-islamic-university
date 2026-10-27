@@ -98,7 +98,7 @@ function addTrees(mapData, group, materials, decoration) {
   canopy.castShadow = canopy.receiveShadow = true; group.add(canopy);
 }
 
-export function buildWorld(mapData, { onProgress = () => {} } = {}) {
+export function buildWorld(mapData, { onProgress = () => {}, preparedData = null } = {}) {
   const group = new THREE.Group(); group.name = 'islamic-university-map';
   const collisionGroup = new THREE.Group(); collisionGroup.name = 'campus-colliders'; collisionGroup.visible = false;
   const standard = (color, options = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.94, ...options });
@@ -148,7 +148,7 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
     }
   }
   onProgress('Joining roads and opening walking connections');
-  const roadAppearance = buildRoadAppearance(mapData);
+  const roadAppearance = preparedData?.roads ?? buildRoadAppearance(mapData);
   for (const [key, level, color] of [['asphalt', ROAD_LEVELS.asphalt, 0x343e43], ['paths', ROAD_LEVELS.path, 0xd2c29c], ['edges', ROAD_LEVELS.edge, 0xbac2ad], ['markings', ROAD_LEVELS.marking, 0xeae4b6]]) {
     for (const polygon of roadAppearance[key]) {
       const [x, z] = polygonCenter(polygon);
@@ -190,9 +190,9 @@ export function buildWorld(mapData, { onProgress = () => {} } = {}) {
     for (const rail of geometries.rails) batches.add(rail, materials.rail, ...centre, { kind: 'bridge-rail' });
   }
   batches.finish();
-  const vegetation = planVegetation(mapData);
+  const vegetation = preparedData?.vegetation ?? planVegetation(mapData);
   addTrees(mapData, group, materials, vegetation);
-  const scenery = buildScenery(mapData, { vegetation });
+  const scenery = buildScenery(mapData, { vegetation, preparedProps: preparedData?.scenery });
   group.add(scenery.group);
   const mainGate = buildMainGate({ mapData });
   group.add(mainGate.group);

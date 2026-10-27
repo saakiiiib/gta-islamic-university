@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(process.env.PLAYWRIGHT_MODULE).href : 'playwright');
 const url = process.argv[2] ?? 'http://127.0.0.1:5176/';
-const output = resolve('validation/phase3'); await mkdir(output,{recursive:true});
+const output = resolve(process.env.CAMPUS_QA_OUTPUT ?? 'validation/phase3'); await mkdir(output,{recursive:true});
 const browser = await chromium.launch({channel:'chrome',headless:true});
 const results = [];
 try {
@@ -18,18 +18,18 @@ try {
       const response=await route.fetch();
       await route.fulfill({response,body:await response.text()+`\n
 globalThis.__controlsQA={
-  get initialized(){return !!camera&&!!simulation&&!!hud;},
+  get initialized(){return state==='ready';},
   snapshot(){return {state,position:player.position.toArray(),vertical:player.velocity.y,health:player.health,yaw:chase.yaw,speed:player.speed,
     driving:simulation.session.driving,vanSpeed:simulation.session.van?.speed??0,playerVisible:player.group.visible,drivers:simulation.occupants.drivers.length,
     pointers:touch?.pointers.size??0,mode:touch?.mode,moveX:touch?.moveX??0,moveZ:touch?.moveZ??0,dpr:renderer.getPixelRatio(),touch:device.touch,
     assets:world.assetState,audioClips:reactions.clips.size,audioState:reactions.context?.state,autonomous:simulation.session.van?.autonomous??false};},
-  approach(){const v=simulation.vans[0],x=v.position.x-1.5*Math.cos(v.yaw)-.4*Math.sin(v.yaw),z=v.position.z+1.5*Math.sin(v.yaw)-.4*Math.cos(v.yaw);
+  approach(){const v=simulation.vans.find(v=>!v.autonomous)??simulation.vans[0],x=v.position.x-1.5*Math.cos(v.yaw)-.4*Math.sin(v.yaw),z=v.position.z+1.5*Math.sin(v.yaw)-.4*Math.cos(v.yaw);
     player.teleport({x,y:simulation.queries.groundHeight(x,z),z},v.yaw);input.clear();chase.reset({x,z,yaw:v.yaw});}
 };\n`});
     });
     await page.goto(url,{waitUntil:'networkidle',timeout:120000});
-    await page.waitForFunction(()=>globalThis.__controlsQA?.initialized,{timeout:120000});
-    await page.locator('#start-button').click();
+    await page.waitForFunction(()=>globalThis.__controlsQA?.initialized,null,{timeout:120000});
+    await page.locator('#enterButton').click();
     await page.waitForFunction(()=>document.body.dataset.gameState==='playing');
     await page.waitForTimeout(500);
     const before=await page.evaluate(()=>__controlsQA.snapshot()), checks={};

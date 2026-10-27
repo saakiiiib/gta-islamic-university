@@ -15,10 +15,11 @@ import { hornAudio } from '../audio/horn.js';
 
 /** All moving campus entities share this fixed-step, explicitly suspended simulation. */
 export class CampusSimulation {
-  constructor(mapData, collisionGroup, { renderCrowd = true, scenery = null } = {}) {
+  constructor(mapData, collisionGroup, { renderCrowd = true, scenery = null, preparedData = null, characterType = 'student' } = {}) {
     this.map = mapData; this.suspended = false; this.yieldingForPedestrian = false; this.events = []; this.lastCollision = null;
     this.queries = new CampusQueries(mapData, { obstacles: scenery?.obstacles ?? [] });
-    this.player = new PlayerController({ collisionGroup, sceneryCollisionGroup: scenery?.collisionGroup, mapData });
+    this.queries.preparedVehicleNetwork = preparedData?.vehicleNetwork;
+    this.player = new PlayerController({ collisionGroup, sceneryCollisionGroup: scenery?.collisionGroup, mapData, characterType });
     const fleet = createVanFleet(mapData, this.queries);
     this.vans = fleet.vans; this.fleetGroup = fleet.group;
     this.bus = new DoubleDeckerBus({ queries: this.queries, spawn: { ...MAIN_GATE_CONFIG.busParking, y: 0 } });
@@ -33,7 +34,7 @@ export class CampusSimulation {
       bus: this.bus,
     });
     this.player.update(1 / 60); this.player.rig.pose = null; this.player.animate(0);
-    this.graph = buildPedestrianGraph(mapData, this.queries);
+    this.graph = buildPedestrianGraph(mapData, this.queries, preparedData?.pedestrianGraph);
     const avoidList = [...this.vans.map(v => ({ ...v.position, radius: 5 })), { ...this.bus.position, radius: 7 }];
     this.crowd = new PedestrianSystem(mapData, this.queries, this.graph, { count: 30, render: renderCrowd, avoid: avoidList });
     this.impacts = new ImpactSystem(this.crowd);

@@ -184,6 +184,13 @@ export function buildVehicleRoutes(map, queries) {
 
 const networks = new WeakMap();
 export function getVehicleNetwork(map, queries) {
-  if (!networks.has(queries)) networks.set(queries, buildVehicleRoutes(map, queries));
+  if (!networks.has(queries)) {
+    const prepared = queries.preparedVehicleNetwork;
+    if (prepared) {
+      const network = structuredClone(prepared), roads = new Map((map.roads ?? []).map(r => [r.id, r]));
+      for (const edge of network.graph.edges) if (typeof edge.road === 'string') edge.road = roads.get(edge.road);
+      networks.set(queries, network);
+    } else networks.set(queries, buildVehicleRoutes(map, queries));
+  }
   return networks.get(queries);
 }

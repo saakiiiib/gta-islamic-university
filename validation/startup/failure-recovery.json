@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "missing-optional",
+    "state": "ready",
+    "readyMs": "6642",
+    "prepared": "true",
+    "errors": []
+  },
+  {
+    "mode": "corrupt-preparation",
+    "state": "ready",
+    "readyMs": "13001",
+    "prepared": "false",
+    "errors": []
+  },
+  {
+    "mode": "storage-unavailable",
+    "state": "ready",
+    "readyMs": "6932",
+    "prepared": "true",
+    "errors": []
+  },
+  {
+    "mode": "map-error-and-retry",
+    "state": "error",
+    "readyMs": null,
+    "prepared": null,
+    "errors": [],
+    "retry": "ready"
+  },
+  {
+    "mode": "stalled-texture",
+    "state": "ready",
+    "readyMs": "26554",
+    "prepared": "true",
+    "errors": []
+  }
+]
