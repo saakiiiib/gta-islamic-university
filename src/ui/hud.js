@@ -5,7 +5,8 @@ export class HUD {
     this.touch = touch;
     this.data = data; this.map = new Minimap($('minimap'), data); this.accumulated = 1;
     this.toastUntil = 0; this.debug = false;
-    $('building-count').textContent = data.buildings.length;
+    const countEl = $('building-count');
+    if (countEl) countEl.textContent = data.buildings.length;
   }
   update(dt, player, renderer, fps, { inspection = false, simulation, visibility = {} } = {}) {
     this.accumulated += dt;

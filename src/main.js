@@ -34,9 +34,18 @@ const STEP = 1 / 60;
 const sunOffset = new THREE.Vector3(-55, 110, -40);
 
 function progress(percent, message) {
-  $('loading-fill').style.width = `${percent}%`;
-  $('loading-percent').textContent = `${percent}%`;
-  $('loading-message').textContent = message;
+  const fill = $('loadingBar') || $('loading-fill');
+  if (fill) fill.style.width = `${percent}%`;
+  const pct = $('loadingPercent') || $('loading-percent');
+  if (pct) pct.textContent = `${percent}%`;
+  const msg = $('loadingMessage') || $('loading-message');
+  if (msg) msg.textContent = message;
+  const legacyFill = $('loading-fill');
+  if (legacyFill) legacyFill.style.width = `${percent}%`;
+  const legacyPct = $('loading-percent');
+  if (legacyPct) legacyPct.textContent = `${percent}%`;
+  const legacyMsg = $('loading-message');
+  if (legacyMsg) legacyMsg.textContent = message;
 }
 function resize() {
   if (!renderer) return;
