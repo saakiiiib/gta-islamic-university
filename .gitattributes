@@ -1,3 +1,5 @@
-# Keep the recorded-voice manifest identical in Windows builds and GitHub Pages.
+# Keep the recorded-voice manifest and map data identical across Windows builds and GitHub Pages.
 public/audio/reactions.json text eol=lf
 docs/audio/reactions.json text eol=lf
+public/data/map.osm text eol=lf
+docs/data/map.osm text eol=lf

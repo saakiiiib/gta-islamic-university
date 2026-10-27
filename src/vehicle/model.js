@@ -49,7 +49,8 @@ function builder() {
   };
 }
 
-export function createElectricVanModel() {
+export function createElectricVanModel({ livery = {} } = {}) {
+  const primary = livery.primary ?? C.green, secondary = livery.secondary ?? C.red, trim = livery.trim ?? C.yellow, accent = livery.accent ?? C.blue;
   const material = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.77, metalness: 0.12, side: THREE.DoubleSide });
   const box = new THREE.BoxGeometry(1, 1, 1);
   const tube = new THREE.CylinderGeometry(1, 1, 1, 8);
@@ -83,20 +84,20 @@ export function createElectricVanModel() {
   // Thin open deck, with alternating painted slats and the bright outer lip.
   block(chassis, C.darkSteel, 0, 0.775, 0.93, 1.43, 0.035, 1.61);
   for (let z = 0.23, i = 0; i < 8; i++, z += 0.202) {
-    block(chassis, i % 2 ? C.red : C.green, 0, 0.815, z, 1.27, 0.027, 0.085);
+    block(chassis, i % 2 ? secondary : primary, 0, 0.815, z, 1.27, 0.027, 0.085);
   }
   for (const x of [-0.72, 0.72]) {
-    block(chassis, C.yellow, x, 0.82, 0.93, 0.06, 0.065, 1.64);
-    block(chassis, C.blue, x, 0.772, 0.93, 0.055, 0.035, 1.64);
+    block(chassis, trim, x, 0.82, 0.93, 0.06, 0.065, 1.64);
+    block(chassis, accent, x, 0.772, 0.93, 0.055, 0.035, 1.64);
   }
   for (const z of [0.11, 1.745]) {
-    block(chassis, C.yellow, 0, 0.82, z, 1.47, 0.065, 0.05);
-    block(chassis, C.blue, 0, 0.772, z, 1.47, 0.035, 0.055);
+    block(chassis, trim, 0, 0.82, z, 1.47, 0.065, 0.05);
+    block(chassis, accent, 0, 0.772, z, 1.47, 0.035, 0.055);
   }
   // Cargo rack supports and the bicycle triangle stay visibly open underneath.
   for (const x of [-0.57, 0.57]) {
-    rod(chassis, C.green, [x, 0.77, 0.18], [x * 0.92, 0.36, 0.85], 0.018);
-    rod(chassis, C.red, [x, 0.77, 1.66], [x * 0.92, 0.36, 0.85], 0.018);
+    rod(chassis, primary, [x, 0.77, 0.18], [x * 0.92, 0.36, 0.85], 0.018);
+    rod(chassis, secondary, [x, 0.77, 1.66], [x * 0.92, 0.36, 0.85], 0.018);
     rod(chassis, C.darkSteel, [x * 0.92, 0.36, 0.85], [0, 0.43, 0.28], 0.014);
   }
   const crank = [0, 0.47, -0.23];

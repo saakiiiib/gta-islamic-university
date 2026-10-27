@@ -8,7 +8,8 @@ export const VAN_CONFIG = Object.freeze({ maxSpeed: 8, reverseSpeed: 2.5, accele
 const approach = (value, target, delta) => value < target ? Math.min(target, value + delta) : Math.max(target, value - delta);
 
 export class ElectricVan {
-  constructor({ queries, spawn, config = {}, model = createElectricVanModel() }) {
+  constructor({ queries, spawn, config = {}, model, livery } = {}) {
+    model = model ?? createElectricVanModel({ livery: livery ?? spawn?.livery });
     this.queries = queries; this.config = { ...VAN_CONFIG, ...config }; this.model = model; this.group = model.group;
     this.position = new Vector3(); this.yaw = 0; this.speed = 0; this.steering = 0; this.wheelAngle = 0;
     this.occupied = false; this.hitObstacle = false; this.acceleration = 0; this.visualLean = 0; this.visualPitch = 0;

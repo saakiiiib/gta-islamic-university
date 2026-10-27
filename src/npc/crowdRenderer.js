@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import { createStudent, animateStudent } from '../player/character.js';
 
-const SHIRTS = [0xeab85e, 0x498f99, 0xb45e63, 0xe0dbc7, 0x638e69, 0x6986b8, 0xc18a55, 0x826b9c];
-const SKINS = [0x9c633d, 0xb97b50, 0x835337, 0xc08c63];
+const SHIRTS = [0xeab85e, 0x2b6b55, 0xb44b42, 0xf4ede2, 0x35688f, 0x638e69, 0x8c4b6e, 0x498f99, 0xd9823b, 0x506575, 0xc7ad7b, 0x785642, 0x3e7769, 0xa85659, 0x6e527d, 0xded5be];
+const SKINS = [0x8c5535, 0x9e653f, 0xb4794e, 0xc48c62, 0x7a472c, 0xd09c73];
+const TROUSERS = [0x253238, 0x3e454c, 0x1e2d3d, 0x4a433d, 0x2b382d, 0xd8ceba];
+const BAGS = [0x425e57, 0x6f5845, 0x324759, 0x7c4f38, 0x4b4f54, 0x826d42];
 
 /** Animated rigs are drawn as three instanced primitive batches. */
 export class CrowdRenderer {
@@ -13,7 +15,7 @@ export class CrowdRenderer {
     this.material = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .9 });
     this.slots = { box: [], head: [], hair: [] }; this.batches = {};
     agents.forEach((agent, index) => {
-      const rig = createStudent({ palette: { shirt: SHIRTS[index % SHIRTS.length], skin: SKINS[index % SKINS.length], navy: index % 3 ? 0x304050 : 0x59504b, bag: index % 2 ? 0x6f5845 : 0x425e57 } });
+      const rig = createStudent({ palette: { shirt: SHIRTS[index % SHIRTS.length], skin: SKINS[index % SKINS.length], navy: TROUSERS[index % TROUSERS.length], bag: BAGS[index % BAGS.length] } });
       rig.group.scale.setScalar(.95 + (index % 4) * .025); agent.rig = rig;
       rig.group.traverse(mesh => {
         if (!mesh.isMesh) return;

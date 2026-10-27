@@ -16,10 +16,10 @@ export function classifyBuilding(building) {
 }
 
 export const BUILDING_PALETTES = Object.freeze({
-  academic: { walls: [0xddc79e, 0xc9b18c, 0xe3d1ae], roof: 0x5c7377, accent: 0xa2674a, map: '#c2ac82' },
-  residential: { walls: [0xc78d70, 0xd5a182, 0xbc806d], roof: 0x616f70, accent: 0x85513e, map: '#bf876d' },
+  academic: { walls: [0xddc79e, 0xc9b18c, 0xe4d3b4], roof: 0x566e72, accent: 0xa86749, map: '#c2ac82' },
+  residential: { walls: [0xc88568, 0xd49b7c, 0xbd7a66], roof: 0x5d6d6e, accent: 0x8a4e3a, map: '#bf876d' },
   civic: { walls: [0xa9c8bf, 0xc1d4c4, 0x96bab6], roof: 0x4e7378, accent: 0x3e7772, map: '#94b6aa' },
-  worship: { walls: [0xe6e4c7, 0xd0dec3], roof: 0x428d79, accent: 0x5e9c86, map: '#86b69d' },
+  worship: { walls: [0xeae8ce, 0xd2dfc7], roof: 0x3d8c77, accent: 0x589a83, map: '#86b69d' },
   construction: { walls: [0x9c8a78, 0xaa8e77], roof: 0x807b70, accent: 0x8b674d, map: '#918475' },
   unclassified: { walls: [0xd1c8ac, 0xbccdb6, 0xd4b6a2, 0xb6c9cc], roof: 0x687b78, accent: 0x85947c, map: '#b4bda4' },
 });
@@ -29,5 +29,5 @@ export function buildingPalette(building) {
   return { kind, ...family, wall: family.walls[hashId(building.id) % family.walls.length] };
 }
 
-export const LAND_COLORS = Object.freeze({ ground: 0x7e9e62, grass: 0x7da76b, garden: 0x609b56, park: 0x70a77b,
-  forest: 0x477c56, orchard: 0x799954, pitch: 0x9cbb78, water: 0x2b93a1 });
+export const LAND_COLORS = Object.freeze({ ground: 0x7ba05f, grass: 0x76a35f, garden: 0x59964e, park: 0x6ca374,
+  forest: 0x447953, orchard: 0x779751, pitch: 0x98b873, water: 0x258f9e });

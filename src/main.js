@@ -133,8 +133,8 @@ function toggleAlignment() {
 }
 
 function lighting() {
-  scene.add(new THREE.HemisphereLight(0xd9e7ed, 0x879078, 1.55));
-  sun = new THREE.DirectionalLight(0xffeed7, 2.0);
+  scene.add(new THREE.HemisphereLight(0xe4edf2, 0x829272, 1.6));
+  sun = new THREE.DirectionalLight(0xfff1dc, 2.15);
   sun.castShadow = true;
   sun.shadow.mapSize.set(device.shadowSize, device.shadowSize);
   const extent = device.shadowExtent;
@@ -227,8 +227,8 @@ async function initialize() {
     renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = device.touch ? THREE.BasicShadowMap : THREE.PCFShadowMap;
     renderer.shadowMap.autoUpdate = !device.touch; renderer.shadowMap.needsUpdate = true;
-    scene = new THREE.Scene(); scene.background = new THREE.Color(0xb0d0df);
-    gameplayFog = new THREE.Fog(0xb0d0df, 350, 1600); scene.fog = gameplayFog;
+    scene = new THREE.Scene(); scene.background = new THREE.Color(0xb3d5e6);
+    gameplayFog = new THREE.Fog(0xb3d5e6, 300, 1500); scene.fog = gameplayFog;
     scene.add(world.group, player.group, simulation.fleetGroup, simulation.occupants.group, simulation.crowd.group);
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
     const cameraColliders = new THREE.Group();

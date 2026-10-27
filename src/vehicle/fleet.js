@@ -86,10 +86,21 @@ export function findFleetSpawns(map, queries, count = 8) {
   return selected.slice(0, count);
 }
 
+export const VAN_LIVERIES = Object.freeze([
+  { primary: 0x1e6b3d, secondary: 0xc43b28, trim: 0xf5d42c, accent: 0x2262a3 },
+  { primary: 0x225588, secondary: 0xe68a22, trim: 0xf0f0f0, accent: 0x1b3b5e },
+  { primary: 0x8a2d3c, secondary: 0x2c5c43, trim: 0xe8c547, accent: 0x5a1e28 },
+  { primary: 0x3d7068, secondary: 0xd96b27, trim: 0xffe066, accent: 0x254742 },
+  { primary: 0xd9822b, secondary: 0x1f4e5b, trim: 0xffffff, accent: 0x8c4e13 },
+  { primary: 0x4a5859, secondary: 0xc93b3b, trim: 0xf4d06f, accent: 0x2f3738 },
+  { primary: 0x286e42, secondary: 0xf0c048, trim: 0xffffff, accent: 0x184a2b },
+  { primary: 0x5c415d, secondary: 0x41705e, trim: 0xf7b05b, accent: 0x3b283c },
+]);
+
 export function createVanFleet(map, queries, count = 8) {
   const group = new Group(); group.name = 'electric-van-fleet';
   const vans = findFleetSpawns(map, queries, count).map((spawn, i) => {
-    const van = new ElectricVan({ queries, spawn }); van.id = i;
+    const van = new ElectricVan({ queries, spawn, livery: VAN_LIVERIES[i % VAN_LIVERIES.length] }); van.id = i;
     van.role = spawn.role; van.serviceRouteId = spawn.routeId ?? null;
     van.pickupHubId = spawn.hubId ?? null;
     van.group.name = `electricCargoTricycle-${i + 1}`; group.add(van.group); return van;
