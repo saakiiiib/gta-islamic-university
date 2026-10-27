@@ -9,17 +9,17 @@ test('Main Gate constructs authentic 4-arch Roman-Islamic architecture with call
   assert.equal(gate.group.name, 'islamic-university-main-gate');
   assert.ok(gate.collisionGroup.isGroup);
 
-  // 5 pillars + 1 central island + 2 boundary walls = 8 solid colliders
+  // 5 pillars + 1 central island + 2 boundary walls + 1 highway limit barrier = 9 solid colliders
   assert.ok(gate.collisionGroup.children.length >= 8);
-  assert.ok(gate.obstacles.length >= 6);
+  assert.ok(gate.obstacles.length >= 7);
 
   // Verify gate location matches OSM Entrance Node 9027931168
   assert.equal(MAIN_GATE_CONFIG.position.x, 304.91);
   assert.equal(MAIN_GATE_CONFIG.position.z, -64.49);
 
-  // Verify exterior player spawn on highway approach N704
-  assert.equal(MAIN_GATE_CONFIG.exteriorSpawn.x, 326.0);
-  assert.equal(MAIN_GATE_CONFIG.exteriorSpawn.z, -78.0);
+  // Verify exterior player spawn on highway approach (~15.5m outside gate)
+  assert.equal(MAIN_GATE_CONFIG.exteriorSpawn.x, 317.5);
+  assert.equal(MAIN_GATE_CONFIG.exteriorSpawn.z, -73.5);
   assert.ok(Math.abs(MAIN_GATE_CONFIG.exteriorSpawn.yaw - 2.1866) < 0.001);
 
   // Clean disposal without errors

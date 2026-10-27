@@ -1,4 +1,4 @@
-const ACTIONS = ['jump', 'sprint', 'interact', 'accelerate', 'reverse', 'pause'];
+const ACTIONS = ['jump', 'sprint', 'interact', 'accelerate', 'reverse', 'pause', 'horn'];
 
 export class TouchControls {
   constructor({ root, canvas, onPause = () => {}, onGesture = () => {}, allowMouse = false }) {
@@ -21,7 +21,7 @@ export class TouchControls {
     this.owners = new Map();
     this.moveX = this.moveZ = 0;
     this.lookDelta = { dx: 0, dy: 0 };
-    this.jumpQueued = this.interactQueued = this.sprint = false;
+    this.jumpQueued = this.interactQueued = this.hornQueued = this.sprint = false;
     this.listeners = [];
     this.listen(this.stick, 'pointerdown', event => this.start(event, 'stick'));
     this.listen(this.look, 'pointerdown', event => {
@@ -61,6 +61,7 @@ export class TouchControls {
     if (action === 'stick') this.updateStick(event);
     else if (action === 'jump') this.jumpQueued = true;
     else if (action === 'interact') this.interactQueued = true;
+    else if (action === 'horn') this.hornQueued = true;
     else if (action === 'sprint') { this.sprint = !this.sprint; this.updateSprint(); }
     else if (action === 'pause') { this.clear(); this.onPause('touch'); }
   }
@@ -124,7 +125,7 @@ export class TouchControls {
     for (const action of ACTIONS) {
       const button = this.buttons[action];
       if (!button) continue;
-      button.hidden = this.mode === 'inspection' ? !['pause', 'accelerate', 'reverse'].includes(action) : this.mode === 'van' ? ['jump', 'sprint'].includes(action) : ['accelerate', 'reverse'].includes(action);
+      button.hidden = this.mode === 'inspection' ? !['pause', 'accelerate', 'reverse'].includes(action) : this.mode === 'van' ? ['jump', 'sprint'].includes(action) : ['accelerate', 'reverse', 'horn'].includes(action);
     }
     if (this.buttons.interact) this.buttons.interact.textContent = this.mode === 'van' ? 'EXIT' : 'ENTER';
     if (this.buttons.accelerate) this.buttons.accelerate.textContent = this.mode === 'inspection' ? 'ZOOM +' : 'GO';
@@ -170,7 +171,7 @@ export class TouchControls {
       jump: this.mode === 'foot' && this.jumpQueued,
       interact: this.mode !== 'inspection' && this.interactQueued,
     };
-    this.jumpQueued = this.interactQueued = false;
+    this.jumpQueued = this.interactQueued = this.hornQueued = false;
     return result;
   }
 

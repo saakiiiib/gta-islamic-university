@@ -45,7 +45,7 @@
       <div id="player-health-card" class="player-health"><span id="player-health-label">YOU · 100 HP</span><progress id="player-health" max="100" value="100" aria-label="Your health"></progress></div>
       <aside id="pedestrian-health" class="pedestrian-health" hidden><span id="pedestrian-status"></span><progress id="health" max="100" value="100" aria-label="Pedestrian health"></progress></aside>
       <div class="controls-strip" id="foot-controls"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> MOVE</span><span><kbd>SHIFT</kbd> SPRINT</span><span><kbd>SPACE</kbd> JUMP</span><span><kbd>E</kbd> VAN</span><span><kbd>ESC</kbd> PAUSE</span></div>
-      <div class="controls-strip" id="van-controls" hidden><span><kbd>W</kbd><kbd>S</kbd> DRIVE / REVERSE</span><span><kbd>A</kbd><kbd>D</kbd> STEER</span><span><kbd>SPACE</kbd> BRAKE</span><span><kbd>E</kbd> EXIT</span><span><kbd>ESC</kbd> PAUSE</span></div>
+      <div class="controls-strip" id="van-controls" hidden><span><kbd>W</kbd><kbd>S</kbd> DRIVE / REVERSE</span><span><kbd>A</kbd><kbd>D</kbd> STEER</span><span><kbd>SPACE</kbd> BRAKE</span><span><kbd>H</kbd> HORN</span><span><kbd>E</kbd> EXIT</span><span><kbd>ESC</kbd> PAUSE</span></div>
       <div id="interaction-prompt" class="interaction-prompt" hidden><kbd>E</kbd><span id="interaction-text">Press E to enter electric van</span></div>
       <div id="toast" class="toast" role="status" hidden></div>
     </section>
@@ -61,6 +61,7 @@
         <button type="button" data-touch-action="jump" aria-label="Jump">JUMP</button>
         <button type="button" data-touch-action="accelerate" aria-label="Accelerate or zoom in" hidden>GO</button>
         <button type="button" data-touch-action="reverse" aria-label="Brake or reverse, or zoom out" hidden>BRAKE / REVERSE</button>
+        <button type="button" data-touch-action="horn" aria-label="Honk vehicle horn" hidden>HORN</button>
         <button type="button" data-touch-action="interact" aria-label="Enter or exit electric van">ENTER</button>
       </div>
       <div class="touch-pause"><button type="button" data-touch-action="pause" aria-label="Pause touch game">Ⅱ</button></div>

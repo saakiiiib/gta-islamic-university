@@ -169,7 +169,17 @@ function tick(t) {
       accumulator -= STEP;
     }
     simulation.animate(elapsed);
-    reactions.consume(simulation.drainEvents(), simulation.entity.position, chase.yaw);
+    const simEvents = simulation.drainEvents();
+    for (const evt of simEvents) {
+      if (evt.type === 'ambulanceDispatched') {
+        hud.toast('🚨 CRITICAL INJURY! IU Ambulance dispatched from Medical Centre...', 5500);
+      } else if (evt.type === 'ambulanceArrived') {
+        hud.toast('🚨 IU Ambulance arrived! Paramedics stabilizing student...', 4000);
+      } else if (evt.type === 'patientStabilized') {
+        hud.toast('✚ Student stabilized and transported to IU Medical Centre! 100 HP restored.', 5500);
+      }
+    }
+    reactions.consume(simEvents, simulation.entity.position, chase.yaw);
     reactions.update(elapsed, simulation.entity.position, chase.yaw, simulation.crowd.agents);
     for (const agent of simulation.crowd.agents) {
       agent.voicePlaying = String(agent.id) === reactions.active?.npcId;
@@ -230,7 +240,7 @@ async function initialize() {
     renderer.shadowMap.autoUpdate = !device.touch; renderer.shadowMap.needsUpdate = true;
     scene = new THREE.Scene(); scene.background = new THREE.Color(0xb3d5e6);
     gameplayFog = new THREE.Fog(0xb3d5e6, 300, 1500); scene.fog = gameplayFog;
-    scene.add(world.group, player.group, simulation.fleetGroup, simulation.busGroup, simulation.occupants.group, simulation.crowd.group);
+    scene.add(world.group, player.group, simulation.fleetGroup, simulation.busGroup, simulation.ambulanceGroup, simulation.occupants.group, simulation.crowd.group);
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
     const cameraColliders = new THREE.Group();
     cameraColliders.add(world.collisionGroup);

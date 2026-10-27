@@ -98,6 +98,41 @@ export class PedestrianSystem {
   setView(view) { this.activity.setView(view); this.renderer?.setView(view); }
   get stats() { return this.activity.stats; }
   /** Explicit user reset restores the original density, without replacing identities. */
+  honkAt(position, yaw, range = 25, fov = Math.PI * 0.65) {
+    const facing = [-Math.sin(yaw), -Math.cos(yaw)];
+    let count = 0;
+    for (const agent of this.agents) {
+      if (['fallen', 'recover'].includes(agent.reactionState)) continue;
+      const dx = agent.position.x - position.x, dz = agent.position.z - position.z;
+      const dist = Math.hypot(dx, dz);
+      if (dist > range || dist < 0.1) continue;
+      const dirX = dx / dist, dirZ = dz / dist;
+      const dot = dirX * facing[0] + dirZ * facing[1];
+      const angle = Math.acos(MathUtils.clamp(dot, -1, 1));
+      if (angle < fov / 2) {
+        react(agent, 'startled', 1.8, 1);
+        agent.idleTime = 0;
+        agent.lookYaw = Math.atan2(dx, dz);
+        const rightX = -facing[1], rightZ = facing[0];
+        const sideDot = dirX * rightX + dirZ * rightZ;
+        const scatterSign = sideDot >= 0 ? 1 : -1;
+        agent.impulse.x = (rightX * scatterSign * 0.7 + dirX * 0.3) * 0.8;
+        agent.impulse.z = (rightZ * scatterSign * 0.7 + dirZ * 0.3) * 0.8;
+        count++;
+      }
+    }
+    return count;
+  }
+  healStudent(npcId) {
+    const agent = this.agents.find(a => a.id === npcId);
+    if (!agent) return false;
+    agent.health = 100;
+    agent.reactionState = 'recover';
+    agent.reactionTime = 1.2;
+    agent.idleTime = 0.5;
+    agent.impulse.x = agent.impulse.z = 0;
+    return true;
+  }
   resetActivity() {
     this.activity.primary = this.activity.nearestHub(this.activity.spawn);
     this.activity.secondary = this.activity.nearestHub(this.activity.primary, this.activity.primary.id);

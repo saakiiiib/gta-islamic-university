@@ -1,4 +1,4 @@
-const TRACKED_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ShiftLeft', 'ShiftRight', 'Space', 'KeyR', 'KeyE', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
+const TRACKED_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ShiftLeft', 'ShiftRight', 'Space', 'KeyR', 'KeyE', 'KeyH', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
 
 /** Browser listeners are installed only when instantiated, keeping imports testable. */
 export class InputController {
@@ -13,6 +13,8 @@ export class InputController {
     this.jumpQueued = false;
     this.resetQueued = false;
     this.interactQueued = false;
+    this.hornQueued = false;
+    this.hornQueued = false;
     this.lookDelta = { dx: 0, dy: 0 };
     this.dragging = false;
     this.lastMouse = null;
@@ -32,6 +34,7 @@ export class InputController {
         if (event.code === 'Space') this.jumpQueued = true;
         if (event.code === 'KeyR') this.resetQueued = true;
         if (event.code === 'KeyE') this.interactQueued = true;
+        if (event.code === 'KeyH') this.hornQueued = true;
       }
       this.keys.add(event.code);
     });
@@ -73,6 +76,7 @@ export class InputController {
       sprint: this.keys.has('ShiftLeft') || this.keys.has('ShiftRight'),
       jump: this.jumpQueued, reset: this.resetQueued,
       brake: this.keys.has('Space'), interact: this.interactQueued,
+      horn: this.hornQueued || this.keys.has('KeyH'),
     };
     this.jumpQueued = false;
     this.resetQueued = false;
@@ -101,6 +105,7 @@ export class InputController {
       input.sprint ||= touch.sprint;
       input.jump ||= touch.jump;
       input.interact ||= touch.interact;
+      input.horn ||= touch.horn;
     }
     return input;
   }

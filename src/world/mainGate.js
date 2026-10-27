@@ -16,7 +16,7 @@ export const MAIN_GATE_CONFIG = Object.freeze({
   position: { x: 304.91, y: 0.0, z: -64.49 }, // OSM Entrance Node 9027931168
   yaw: 2.1866, // Angle facing outward toward highway (~125.3 deg)
   highwayNode: { x: 338.00, y: 0.0, z: -87.87 }, // OSM Highway Node 321516187
-  exteriorSpawn: { x: 326.00, y: 0.0, z: -78.00, yaw: 2.1866 }, // Highway approach spawn facing Main Gate
+  exteriorSpawn: { x: 317.50, y: 0.0, z: -73.50, yaw: 2.1866 }, // Highway approach spawn facing Main Gate (~15.5m outside)
   busParking: { x: 271.00, y: 0.0, z: -45.00, yaw: -0.45 }, // Road bay near entrance
 });
 
@@ -614,7 +614,7 @@ export function buildMainGate(options = {}) {
   // 8. Exterior Highway Approach Road & Striped Curbs
   // --------------------------------------------------------------------------
   // Road connecting Highway node (338.00, -87.87) to Gate Entrance (304.91, -64.49)
-  const approachLength = 40.0;
+  const approachLength = 20.0;
   const approachWidth = 14.0;
   const roadGeo = new THREE.PlaneGeometry(approachWidth, approachLength);
   roadGeo.rotateX(-Math.PI / 2);
@@ -650,6 +650,50 @@ export function buildMainGate(options = {}) {
     const markMesh = new THREE.Mesh(markGeo, curbWhiteMat);
     gateRig.add(markMesh);
   }
+
+    // Highway Boundary Perimeter Barrier (Blocks walking into empty void outside the gate)
+  const barrierWidth = 24.0;
+  const barrierHeight = 1.6;
+  const barrierZ = 19.5;
+
+  const barrierMat = new THREE.MeshStandardMaterial({ color: 0x82888f, roughness: 0.6, metalness: 0.4 });
+  const hazardMat = new THREE.MeshStandardMaterial({ color: 0xf0c030, roughness: 0.5, metalness: 0.1 });
+
+  // Concrete barrier base
+  const jerseyGeo = new THREE.BoxGeometry(barrierWidth, 0.85, 0.6);
+  jerseyGeo.translate(0, 0.42, barrierZ);
+  gateRig.add(new THREE.Mesh(jerseyGeo, basePlinthMat));
+
+  // Steel guardrail with caution color
+  const railGeo = new THREE.BoxGeometry(barrierWidth, 0.35, 0.15);
+  railGeo.translate(0, 1.15, barrierZ);
+  gateRig.add(new THREE.Mesh(railGeo, hazardMat));
+
+  // Posts
+  for (let px = -barrierWidth / 2 + 1; px <= barrierWidth / 2 - 1; px += 2.5) {
+    const postGeo = new THREE.CylinderGeometry(0.08, 0.08, 1.4, 8);
+    postGeo.translate(px, 0.7, barrierZ);
+    gateRig.add(new THREE.Mesh(postGeo, barrierMat));
+  }
+
+  // Solid boundary collider
+  const barrierWorldP = new THREE.Vector3(0, barrierHeight / 2, barrierZ).applyAxisAngle(new THREE.Vector3(0, 1, 0), gateYaw).add(gateCenter);
+  const barrierCollider = new THREE.Mesh(new THREE.BoxGeometry(barrierWidth, 3.5, 1.2), new THREE.MeshBasicMaterial());
+  barrierCollider.position.copy(barrierWorldP);
+  barrierCollider.rotation.y = gateYaw;
+  barrierCollider.name = 'highway-boundary-barrier';
+  collisionGroup.add(barrierCollider);
+
+  obstacles.push({
+    id: 'highway-boundary-barrier',
+    kind: 'highway-barrier',
+    x: barrierWorldP.x,
+    z: barrierWorldP.z,
+    width: barrierWidth,
+    depth: 1.2,
+    height: 3.5,
+    yaw: gateYaw,
+  });
 
   collisionGroup.updateMatrixWorld(true);
 

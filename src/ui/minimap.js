@@ -54,7 +54,7 @@ export class Minimap {
     g.fillStyle = '#547447';
     for (const tree of this.data.trees) { g.beginPath(); g.arc((tree.x - b.minX) * sx, (tree.z - b.minZ) * sz, 4, 0, Math.PI * 2); g.fill(); }
   }
-  draw(position, yaw, { van, vans, pedestrians = [], driving = false } = {}) {
+  draw(position, yaw, { van, vans, ambulance = null, pedestrians = [], driving = false } = {}) {
     const g = this.ctx, b = this.data.bounds, n = this.size, half = this.span / 2;
     const sx = this.base.width / (b.maxX - b.minX), sz = this.base.height / (b.maxZ - b.minZ);
     g.fillStyle = '#b9c49b'; g.fillRect(0, 0, n, n);
