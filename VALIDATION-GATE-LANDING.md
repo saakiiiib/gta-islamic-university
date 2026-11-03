@@ -42,6 +42,10 @@ Updated menu first paint was 0.37 s cold and 0.26 s cached at the median. Entry 
 
 ## Delivery and limits
 
-Publishing retains `main → /docs` and the same GitHub Pages URL. Live workflow and asset verification will be recorded after publication. The release ZIP contains source, lockfile, raw map, production builds and validation evidence, excluding dependencies and Git internals.
+Publishing retains `main → /docs` and the [same GitHub Pages URL](https://saakiiiib.github.io/gta-islamic-university/). Release `22440d28339bc4fbabb9d38dda2b2ea71bcd0542` deployed successfully in [Pages run 41577740586](https://github.com/saakiiiib/gta-islamic-university/actions/runs/41577740586). All **58 hosted files** matched the generated release, including the unchanged map. See [hosted asset verification](validation/gate-landing/live/hosted-assets.json).
+
+Live desktop and phone-sized Chrome checks retained early Female selection, loaded valid preparation, entered gameplay with 30 pedestrians/eight vans and reported no page errors, failed requests or horizontal overflow. Observed live entry readiness was 7.43 s desktop and 5.83 s phone-sized emulation; these individual Internet observations are separate from the controlled local benchmark. [Live browser results](validation/gate-landing/live/hosted-browser.json).
+
+The release ZIP contains source, lockfile, raw map, production builds and validation evidence, excluding dependencies and Git internals.
 
 Browser checks used an explicitly authorized temporary Chrome profile, with no signed-in user profile. Physical Android devices and iPhone Safari were unavailable. Touch emulation does not establish phone frame rates. Existing unit coverage checks character/vehicle resource ownership; this release does not claim a new whole-browser memory benchmark. Human listening and physical-phone audio quality were not evaluated; clip loading and audio-context operation were verified.

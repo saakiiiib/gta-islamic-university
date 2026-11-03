@@ -1,0 +1,71 @@
+{
+  "url": "https://saakiiiib.github.io/gta-islamic-university/?release=22440d2",
+  "checkedAt": "2026-11-03T04:23:57.691Z",
+  "profiles": [
+    {
+      "mobile": false,
+      "startup": {
+        "readyMs": 7433,
+        "menuPaintMs": 1788,
+        "menuReadyMs": 597,
+        "horizontalOverflow": false,
+        "imageFailures": 0
+      },
+      "state": {
+        "engine": "three.js r186",
+        "readyMs": "7433",
+        "prepared": "true",
+        "character": "niqab",
+        "position": "317.50,0.00,-73.50",
+        "grounded": "true",
+        "cameraMode": "student",
+        "vehicleSpeed": "0.00",
+        "pedestrians": "30",
+        "vans": "8",
+        "durability": "100.0",
+        "inputMode": "desktop",
+        "pixelRatio": "1.00",
+        "cameraHeading": "2.187",
+        "nearbyNpcs": "18",
+        "visibleNpcs": "1",
+        "visibleVans": "0",
+        "movingVans": "3"
+      },
+      "errors": [],
+      "failed": []
+    },
+    {
+      "mobile": true,
+      "startup": {
+        "readyMs": 5830,
+        "menuPaintMs": 556,
+        "menuReadyMs": 487,
+        "horizontalOverflow": false,
+        "imageFailures": 0
+      },
+      "state": {
+        "engine": "three.js r186",
+        "readyMs": "5830",
+        "prepared": "true",
+        "character": "niqab",
+        "position": "317.50,0.00,-73.50",
+        "grounded": "true",
+        "cameraMode": "student",
+        "vehicleSpeed": "0.00",
+        "pedestrians": "30",
+        "vans": "8",
+        "durability": "100.0",
+        "inputMode": "touch",
+        "pixelRatio": "1.25",
+        "cameraHeading": "2.187",
+        "nearbyNpcs": "18",
+        "visibleNpcs": "0",
+        "visibleVans": "0",
+        "movingVans": "3"
+      },
+      "errors": [],
+      "failed": []
+    }
+  ],
+  "passed": true
+}
