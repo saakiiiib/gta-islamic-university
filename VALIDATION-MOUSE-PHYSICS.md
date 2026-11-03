@@ -33,7 +33,11 @@ The raw OSM map SHA-256 remains `8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da
 
 ## Deployment
 
-Publishing retains `main → /docs` at the existing GitHub Pages URL. Live workflow and asset verification follow publication. Reproduce the extra browser fixture with `PLAYWRIGHT_MODULE` pointing to an installed Playwright module and `node scripts/browser-mouse-physics.mjs http://127.0.0.1:5191/` against a Vite development server. `CAMPUS_MOUSE_QA=1` enables the production fallback/jump check in `scripts/browser-gate-hosted.mjs`.
+Publishing retains `main → /docs` at the [existing GitHub Pages URL](https://saakiiiib.github.io/gta-islamic-university/). Release `2935607f4cced58db7a25acb1a94829210cd6c7b` deployed successfully in [Pages run 41628716788](https://github.com/saakiiiib/gta-islamic-university/actions/runs/41628716788). All **58 hosted files** matched the generated release, including unchanged map bytes. [Hosted asset verification](validation/mouse-physics/live/hosted-assets.json).
+
+The live desktop smoke check explicitly removed pointer capture to reproduce the embedded browser's limitation, then verified ordinary mouse rotation and a grounded jump/landing. Both desktop and phone-sized profiles retained early Female selection, valid preparation, entry, 30 pedestrians and eight vans with no page errors or failed requests. [Live browser results](validation/mouse-physics/live/hosted-browser.json). The in-app browser connection interrupted during final testing; these final interaction checks used the already authorized isolated Chrome session.
+
+Reproduce the extra browser fixture with `PLAYWRIGHT_MODULE` pointing to an installed Playwright module and `node scripts/browser-mouse-physics.mjs http://127.0.0.1:5191/` against a Vite development server. `CAMPUS_MOUSE_QA=1` enables the production fallback/jump check in `scripts/browser-gate-hosted.mjs`.
 
 ## Limits
 
