@@ -72,15 +72,15 @@ export class CampusSimulation {
           onImpact: impact => this.impacts.handle(impact),
         });
       }
-      if (this.bus && this.session.van !== this.bus) {
+      if (this.bus && !(this.session.driving && this.session.van === this.bus)) {
         this.bus.update(step, {}, {
           pedestrians: this.crowd.agents,
           vans: this.vans,
           onImpact: impact => this.impacts.handle(impact),
         });
       }
-      if (this.sideCharacters) this.sideCharacters.update(duration);
-    if (this.ambulance) {
+      if (this.sideCharacters) this.sideCharacters.update(step);
+      if (this.ambulance) {
         const ambEvent = this.ambulance.update(step, { crowd: this.crowd });
         if (ambEvent) this.events.push(ambEvent);
       }
@@ -111,9 +111,9 @@ export class CampusSimulation {
     if (this.ambulance) this.ambulance.syncVisuals(dt);
     this.occupants.update(dt, this.session); this.crowd.animate(dt);
   }
-  reset() {
+  reset(spawn = this.map.spawn) {
     this.driverController.reset();
-    this.session.reset(this.map.spawn);
+    this.session.reset(spawn);
     if (this.bus) this.bus.reset();
     if (this.ambulance) this.ambulance.reset();
     this.crowd.resetActivity?.();

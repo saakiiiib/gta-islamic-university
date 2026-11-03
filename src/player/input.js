@@ -14,11 +14,11 @@ export class InputController {
     this.resetQueued = false;
     this.interactQueued = false;
     this.hornQueued = false;
-    this.hornQueued = false;
     this.lookDelta = { dx: 0, dy: 0 };
     this.dragging = false;
     this.lastMouse = null;
     this.hadPointerLock = false;
+    this.pointerRequest = null;
     this.listeners = [];
     this.listen(this.window, 'keydown', event => {
       if (event.code === 'Escape') {
@@ -43,21 +43,27 @@ export class InputController {
     this.listen(this.canvas, 'mousedown', event => {
       if (!this.enabled) return;
       if (event.button === 2) { this.dragging = true; this.lastMouse = { x: event.clientX, y: event.clientY }; event.preventDefault(); }
+      else if (event.button === 0) this.requestPointerLock();
     });
     this.listen(this.window, 'mouseup', event => { if (event.button === 2) { this.dragging = false; this.lastMouse = null; } });
+    this.listen(this.canvas, 'mouseleave', () => { if (!this.dragging) this.lastMouse = null; });
     this.listen(this.window, 'mousemove', event => {
       if (!this.enabled) return;
       const locked = this.document.pointerLockElement === this.canvas;
       if (locked) { this.lookDelta.dx += event.movementX ?? 0; this.lookDelta.dy += event.movementY ?? 0; }
-      else if (this.dragging) {
+      // Embedded browsers may not implement pointer lock. Keep ordinary mouse
+      // look usable over the game, without rotating while interacting with HUD.
+      else if (this.dragging || (!this.touch?.available && event.target === this.canvas)) {
         if (this.lastMouse) { this.lookDelta.dx += event.clientX - this.lastMouse.x; this.lookDelta.dy += event.clientY - this.lastMouse.y; }
         this.lastMouse = { x: event.clientX, y: event.clientY };
-      }
+      } else this.lastMouse = null;
     });
     this.listen(this.document, 'pointerlockchange', () => {
       const locked = this.document.pointerLockElement === this.canvas;
+      if (locked && !this.enabled) { this.releasePointerLock(); return; }
       const lost = this.hadPointerLock && !locked;
       this.hadPointerLock = locked;
+      this.lastMouse = null;
       if (lost && this.enabled) { this.clear(); this.onPause('pointerlock'); }
     });
     this.listen(this.window, 'blur', () => { this.clear(); if (this.enabled) this.onPause('focus'); });
@@ -81,6 +87,7 @@ export class InputController {
     this.jumpQueued = false;
     this.resetQueued = false;
     this.interactQueued = false;
+    this.hornQueued = false;
     if (this.touch?.available && this.enabled) {
       const touch = this.touch.snapshot();
       const keyboardMove = input.forward || input.back || input.left || input.right;
@@ -136,24 +143,49 @@ export class InputController {
   clear() {
     this.touch?.clear();
     this.keys.clear();
-    this.jumpQueued = this.resetQueued = this.interactQueued = this.dragging = false;
+    this.jumpQueued = this.resetQueued = this.interactQueued = this.hornQueued = this.dragging = false;
     this.lookDelta.dx = this.lookDelta.dy = 0;
     this.lastMouse = null;
   }
 
   setEnabled(enabled) {
     this.enabled = Boolean(enabled);
-    if (!this.enabled) this.clear();
+    if (!this.enabled) { this.clear(); this.pointerRequest?.cancel(); }
     this.touch?.setEnabled(this.enabled);
   }
 
-  async requestPointerLock() {
+  requestPointerLock() {
+    if (!this.enabled || this.touch?.available || !this.canvas.requestPointerLock) return Promise.resolve(false);
+    if (this.document.pointerLockElement === this.canvas) return Promise.resolve(true);
+    if (this.pointerRequest) return this.pointerRequest.promise;
+    // Older browsers return void and report completion through document events.
+    // Share pending requests and bound the wait; a failure keeps free mouse look.
+    let finish;
+    const promise = new Promise(resolve => { finish = resolve; });
+    let done = false;
+    const complete = locked => {
+      if (done) return;
+      done = true; clearTimeout(timer);
+      this.document.removeEventListener('pointerlockchange', changed);
+      this.document.removeEventListener('pointerlockerror', failed);
+      this.pointerRequest = null;
+      finish(!!locked && this.enabled);
+    };
+    const changed = () => complete(this.document.pointerLockElement === this.canvas);
+    const failed = () => complete(false);
+    const timer = setTimeout(failed, 1500);
+    this.pointerRequest = { promise, cancel: failed };
+    this.document.addEventListener('pointerlockchange', changed);
+    this.document.addEventListener('pointerlockerror', failed);
     try {
-      if (!this.enabled || this.touch?.available || !this.canvas.requestPointerLock) return false;
-      await this.canvas.requestPointerLock();
-      if (!this.enabled) { this.releasePointerLock(); return false; }
-      return this.document.pointerLockElement === this.canvas;
-    } catch { return false; }
+      const result = this.canvas.requestPointerLock();
+      if (result?.then) result.then(() => {
+        if (!this.enabled) this.releasePointerLock();
+        changed();
+      }, failed);
+      else if (this.document.pointerLockElement === this.canvas) changed();
+    } catch { failed(); }
+    return promise;
   }
 
   releasePointerLock() {

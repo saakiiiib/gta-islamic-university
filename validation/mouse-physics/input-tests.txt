@@ -1,0 +1,27 @@
+✔ initial inspection fits the complete campus in wide and resized viewports (2.1984ms)
+✔ inspection entry clears held movement, releases lock without pause, and exit restores the chase view (2.1822ms)
+✔ inspection leaves student capsule, velocity and airborne state unchanged (11.4325ms)
+✔ inspection focus loss clears controls; suspend/resume retains the inspection viewpoint (0.8651ms)
+✔ a delayed pointer-lock grant is released if inspection or pause already disabled student input (0.4961ms)
+✔ inspection keyboard pan is normalized, orbit/zoom are bounded, and resize respects manual framing (0.3344ms)
+✔ nearby labels enforce range, occlusion, HUD avoidance, overlap rejection and six/eighteen caps (26.625ms)
+✔ ordinary mouse movement rotates over the canvas without pointer-lock support (2.2278ms)
+✔ right drag and locked movement still work while touchscreen motion remains isolated (1.889ms)
+✔ legacy event-only pointer lock waits for a real grant and canvas clicks can recapture (0.8705ms)
+✔ rejected and late pointer-lock grants retain fallback and never capture while paused (0.6665ms)
+✔ horn stops on release and pause clears a pending honk (0.7621ms)
+✔ multiple fingers independently move, look, and queue jump; joystick is proportional (5.0626ms)
+✔ duplicate ownership is rejected, sprint toggles, van actions hold, and mode clears input (0.65ms)
+✔ pause, focus loss, visibility, and disable clear all touches (0.4789ms)
+✔ InputController merges touch without breaking keyboard priority or PC look (1.0199ms)
+✔ van keyboard throttle and steering override their touch axes independently (0.479ms)
+✔ inspection zoom is held and mode visibility and labels follow zoom controls (0.217ms)
+✔ canceled queued actions do not fire, while completed presses remain queued (1.0101ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 240.4293

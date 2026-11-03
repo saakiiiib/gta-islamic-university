@@ -18,6 +18,21 @@ const localWorld = new CollisionWorld(proxy);
 for (const mesh of proxy.children) mesh.geometry.dispose();
 material.dispose();
 
+const busWorlds = new Map();
+function vehicleWorld(van) {
+  if (!van.isBus) return localWorld;
+  const { halfWidth, front, rear } = van.config;
+  const key = `${halfWidth},${front},${rear}`;
+  if (!busWorlds.has(key)) {
+    // Match DoubleDeckerBus.createParkedCollider(), in the bus's local frame.
+    const hull = new Mesh(new BoxGeometry(halfWidth * 2, 4.2, front + rear), new MeshBasicMaterial());
+    hull.position.set(0, 2.1, (rear - front) / 2);
+    busWorlds.set(key, new CollisionWorld(hull));
+    hull.geometry.dispose(); hull.material.dispose();
+  }
+  return busWorlds.get(key);
+}
+
 function toLocal(point, van, cosine, sine) {
   const x = point.x - van.position.x, z = point.z - van.position.z;
   return new Vector3(cosine * x - sine * z, point.y - van.position.y, sine * x + cosine * z);
@@ -38,7 +53,7 @@ export function resolveVanCapsule(capsule, velocity, van) {
   const localVelocity = new Vector3(cosine * relativeX - sine * relativeZ, velocity.y,
     sine * relativeX + cosine * relativeZ);
   const before = localVelocity.clone();
-  const grounded = localWorld.resolve(local, localVelocity);
+  const grounded = vehicleWorld(van).resolve(local, localVelocity);
   capsule.start.copy(toWorld(local.start, van, cosine, sine));
   capsule.end.copy(toWorld(local.end, van, cosine, sine));
   velocity.set(cosine * localVelocity.x + sine * localVelocity.z + vanVX,

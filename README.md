@@ -74,8 +74,9 @@ Preview normally runs at `http://127.0.0.1:4173/`. JavaScript modules and the ma
 | Shift + movement | Sprint |
 | Space | Jump while grounded |
 | E | Enter a nearby stopped van / jump off at any speed |
-| Mouse | Orbit camera when pointer lock is available |
-| Right mouse + drag | Orbit without pointer lock |
+| Mouse | Orbit camera; uses pointer capture when supported and ordinary canvas movement otherwise |
+| Left click on the game | Retry pointer capture when supported |
+| Right mouse + drag | Alternative camera orbit |
 | Arrow keys | Alternative camera orbit |
 | Escape | Pause / resume |
 | R | Return to Main Gate; repair eight vans and restore campus activity/traffic |
@@ -83,6 +84,8 @@ Preview normally runs at `http://127.0.0.1:4173/`. JavaScript modules and the ma
 | L | Toggle nearby place labels (on by default) |
 | I | Enter / leave the paused campus inspection camera |
 | G | Toggle cyan OSM roads / amber building footprints |
+
+Mouse look also works in embedded browsers without pointer capture: move the pointer over the game canvas. Interacting with the toolbar or pausing stops that movement. Recent movement repairs cover blocked shoreline/perimeter momentum, missing collision faces, full bus collisions and a matching player/camera reset. See [mouse and physics validation](VALIDATION-MOUSE-PHYSICS.md).
 | F3 | Toggle frame rate, map, activity and nearby/visible actor diagnostics |
 
 Switching tabs or losing focus pauses movement. Returning requires Resume or Escape. Pointer lock is requested only when you start or resume; if unavailable, use right-drag or the arrow keys. The game starts at mapped node `9027931167`, about 21 metres inside Main Gate, looking northwest.

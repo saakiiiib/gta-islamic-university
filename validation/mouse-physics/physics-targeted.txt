@@ -1,0 +1,48 @@
+✔ DoubleDeckerBus model creates dual-deck geometry with 6 heavy-duty wheels (14.8836ms)
+✔ DoubleDeckerBus controller drives, steers, brakes, and responds to collisions (5.8667ms)
+✔ untrimmed mapData retains canonical 189 buildings for backwards compatibility (187.7459ms)
+✔ trimmed mapData trims strictly to 57 authentic campus buildings (135.3448ms)
+✔ trimmed mapData retains 3 campus ponds and excludes external village pond (115.3848ms)
+✔ trimmed mapData preserves all campus sports fields and gardens (100.3037ms)
+✔ player controller enforces campus perimeter when mapData is trimmed (113.1595ms)
+✔ launch starts at the visible passenger sole and preserves van momentum in air (14.1061ms)
+✔ low and high speed exits land on real floor with speed-scaled nonlethal injury (15.4793ms)
+✔ dismount hits a static wall instead of crossing it or finding a safe exit (4.2011ms)
+✔ live van collision uses its latest transform and protects the dismounted player (7.4571ms)
+✔ a moving driver van resolves a standing player onto its current deck (2.6957ms)
+✔ a hard landing progresses from fall to recovery without respawning (4.8457ms)
+✔ fixed step dismount motion and animated phases remain finite at 30 and 60 Hz (6.1719ms)
+✔ a fallen passenger cannot start running or jumping before getting up (4.7303ms)
+✔ shoreline contact stops stored speed but preserves tangent walking and jump recovery (21.0451ms)
+✔ map and campus edges stop blocked velocity and allow movement back into campus (7.8052ms)
+✔ live van separation cannot push the capsule through the campus perimeter (1.3766ms)
+✔ bus capsule collision uses its full configured hull in either world heading (0.6299ms)
+✔ octree subdivision retains outer hull wall and roof triangles at floating-point bounds (0.6054ms)
+✔ jumping under a low roof stops at the ceiling, lands, and leaves walking responsive (4.3683ms)
+✔ exited moving bus keeps simulating once per fixed tick instead of freezing or double updating (1.0354ms)
+✔ simulation reset forwards an optional matching player/camera spawn and preserves the map default (0.2865ms)
+✔ movement axes are camera relative and diagonals are normalized (2.3105ms)
+✔ walking and sprinting reach their metre-per-second speeds (10.9095ms)
+✔ diagonal walking covers the same ground distance (10.1963ms)
+✔ gravity lands and jump is grounded-only without midair retrigger (3.6969ms)
+✔ wall collision stops penetration but lets diagonal movement slide (7.3541ms)
+✔ two perpendicular walls contain a sprint into their corner (9.2532ms)
+✔ falling onto a roof grounds the player at its actual height (3.2906ms)
+✔ an extruded footprint preserves a physically accessible courtyard hole (10.6978ms)
+✔ water shoreline blocks the whole capsule footprint and allows a mapped bridge (11.8837ms)
+✔ polygon water holes are walkable land (0.7015ms)
+✔ the capsule walks up a bridge ramp and stays grounded on its deck (8.4459ms)
+✔ boundary is inset by capsule radius and reset clears velocity (2.467ms)
+✔ bounded internal fixed steps are invariant at 30 and 60 render Hz (5.2626ms)
+✔ camera obstacle rays keep its near plane outside a wall (5.7707ms)
+✔ student model is original geometry, proportioned in metres, and animates (2.7635ms)
+✔ input one-shot actions, pause clearing, pointer-lock fallback and cleanup (1.7881ms)
+✔ held arrow camera controls are elapsed-time scaled and clear on pause (1.109ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1035.2631

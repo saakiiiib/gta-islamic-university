@@ -105,13 +105,13 @@ async function play() {
   if (inspectionSession.active) { syncView(); return; }
   const locked = await input.requestPointerLock();
   if (device.touch && state === 'playing') hud.toast(firstStart ? 'Left stick: move · Swipe right: look · Approach the van and tap Enter.' : 'Touch controls ready.', 5000);
-  else if (!locked && state === 'playing') hud.toast(firstStart ? 'WASD to move. Right-drag to look. The electric van is parked ahead; approach and press E.' : 'Hold right mouse and drag to look around.', 6500);
+  else if (!locked && state === 'playing') hud.toast(firstStart ? 'WASD to move. Move your mouse over the game to look. Approach a van and press E.' : 'Move your mouse over the game to look. Click the game to capture the pointer when supported.', 6500);
   else if (firstStart) hud.toast('Walk through the Main Gate into campus. The iconic IU Red Bus is parked ahead!', 5500);
 }
 function resetPlayer() {
   handoff.cancel(); document.body.classList.remove('entering-campus');
   if (inspectionSession.active) { inspectionSession.exit(); syncView(); }
-  simulation.reset(); simulation.setSuspended(false); chase.setDriving(false); chase.reset(MAIN_GATE_CONFIG.exteriorSpawn); accumulator = 0;
+  simulation.reset(MAIN_GATE_CONFIG.exteriorSpawn); simulation.setSuspended(false); chase.setDriving(false); chase.reset(MAIN_GATE_CONFIG.exteriorSpawn); accumulator = 0;
   reactions?.reset();
   input.clear(); syncTouch();
   hud.toast('Back at Main Gate. Eight vans repaired; campus traffic restored.');

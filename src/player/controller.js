@@ -71,6 +71,15 @@ export class PlayerController {
     this.capsule.end.copy(this.position).y += this.config.height - this.config.radius;
   }
 
+  horizontalAllowed(x, z) {
+    const radius = this.config.radius, bounds = this.mapData.bounds;
+    if (bounds && (x < bounds.minX + radius - 1e-7 || x > bounds.maxX - radius + 1e-7 ||
+      z < bounds.minZ + radius - 1e-7 || z > bounds.maxZ - radius + 1e-7)) return false;
+    const ring = this.mapData.trimmed && this.mapData.campus?.polygons?.[0]?.[0];
+    if (ring && !pointInRing([x, z], ring) && !(x >= 290 && x <= 338 && z >= -90 && z <= -55)) return false;
+    return !isWaterBlocked(x, z, this.mapData, radius);
+  }
+
   get state() {
     return { position: this.position, yaw: this.yaw, speed: this.speed, grounded: this.grounded, verticalSpeed: this.velocity.y, sprinting: this.speed > this.config.walkSpeed + 0.2,
       motionState: this.dismount?.phase ?? (!this.grounded ? 'jump' : this.landingTime > 0 ? 'land' : this.speed > 4.5 ? 'run' : this.speed > .12 ? 'walk' : 'idle'),
@@ -170,27 +179,23 @@ export class PlayerController {
     let grounded = false;
     for (let i = 0; i < count; i++) {
       const priorX = this.position.x, priorZ = this.position.z;
-      let nextX = priorX + this.velocity.x * subDt;
-      let nextZ = priorZ + this.velocity.z * subDt;
+      const desiredX = priorX + this.velocity.x * subDt;
+      const desiredZ = priorZ + this.velocity.z * subDt;
+      let nextX = desiredX, nextZ = desiredZ;
       const bounds = this.mapData.bounds;
       if (bounds) {
         nextX = MathUtils.clamp(nextX, bounds.minX + cfg.radius, bounds.maxX - cfg.radius);
         nextZ = MathUtils.clamp(nextZ, bounds.minZ + cfg.radius, bounds.maxZ - cfg.radius);
       }
-      if (this.mapData.trimmed && this.mapData.campus?.polygons?.[0]?.[0]) {
-        const ring = this.mapData.campus.polygons[0][0];
-        const isAllowed = (px, pz) => pointInRing([px, pz], ring) || (px >= 290 && px <= 338 && pz >= -90 && pz <= -55);
-        if (!isAllowed(nextX, nextZ)) {
-          if (isAllowed(nextX, priorZ)) nextZ = priorZ;
-          else if (isAllowed(priorX, nextZ)) nextX = priorX;
-          else { nextX = priorX; nextZ = priorZ; this.velocity.x = this.velocity.z = 0; }
-        }
-      }
-      if (isWaterBlocked(nextX, nextZ, this.mapData, cfg.radius)) {
-        if (!isWaterBlocked(nextX, priorZ, this.mapData, cfg.radius)) nextZ = priorZ;
-        else if (!isWaterBlocked(priorX, nextZ, this.mapData, cfg.radius)) nextX = priorX;
+      if (!this.horizontalAllowed(nextX, nextZ)) {
+        if (this.horizontalAllowed(nextX, priorZ)) nextZ = priorZ;
+        else if (this.horizontalAllowed(priorX, nextZ)) nextX = priorX;
         else { nextX = priorX; nextZ = priorZ; }
       }
+      // A shoreline or perimeter is a contact, not invisible stored momentum.
+      // Retain the tangent component so walking along it and turning away work.
+      if (Math.abs(nextX - desiredX) > 1e-9) this.velocity.x = 0;
+      if (Math.abs(nextZ - desiredZ) > 1e-9) this.velocity.z = 0;
       this.capsule.translate(new Vector3(nextX - priorX, this.velocity.y * subDt, nextZ - priorZ));
       const beforeWall = Math.hypot(this.velocity.x, this.velocity.z);
       grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
@@ -215,14 +220,13 @@ export class PlayerController {
         // A vehicle's separation must still respect surveyed walls, water and map edges.
         grounded = this.world.resolve(this.capsule, this.velocity) || grounded;
         if (this.sceneryWorld) grounded = this.sceneryWorld.resolve(this.capsule, this.velocity) || grounded;
-        const x = this.capsule.start.x, z = this.capsule.start.z;
-        const bounds = this.mapData.bounds;
-        const blockedX = bounds && (x < bounds.minX + cfg.radius || x > bounds.maxX - cfg.radius);
-        const blockedZ = bounds && (z < bounds.minZ + cfg.radius || z > bounds.maxZ - cfg.radius);
-        if (blockedX || blockedZ || isWaterBlocked(x, z, this.mapData, cfg.radius)) {
-          this.capsule.translate(new Vector3(priorX - x, 0, priorZ - z));
-          this.velocity.x = this.velocity.z = 0;
-        }
+      }
+      // Recheck after all static and vehicle separation: their impulses must
+      // not push a walking/jumping student across the campus or into water.
+      const x = this.capsule.start.x, z = this.capsule.start.z;
+      if (!this.horizontalAllowed(x, z)) {
+        this.capsule.translate(new Vector3(priorX - x, 0, priorZ - z));
+        this.velocity.x = this.velocity.z = 0;
       }
       const lostSpeed = beforeWall - Math.hypot(this.velocity.x, this.velocity.z);
       if (this.dismount?.phase === 'jumpOff' && this.dismount.impactCooldown <= 0 && lostSpeed > 2.5) {

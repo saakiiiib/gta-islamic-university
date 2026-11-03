@@ -1,10 +1,21 @@
 import { Vector3 } from 'three';
 import { Octree } from 'three/addons/math/Octree.js';
 
+class PaddedOctree extends Octree {
+  calcBox() {
+    super.calcBox();
+    // Three pads only the minimum. Rounding a subdivided maximum inward can
+    // otherwise discard an entire outer wall/roof face during tree building.
+    // Padding the acceleration bounds keeps all original triangles intact.
+    this.box.max.addScalar(1e-6);
+    return this;
+  }
+}
+
 /** Immutable triangle acceleration structure shared by all character updates. */
 export class CollisionWorld {
   constructor(group) {
-    this.octree = new Octree();
+    this.octree = new PaddedOctree();
     if (group) {
       group.updateWorldMatrix(true, true);
       this.octree.fromGraphNode(group);

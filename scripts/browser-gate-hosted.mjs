@@ -14,6 +14,11 @@ try {
     const context = await browser.newContext(mobile
       ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 }
       : { viewport: { width: 1365, height: 768 } });
+    const testMouse = !mobile && process.env.CAMPUS_MOUSE_QA === '1';
+    if (testMouse) await context.addInitScript(() => {
+      // Match the in-app browser where pointer capture is not exposed.
+      Object.defineProperty(HTMLCanvasElement.prototype, 'requestPointerLock', { configurable: true, value: undefined });
+    });
     const page = await context.newPage(), errors = [], failed = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.status() >= 400) failed.push({ url: response.url(), status: response.status() }); });
@@ -34,13 +39,21 @@ try {
     await page.locator('#enterButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'playing' && !document.body.classList.contains('entering-campus'));
     await page.waitForFunction(() => document.querySelector('#game').dataset.pedestrians === '30');
+    if (testMouse) {
+      const yaw = Number(await page.locator('#game').getAttribute('data-camera-heading'));
+      await page.mouse.move(650, 340); await page.mouse.move(850, 360, { steps: 10 });
+      await page.waitForFunction(before => Math.abs(Number(document.querySelector('#game').dataset.cameraHeading) - before) > .2, yaw);
+      await page.keyboard.press('Space');
+      await page.waitForFunction(() => document.querySelector('#game').dataset.grounded === 'false');
+      await page.waitForFunction(() => document.querySelector('#game').dataset.grounded === 'true');
+    }
     const state = await page.locator('#game').evaluate(canvas => ({ ...canvas.dataset }));
     assert.equal(state.character, 'niqab'); assert.equal(state.vans, '8');
     assert.equal(state.inputMode, mobile ? 'touch' : 'desktop');
     if (mobile) assert.equal(await page.locator('#touch-controls').isVisible(), true);
     await page.screenshot({ path: resolve(output, `${mobile ? 'mobile' : 'desktop'}-gameplay.png`) });
     assert.deepEqual(errors, []); assert.deepEqual(failed, []);
-    report.profiles.push({ mobile, startup, state, errors, failed });
+    report.profiles.push({ mobile, startup, state, errors, failed, mouseLookWithoutCapture: testMouse, groundedJump: testMouse });
     await context.close();
   }
   report.passed = true;
