@@ -7,53 +7,45 @@
   <meta name="description" content="Explore a playable, map-derived 3D Islamic University campus in Kushtia, Bangladesh.">
   <title>Campus Story: Islamic University</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <script type="module" crossorigin src="./assets/index-CqNUh_Gg.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DC42vP5y.css">
+  <script type="module" crossorigin src="./assets/index-Cr1U1tRx.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-B_p2gwDq.css">
 </head>
 <body>
   <main id="app">
     <canvas id="game" tabindex="0" aria-label="3D campus game. On phones: left joystick moves or steers; swipe right to look. Touch buttons jump, sprint, enter or exit, drive and pause. On desktop: WASD moves, Shift sprints, Space jumps. E enters a stopped van or jumps off at any speed. W/S drive, A/D steer, Space brakes. Mouse or arrows look. M mutes, I inspects, L labels, G map alignment, Escape pauses."></canvas>
     <div class="vignette" aria-hidden="true"></div>
 
-    <header class="game-header">
+    <header class="game-header" hidden>
       <a class="wordmark" href="#" aria-label="GTA Islamic University home"><span class="brand-monogram">iu<span>↗</span></span><span>ISLAMIC UNIVERSITY<small>THE CAMPUS IS YOURS.</small></span></a>
       <div class="header-right"><span class="live-dot"></span><span>KUSHTIA, BANGLADESH</span><button id="pause-button" type="button" title="Pause game (Escape)" aria-label="Pause game" disabled>Ⅱ</button></div>
     </header>
 
-        <div class="page" id="landing">
-      <div class="scene" aria-hidden="true">
-        <div class="scene__grain"></div>
-        <div class="scene__photo"></div>
-        <div class="scene__colorwash"></div>
-        <div class="scene__shade"></div>
-        <div class="scene__edge"></div>
-      </div>
+    <div class="page" id="landing">
+      <section class="landing-menu" aria-labelledby="heroTitle">
+        <header class="site-header">
+          <a class="brand" href="#landing" aria-label="Campus Story: Islamic University — home">
+            <span class="brand__mark" aria-hidden="true">iu<span>↗</span></span>
+            <span class="brand__words">ISLAMIC UNIVERSITY<small>KUSHTIA, BANGLADESH</small></span>
+          </a>
+        </header>
 
-      <header class="site-header">
-        <a class="brand" href="#landing" aria-label="Campus Story: Islamic University — home">
-          <span class="brand__mark" aria-hidden="true"><span>iu</span><i></i></span>
-          <span class="brand__words"><strong>CAMPUS STORY</strong><small>ISLAMIC UNIVERSITY</small></span>
-        </a>
-        <div class="header-actions">
-          <span class="location"><span class="location__dot" aria-hidden="true"></span> KUSHTIA, BANGLADESH</span>
-          <button class="round-button" id="motionToggle" type="button" title="Pause background animation" aria-label="Pause background animation" aria-pressed="false"><span class="pause-symbol" aria-hidden="true">Ⅱ</span></button>
-        </div>
-      </header>
+        <div class="menu-body">
+          <div class="menu-eyebrow"><span aria-hidden="true"></span>YOUR CAMPUS. YOUR STORY.</div>
+          <h1 id="heroTitle">Campus<br><em>Story.</em><span class="sr-only"> Islamic University</span></h1>
+          <div class="menu-rule" aria-hidden="true"></div>
 
-      <div class="hero">
-        <section class="hero__content" aria-labelledby="heroTitle">
-          <h1 id="heroTitle">Campus Story: <strong>Islamic University</strong></h1>
-
-          <div class="character-select" aria-label="Select Player Character">
-            <span class="character-select__label">CHOOSE YOUR CHARACTER</span>
-            <div class="character-pills">
-              <button type="button" class="char-pill active" data-char="hujur" aria-pressed="true">
-                <span class="char-pill__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg></span>
-                <span class="char-pill__name">Male</span>
+          <div class="character-select">
+            <div class="character-select__label"><span id="characterHeading">CHOOSE YOUR CHARACTER</span><span id="selectionNumber" aria-hidden="true">01 / 02</span></div>
+            <div class="character-pills" role="group" aria-labelledby="characterHeading">
+              <button type="button" class="char-pill active" data-char="hujur" aria-pressed="true" aria-label="Male">
+                <span class="char-pill__check" aria-hidden="true">✓</span>
+                <span class="char-pill__portrait"><img src="./assets/portrait-hujur-CywwYab9.png" width="418" height="314" alt="" draggable="false"></span>
+                <span class="char-pill__name">Male</span><span class="char-pill__detail" aria-hidden="true">Hujur Scholar</span>
               </button>
-              <button type="button" class="char-pill" data-char="niqab" aria-pressed="false">
-                <span class="char-pill__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg></span>
-                <span class="char-pill__name">Female</span>
+              <button type="button" class="char-pill" data-char="niqab" aria-pressed="false" aria-label="Female">
+                <span class="char-pill__check" aria-hidden="true">✓</span>
+                <span class="char-pill__portrait"><img src="./assets/portrait-niqab-C29sYJqL.png" width="418" height="314" alt="" draggable="false"></span>
+                <span class="char-pill__name">Female</span><span class="char-pill__detail" aria-hidden="true">Niqab Student</span>
               </button>
               <button type="button" class="char-pill" data-char="student" aria-pressed="false" hidden disabled tabindex="-1" aria-hidden="true">
                 <span class="char-pill__icon">🎓</span>
@@ -64,26 +56,30 @@
 
           <div class="hero__actions">
             <button class="primary-button" id="enterButton" type="button" disabled>
-              <span id="enterButtonLabel">ENTER CAMPUS</span>
+              <span id="enterButtonLabel">Enter Campus</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11"/></svg>
             </button>
-            <button class="text-button" id="controlsButton" type="button">HOW TO PLAY <span aria-hidden="true">↗</span></button>
+            <div class="loading" id="loadingPanel" aria-live="polite">
+              <div class="loading__caption"><span id="loadingMessage">Getting campus ready…</span><span id="loadingPercent"></span></div>
+              <div class="loading__track" id="loadingProgress" role="progressbar" aria-label="Current loading stage" aria-valuemin="0" aria-valuemax="100" data-indeterminate="true"><div class="loading__bar" id="loadingBar"></div></div>
+            </div>
+            <button class="text-button" id="controlsButton" type="button">How to play <span aria-hidden="true">↗</span></button>
           </div>
-          <p id="touch-instructions" class="touch-instructions" hidden>Landscape recommended. Left stick moves · Swipe right to look · Tap Sprint to toggle · Hold Go / Brake to drive.</p>
-          <p id="error-message" class="error" role="alert" hidden></p>
-          <button id="retry-loading" class="text-button" type="button" hidden>RETRY LOADING ↻</button>
-          <div class="loading" id="loadingPanel" aria-live="polite">
-            <div class="loading__caption"><span id="loadingMessage">Reading campus map…</span><span id="loadingPercent">0%</span></div>
-            <div class="loading__track" id="loadingProgress" role="progressbar" aria-label="Current loading stage" aria-valuemin="0" aria-valuemax="100"><div class="loading__bar" id="loadingBar"></div></div>
-          </div>
-        </section>
-      </div>
+          <span id="touch-instructions" class="touch-instructions" hidden>Left stick moves · Swipe right to look</span>
+          <div id="error-message" class="error" role="alert" hidden></div>
+          <button id="retry-loading" class="text-button" type="button" hidden>Retry loading ↻</button>
+        </div>
+        <footer class="menu-footer"><span>ISLAMIC UNIVERSITY · BANGLADESH</span><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap</a></footer>
+      </section>
 
-      <footer class="site-footer">
-        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a>
-        <div class="footer-motto"><span>CAMPUS IN MOTION</span><span class="footer-separator"></span><span>EXPLORE AT YOUR OWN PACE</span></div>
-        <div class="footer-meta"><span>ISLAMIC UNIVERSITY, KUSHTIA</span><span>·</span><span>1:1 METRE SCALE</span></div>
-      </footer>
+      <section class="gate-scene" aria-label="Main Gate view">
+        <div id="landing-scene" aria-hidden="true"></div>
+        <img class="gate-poster" src="./assets/campus-story-bg-BOO51Omh.webp" alt="Islamic University Main Gate, framed by palms and red flowering trees" fetchpriority="high" decoding="async">
+        <div class="gate-shade" aria-hidden="true"></div>
+        <div class="gate-top"><span class="gate-label"><i aria-hidden="true"></i>MAIN GATE</span><button id="mainGateView" type="button" aria-label="Expand Main Gate view" aria-pressed="false" aria-controls="landing-scene"><span aria-hidden="true">↗</span></button></div>
+        <div class="gate-caption"><span class="caption-line" aria-hidden="true"></span><div><span class="gate-eyebrow">YOUR STARTING POINT</span><h2>At the gates of<br> something new.</h2></div></div>
+        <footer class="gate-footer"><span>MAIN GATE <i aria-hidden="true">—</i> ISLAMIC UNIVERSITY</span><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a></footer>
+      </section>
 
       <dialog class="modal" id="controlsDialog" aria-labelledby="controlsHeading">
         <div class="modal__top"><span class="modal__eyebrow">CAMPUS CONTROLS</span><button type="button" class="modal__close" data-close-dialog aria-label="Close">×</button></div>
@@ -154,7 +150,7 @@
     <aside id="inspection-banner" class="inspection-banner" hidden><b>CAMPUS VIEW <span>SIMULATION PAUSED</span></b><p>Drag / arrows orbit · Right drag / WASD pan · Scroll zoom</p><span>Press <kbd>I</kbd> or <kbd>ESC</kbd> to return</span></aside>
 
     <aside id="debug-panel" hidden><pre id="debug-text"></pre></aside>
-    <footer class="attribution"><span>MAP DATA</span> <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a><span class="attribution-detail"> · ODbL 1.0</span></footer>
+    <footer class="attribution" hidden><span>MAP DATA</span> <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a><span class="attribution-detail"> · ODbL 1.0</span></footer>
     <div id="announcer" class="sr-only" aria-live="polite"></div>
   </main>
 </body>

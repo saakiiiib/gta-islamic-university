@@ -1,0 +1,37 @@
+[
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "delayedGameModuleMs": 2200,
+    "paintMs": 2092,
+    "menuReadyMs": 1229,
+    "readyMs": 16410,
+    "character": "niqab",
+    "prepared": "true",
+    "horizontalOverflow": false,
+    "menuOverflow": false,
+    "imageFailures": 0,
+    "errors": []
+  },
+  {
+    "viewport": [
+      320,
+      568
+    ],
+    "delayedGameModuleMs": 2200,
+    "paintMs": 588,
+    "menuReadyMs": 517,
+    "readyMs": 13849,
+    "character": "niqab",
+    "prepared": "true",
+    "horizontalOverflow": false,
+    "menuOverflow": false,
+    "imageFailures": 0,
+    "errors": []
+  },
+  {
+    "missingMapErrorAndRetry": true
+  }
+]

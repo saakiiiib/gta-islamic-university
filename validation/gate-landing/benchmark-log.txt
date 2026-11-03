@@ -1,0 +1,13 @@
+{"run":1,"build":"before","visit":"cold","buttonReadyMs":11455,"stableFrameMs":11527,"longestTaskMs":5336,"menuPaintMs":1836,"prepared":"false","transferredBytes":6631401}
+{"run":1,"build":"before","visit":"warm","buttonReadyMs":9778,"stableFrameMs":9858,"longestTaskMs":4116,"menuPaintMs":336,"prepared":"false","transferredBytes":9330}
+{"run":1,"build":"after","visit":"cold","buttonReadyMs":5345,"stableFrameMs":5397,"longestTaskMs":2538,"menuPaintMs":508,"prepared":"true","transferredBytes":6902066}
+{"run":1,"build":"after","visit":"warm","buttonReadyMs":5184,"stableFrameMs":5250,"longestTaskMs":2424,"menuPaintMs":264,"prepared":"true","transferredBytes":300}
+{"run":2,"build":"after","visit":"cold","buttonReadyMs":4861,"stableFrameMs":4909,"longestTaskMs":2112,"menuPaintMs":340,"prepared":"true","transferredBytes":6902066}
+{"run":2,"build":"after","visit":"warm","buttonReadyMs":6285,"stableFrameMs":6329,"longestTaskMs":3200,"menuPaintMs":236,"prepared":"true","transferredBytes":300}
+{"run":2,"build":"before","visit":"cold","buttonReadyMs":8656,"stableFrameMs":8724,"longestTaskMs":4314,"menuPaintMs":228,"prepared":"false","transferredBytes":6631401}
+{"run":2,"build":"before","visit":"warm","buttonReadyMs":10510,"stableFrameMs":10588,"longestTaskMs":5395,"menuPaintMs":440,"prepared":"false","transferredBytes":9330}
+{"run":3,"build":"before","visit":"cold","buttonReadyMs":10829,"stableFrameMs":10913,"longestTaskMs":4704,"menuPaintMs":312,"prepared":"false","transferredBytes":6631401}
+{"run":3,"build":"before","visit":"warm","buttonReadyMs":14126,"stableFrameMs":14215,"longestTaskMs":7407,"menuPaintMs":416,"prepared":"false","transferredBytes":9330}
+{"run":3,"build":"after","visit":"cold","buttonReadyMs":10123,"stableFrameMs":10162,"longestTaskMs":5050,"menuPaintMs":368,"prepared":"true","transferredBytes":6718136}
+{"run":3,"build":"after","visit":"warm","buttonReadyMs":9544,"stableFrameMs":9688,"longestTaskMs":4819,"menuPaintMs":360,"prepared":"true","transferredBytes":300}
+{"before":{"cold":{"readyMedianMs":10829,"stableFrameMedianMs":10913,"longestTaskMedianMs":4704},"warm":{"readyMedianMs":10510,"stableFrameMedianMs":10588,"longestTaskMedianMs":5395}},"after":{"cold":{"readyMedianMs":5345,"stableFrameMedianMs":5397,"longestTaskMedianMs":2538},"warm":{"readyMedianMs":6285,"stableFrameMedianMs":6329,"longestTaskMedianMs":3200}}}

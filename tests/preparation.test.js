@@ -10,12 +10,14 @@ import { buildWorld } from '../src/world/buildWorld.js';
 import { CampusQueries } from '../src/navigation/campusQueries.js';
 import { buildPedestrianGraph } from '../src/navigation/graph.js';
 import { buildVehicleRoutes, getVehicleNetwork } from '../src/vehicle/routes.js';
-import { validateCampusPreparation, loadCampusPreparation } from '../src/world/prepared.js';
+import { validateCampusPreparation, loadCampusPreparation, requestCampusPreparation } from '../src/world/prepared.js';
 import { collisionFingerprint } from './helpers/integrity.js';
 
 const bytes = readFileSync(new URL('../public/data/map.osm', import.meta.url));
 const map = buildMapData(parseOsm(bytes.toString('utf8')));
 map.sourceSha256 = createHash('sha256').update(bytes).digest('hex');
+const trimmedMap = buildMapData(parseOsm(bytes.toString('utf8')), { trimToCampus: true });
+trimmedMap.sourceSha256 = map.sourceSha256;
 const packet = JSON.parse(readFileSync(new URL('../src/generated/campus-prepared.json', import.meta.url)));
 const hash = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
@@ -24,15 +26,16 @@ test('indexed planting and furniture preserve the original deterministic placeme
   // Fingerprints independently compared with the unmodified 5f2c051 generators.
   assert.equal(hash(vegetation), 'ba1b2d835451ecab15da8ba93f1ecb39b7ebccb7549e73df54721ac2ca1832e4');
   assert.equal(hash(scenery), '46100fa82a9daec35ab355434e3e31a66ac9843a10e7d01d1bde632221670fb5');
-  assert.deepEqual(packet.data.vegetation, vegetation);
-  assert.deepEqual(packet.data.scenery, scenery);
+  const trimmedVegetation = planVegetation(trimmedMap);
+  assert.deepEqual(packet.data.vegetation, trimmedVegetation);
+  assert.deepEqual(packet.data.scenery, planScenery(trimmedMap, { vegetation: trimmedVegetation }));
 });
 
 test('prepared road polygons, walking graph and swept van routes match their source generators', () => {
-  assert.deepEqual(packet.data.roads, buildRoadAppearance(map));
-  const queries = new CampusQueries(map, { obstacles: packet.data.scenery });
-  const runtime = buildPedestrianGraph(map, queries);
-  const hydrated = buildPedestrianGraph(map, queries, packet.data.pedestrianGraph);
+  assert.deepEqual(packet.data.roads, buildRoadAppearance(trimmedMap));
+  const queries = new CampusQueries(trimmedMap, { obstacles: packet.data.scenery });
+  const runtime = buildPedestrianGraph(trimmedMap, queries);
+  const hydrated = buildPedestrianGraph(trimmedMap, queries, packet.data.pedestrianGraph);
   assert.deepEqual(hydrated.nodes, runtime.nodes);
   assert.deepEqual(hydrated.edges, runtime.edges);
   assert.deepEqual(hydrated.diagnostics, runtime.diagnostics);
@@ -42,35 +45,42 @@ test('prepared road polygons, walking graph and swept van routes match their sou
     if (next) assert.equal(hydrated.segmentWalkable([node.x, node.z], [next.x, next.z]), runtime.segmentWalkable([node.x, node.z], [next.x, next.z]));
   }
   queries.preparedVehicleNetwork = packet.data.vehicleNetwork;
-  assert.deepEqual(getVehicleNetwork(map, queries), buildVehicleRoutes(map, queries));
+  assert.deepEqual(getVehicleNetwork(trimmedMap, queries), buildVehicleRoutes(trimmedMap, queries));
 });
 
 test('prepared world preserves source collider triangles and does not mutate the cached plan', () => {
   const baseline = JSON.parse(readFileSync(new URL('./phase1-baseline.json', import.meta.url)));
-  const world = buildWorld(map, { preparedData: packet.data });
-  assert.deepEqual(collisionFingerprint(world.collisionGroup), baseline.collision);
-  assert.equal(packet.data.scenery.length, 78);
+  const world = buildWorld(trimmedMap, { preparedData: packet.data });
+  const generated = buildWorld(trimmedMap);
+  assert.deepEqual(collisionFingerprint(world.collisionGroup), collisionFingerprint(generated.collisionGroup));
+  generated.dispose();
+  const original = buildWorld(map);
+  assert.deepEqual(collisionFingerprint(original.collisionGroup), baseline.collision);
+  original.dispose();
   assert.equal(hash(packet.data), packet.payloadSha256);
   world.dispose();
 });
 
 test('preparation requires exact map/schema identity and verifies cached payload bytes', async () => {
-  assert.equal(validateCampusPreparation(packet, map), true);
+  assert.equal(validateCampusPreparation(packet, trimmedMap), true);
+  assert.equal(validateCampusPreparation(packet, map), false);
   const fetcher = async () => new Response(JSON.stringify(packet));
-  assert.deepEqual(await loadCampusPreparation(map, { fetcher }), packet.data);
-  assert.equal(validateCampusPreparation({ ...packet, version: -1 }, map), false);
-  assert.equal(validateCampusPreparation(packet, { ...map, sourceSha256: '0'.repeat(64) }), false);
-  assert.equal(validateCampusPreparation(packet, { ...map, spawn: { ...map.spawn, x: map.spawn.x + .01 } }), false);
+  assert.deepEqual(await loadCampusPreparation(trimmedMap, { fetcher }), packet.data);
+  assert.deepEqual(await loadCampusPreparation(trimmedMap, { pendingPacket: requestCampusPreparation({ fetcher }) }), packet.data);
+  assert.equal(await loadCampusPreparation(map, { fetcher }), null);
+  assert.equal(validateCampusPreparation({ ...packet, version: -1 }, trimmedMap), false);
+  assert.equal(validateCampusPreparation(packet, { ...trimmedMap, sourceSha256: '0'.repeat(64) }), false);
+  assert.equal(validateCampusPreparation(packet, { ...trimmedMap, spawn: { ...trimmedMap.spawn, x: trimmedMap.spawn.x + .01 } }), false);
   const corrupt = structuredClone(packet); corrupt.data.vegetation.trees[0].x += 1;
-  assert.equal(await loadCampusPreparation(map, { fetcher: async () => new Response(JSON.stringify(corrupt)) }), null);
-  assert.equal(await loadCampusPreparation(map, { fetcher: async () => new Response('broken') }), null);
-  assert.equal(await loadCampusPreparation(map, { fetcher: async () => new Response('', { status: 404 }) }), null);
-  assert.equal(await loadCampusPreparation(map, { fetcher: async () => { throw new Error('offline'); } }), null);
+  assert.equal(await loadCampusPreparation(trimmedMap, { fetcher: async () => new Response(JSON.stringify(corrupt)) }), null);
+  assert.equal(await loadCampusPreparation(trimmedMap, { fetcher: async () => new Response('broken') }), null);
+  assert.equal(await loadCampusPreparation(trimmedMap, { fetcher: async () => new Response('', { status: 404 }) }), null);
+  assert.equal(await loadCampusPreparation(trimmedMap, { fetcher: async () => { throw new Error('offline'); } }), null);
 });
 
 test('stalled optional preparation aborts and leaves runtime generation available', async () => {
   let aborted = false;
-  const result = await loadCampusPreparation(map, { timeoutMs: 10,
+  const result = await loadCampusPreparation(trimmedMap, { timeoutMs: 10,
     fetcher: (_url, { signal }) => new Promise((resolve, reject) => signal.addEventListener('abort', () => { aborted = true; reject(new Error('aborted')); })),
   });
   assert.equal(result, null); assert.equal(aborted, true);

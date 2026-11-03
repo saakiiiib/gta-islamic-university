@@ -18,12 +18,21 @@ export function createLanding(doc, { reload = () => doc.defaultView.location.rel
   const $ = id => doc.getElementById(id);
   const selection = createCharacterSelection();
   let ready = false;
+  const gateButton = $('mainGateView'), landingElement = $('landing');
+  const expandGate = expanded => {
+    landingElement.classList.toggle('gate-expanded', expanded);
+    gateButton?.setAttribute('aria-pressed', String(expanded));
+    gateButton?.setAttribute('aria-label', expanded ? 'Return to start menu' : 'Expand Main Gate view');
+    if (gateButton?.querySelector('span')) gateButton.querySelector('span').textContent = expanded ? '↙' : '↗';
+    if (!expanded) landingElement.classList.remove('gate-live');
+  };
   const refreshSelection = () => {
     for (const pill of doc.querySelectorAll('.char-pill')) {
       const selected = !pill.hidden && pill.dataset.char === selection.value;
       pill.classList.toggle('active', selected);
       pill.setAttribute('aria-pressed', String(selected));
     }
+    if ($('selectionNumber')) $('selectionNumber').textContent = selection.value === 'hujur' ? '01 / 02' : '02 / 02';
   };
   for (const pill of doc.querySelectorAll('.char-pill:not([hidden])')) {
     pill.addEventListener('click', () => selection.select(pill.dataset.char));
@@ -35,10 +44,11 @@ export function createLanding(doc, { reload = () => doc.defaultView.location.rel
   $('controlsButton')?.addEventListener('click', () => dialog?.showModal());
   for (const button of doc.querySelectorAll('[data-close-dialog]')) button.addEventListener('click', () => dialog?.close());
   dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
-  $('motionToggle')?.addEventListener('click', () => {
-    const paused = $('landing').classList.toggle('motion-paused');
-    $('motionToggle').setAttribute('aria-pressed', String(paused));
-    $('motionToggle').setAttribute('aria-label', `${paused ? 'Resume' : 'Pause'} background animation`);
+  gateButton?.addEventListener('click', () => expandGate(!landingElement.classList.contains('gate-expanded')));
+  doc.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !landingElement.hidden && landingElement.classList.contains('gate-expanded')) {
+      expandGate(false); gateButton?.focus();
+    }
   });
   return {
     selection,
@@ -47,7 +57,7 @@ export function createLanding(doc, { reload = () => doc.defaultView.location.rel
       ready = Boolean(value);
       $('enterButton').disabled = !ready;
       $('loadingPanel').hidden = ready;
-      $('enterButtonLabel').textContent = 'ENTER CAMPUS';
+      $('enterButtonLabel').textContent = ready ? 'Enter Campus' : 'Preparing campus…';
     },
     progress(message, { completed, total, loadedBytes, totalBytes, detail } = {}) {
       const byteProgress = Number.isFinite(totalBytes) && totalBytes > 0;

@@ -12,10 +12,11 @@ import { ReactionAudio } from './audio/reactions.js';
 import { TouchControls } from './player/touch.js';
 import { deviceProfile, renderPixelRatio } from './platform/device.js';
 import { createWorldAssetPipeline } from './world/assets.js';
-import { loadCampusPreparation } from './world/prepared.js';
+import { loadCampusPreparation, requestCampusPreparation } from './world/prepared.js';
 import { CAMPUS_MAP_SHA256, CAMPUS_MAP_BYTES } from './generated/campus-source.js';
 import { MAIN_GATE_CONFIG } from './world/mainGate.js';
 import { CampusVisibility } from './activity/visibility.js';
+import { GateMenuCamera, CameraHandoff } from './ui/gateCamera.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('game');
@@ -28,6 +29,9 @@ let simulation;
 let reactions;
 let touch, shadowElapsed = Infinity;
 let visibility;
+let gateCamera, gateFrameDirty = true;
+const handoff = new CameraHandoff();
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let assetPipeline, startupStage = 'map', latestAssetProgress;
 let accumulator = 0, lastTime = performance.now(), fps = 60;
 const STEP = 1 / 60;
@@ -40,7 +44,7 @@ async function warmOpeningFrame() {
   await paint();
   if (renderer.compileAsync) await renderer.compileAsync(scene, camera);
   renderer.render(scene, camera);
-  await paint();
+  await new Promise(resolve => requestAnimationFrame(resolve));
 }
 function resize() {
   if (!renderer) return;
@@ -49,6 +53,8 @@ function resize() {
   renderer.setSize(width, height, false);
   camera.aspect = width / Math.max(1, height); camera.updateProjectionMatrix();
   inspection?.resize(width / Math.max(1, height));
+  gateFrameDirty = true;
+  handoff.cancel(); document.body.classList.remove('entering-campus');
   input?.clear(); // Rotation/browser chrome changes cannot leave a captured stick held.
 }
 function syncTouch() {
@@ -61,6 +67,7 @@ function syncTouch() {
 function pause(reason = 'escape') {
   if (!['playing', 'inspection'].includes(state)) return;
   state = 'paused'; accumulator = 0;
+  handoff.cancel(); document.body.classList.remove('entering-campus');
   input.setEnabled(false); inspectionSession.suspend(); simulation.setSuspended(true);
   reactions?.setSuspended(true);
   if (document.pointerLockElement === canvas) document.exitPointerLock();
@@ -79,11 +86,19 @@ async function play() {
   simulation.setSuspended(inspectionSession.active);
   reactions?.setSuspended(inspectionSession.active);
   if (!inspectionSession.active) reactions?.unlock();
-  if (firstStart) { simulation.reset(); simulation.player.teleport(MAIN_GATE_CONFIG.exteriorSpawn, MAIN_GATE_CONFIG.exteriorSpawn.yaw); chase.setDriving(false); chase.reset(MAIN_GATE_CONFIG.exteriorSpawn); }
+  if (firstStart) {
+    // Initialization already placed this unchanged campus. Rebuilding/resetting
+    // its crowd a second time here adds a needless first-click stall.
+    chase.setDriving(false); chase.reset(MAIN_GATE_CONFIG.exteriorSpawn);
+    handoff.begin(gateCamera.fit(window.innerWidth / Math.max(1, window.innerHeight)), camera, { reducedMotion: reducedMotion.matches });
+    document.body.classList.toggle('entering-campus', handoff.active);
+  }
   const landingElement = $('landing'); if (landingElement) landingElement.hidden = true;
   $('start-screen').hidden = true; $('pause-screen').hidden = true; $('play-hud').hidden = false;
   $('pause-button').disabled = false;
   $('view-toolbar').hidden = false;
+  document.querySelector('.game-header').hidden = false;
+  document.querySelector('#app > .attribution').hidden = false;
   syncTouch();
   canvas.focus({ preventScroll: true });
   $('announcer').textContent = device.touch ? 'Use the left stick to move, swipe the right side to look, and approach a van to tap Enter.' : 'Explore campus. WASD moves, Shift sprints, Space jumps. Walk through the Main Gate and drive the IU Red Bus or vans.';
@@ -94,6 +109,7 @@ async function play() {
   else if (firstStart) hud.toast('Walk through the Main Gate into campus. The iconic IU Red Bus is parked ahead!', 5500);
 }
 function resetPlayer() {
+  handoff.cancel(); document.body.classList.remove('entering-campus');
   if (inspectionSession.active) { inspectionSession.exit(); syncView(); }
   simulation.reset(); simulation.setSuspended(false); chase.setDriving(false); chase.reset(MAIN_GATE_CONFIG.exteriorSpawn); accumulator = 0;
   reactions?.reset();
@@ -119,6 +135,7 @@ function syncView() {
 function toggleInspection() {
   if (!['playing', 'inspection'].includes(state)) return;
   accumulator = 0; lastTime = performance.now();
+  handoff.cancel(); document.body.classList.remove('entering-campus');
   if (inspectionSession.active) {
     inspectionSession.exit(); state = 'playing'; syncView();
     canvas.focus({ preventScroll: true }); input.requestPointerLock();
@@ -210,25 +227,45 @@ function tick(t) {
     inspection.update(elapsed);
     visibility.prepare(inspection.camera);
     hud.update(elapsed, simulation.entity, renderer, fps, { inspection: true, simulation, visibility: visibility.sample(elapsed, simulation, simulation.entity.position) });
-  } else if (state === 'ready') {
-    world.update(elapsed, player.position);
-    world.scenery?.update(player.position);
   }
   if (renderer && scene && camera) {
+    // The normal landing uses its immediate poster. A requested expanded
+    // in-game preview draws once, using the existing renderer, after readiness.
+    // No duplicate renderer or continuous hidden campus rendering while waiting.
+    if (state === 'ready') {
+      if ($('landing').classList.contains('gate-expanded') && gateFrameDirty && !document.hidden) renderGatePreview();
+      requestAnimationFrame(tick); return;
+    }
     if (device.touch) {
       shadowElapsed += elapsed;
       if (shadowElapsed >= device.shadowInterval) { renderer.shadowMap.needsUpdate = true; shadowElapsed = 0; }
     }
-    const activeCamera = inspectionSession.active ? inspection.camera : camera;
+    const activeCamera = inspectionSession.active ? inspection.camera : handoff.update(elapsed, camera);
+    if (!handoff.active) document.body.classList.remove('entering-campus');
+    renderer.setScissorTest(false); renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.render(scene, activeCamera);
-    labels.update(elapsed, activeCamera, simulation.entity.position, { inspection: inspectionSession.active, visible: ['playing', 'inspection'].includes(state), width: window.innerWidth, height: window.innerHeight });
+    labels.update(elapsed, activeCamera, simulation.entity.position, { inspection: inspectionSession.active, visible: !handoff.active && ['playing', 'inspection'].includes(state), width: window.innerWidth, height: window.innerHeight });
   }
   requestAnimationFrame(tick);
+}
+
+function renderGatePreview() {
+  const rect = $('landing-scene').getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  gateCamera.fit(rect.width / rect.height);
+  renderer.setViewport(rect.left, window.innerHeight - rect.bottom, rect.width, rect.height);
+  renderer.setScissor(rect.left, window.innerHeight - rect.bottom, rect.width, rect.height);
+  renderer.setScissorTest(true);
+  renderer.render(scene, gateCamera.camera);
+  renderer.setScissorTest(false); renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+  $('landing').classList.add('gate-live');
+  gateFrameDirty = false;
 }
 
 async function initialize() {
   try {
     performance.mark('campus-start');
+    const pendingPreparation = requestCampusPreparation();
     assetPipeline = createWorldAssetPipeline({ baseURL: import.meta.env.BASE_URL, mobile: device.touch, onProgress: data => {
       latestAssetProgress = data;
       if (startupStage === 'materials') progress('Finishing opening-view materials…', data);
@@ -241,7 +278,7 @@ async function initialize() {
       trimToCampus: true,
     });
     startupStage = 'preparation';
-    const preparedData = await loadCampusPreparation(mapData, { onProgress: message => progress(message) });
+    const preparedData = await loadCampusPreparation(mapData, { pendingPacket: pendingPreparation, onProgress: message => progress(message) });
     performance.mark('campus-map-ready');
     progress('Creating roads, courtyards, gardens and water…');
     await paint();
@@ -262,6 +299,7 @@ async function initialize() {
     gameplayFog = new THREE.Fog(0xb3d5e6, 260, 850); scene.fog = gameplayFog;
     scene.add(world.group, player.group, simulation.fleetGroup, simulation.busGroup, simulation.ambulanceGroup, simulation.occupants.group, simulation.crowd.group, simulation.sideCharactersGroup);
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
+    gateCamera = new GateMenuCamera();
     const cameraColliders = new THREE.Group();
     cameraColliders.add(world.collisionGroup);
     if (world.scenery?.collisionGroup) cameraColliders.add(world.scenery.collisionGroup);
@@ -322,9 +360,10 @@ async function initialize() {
     $('start-label').textContent = 'STEP INTO CAMPUS'; $('start-button').disabled = false;
     landing.setReady(true);
     state = 'ready'; document.body.dataset.gameState = state;
+    gateFrameDirty = true;
     $('announcer').textContent = 'Campus ready. Select Enter Campus to play.';
     startupStage = 'background';
-    assetPipeline.startBackground(world, { renderer }).catch(error => console.warn('Optional campus detail:', error));
+    assetPipeline.startBackground(world, { renderer }).then(() => { gateFrameDirty = true; }).catch(error => console.warn('Optional campus detail:', error));
     console.info('Campus data loaded', mapData.diagnostics.counts);
     if (mapData.diagnostics.repairs.length) console.info('Documented source geometry repairs', mapData.diagnostics.repairs);
     // DOM diagnostics support QA without exposing or changing game controls.
@@ -359,11 +398,14 @@ async function initialize() {
 $('start-button').addEventListener('click', play);
 const enterButton = $('enterButton');
 if (enterButton) enterButton.addEventListener('click', play);
+$('mainGateView').addEventListener('click', () => { gateFrameDirty = true; });
+new ResizeObserver(() => { gateFrameDirty = true; }).observe($('landing-scene'));
 
 let selectionVersion = 0, selectionWarmup = Promise.resolve();
 landing.selection.subscribe(type => {
   if (!player) return;
   player.setCharacterType(type);
+  gateFrameDirty = true;
   canvas.dataset.character = player.characterType;
   if (state !== 'ready') return;
   const version = ++selectionVersion;

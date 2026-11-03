@@ -34,7 +34,9 @@ try {
   }
 } catch { /* First build, source change or invalid previous packet. */ }
 
-const map = buildMapData(parseOsm(mapBytes.toString('utf8'))), started = performance.now();
+// Match the map shape used by loadMap at runtime. The untrimmed source remains
+// unchanged; only the derived preparation uses the campus view.
+const map = buildMapData(parseOsm(mapBytes.toString('utf8')), { trimToCampus: true }), started = performance.now();
 const roads = buildRoadAppearance(map), vegetation = planVegetation(map), scenery = planScenery(map, { vegetation });
 const gate = buildMainGate({ mapData: map });
 const queries = new CampusQueries(map, { obstacles: [...scenery, ...gate.obstacles] });

@@ -31,14 +31,22 @@ export function validateCampusPreparation(packet, map, mapSha256 = map.sourceSha
 
 /** Build output is emitted under a Vite content-hashed URL, so Pages never
  * reuses preparation from an older generator after a deployment. */
-export async function loadCampusPreparation(map, { mapSha256 = map.sourceSha256, fetcher = globalThis.fetch, onProgress = () => {}, timeoutMs = 12000 } = {}) {
-  if (!fetcher || !mapSha256) return null;
+export async function requestCampusPreparation({ fetcher = globalThis.fetch, timeoutMs = 12000 } = {}) {
+  if (!fetcher) return null;
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    onProgress('Loading prepared campus routes and landscape…');
     const response = await fetcher(new URL('../generated/campus-prepared.json', import.meta.url), { signal: controller.signal });
     if (!response.ok) return null;
-    const packet = await response.json();
+    return await response.json();
+  } catch { return null; }
+  finally { clearTimeout(timer); }
+}
+
+export async function loadCampusPreparation(map, { mapSha256 = map.sourceSha256, fetcher = globalThis.fetch, onProgress = () => {}, timeoutMs = 12000, pendingPacket } = {}) {
+  if (!mapSha256) return null;
+  try {
+    onProgress('Loading prepared campus routes and landscape…');
+    const packet = await (pendingPacket ?? requestCampusPreparation({ fetcher, timeoutMs }));
     if (!validateCampusPreparation(packet, map, mapSha256) || !globalThis.crypto?.subtle) return null;
     const bytes = new TextEncoder().encode(JSON.stringify(packet.data));
     const digest = await crypto.subtle.digest('SHA-256', bytes);
@@ -50,5 +58,5 @@ export async function loadCampusPreparation(map, { mapSha256 = map.sourceSha256,
     // Offline development, old deployment, quota failures and corrupt optional
     // preparation always retain the original authoritative source generators.
     return null;
-  } finally { clearTimeout(timer); }
+  }
 }

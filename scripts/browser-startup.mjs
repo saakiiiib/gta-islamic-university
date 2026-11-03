@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(process.env.PLAYWRIGHT_MODULE).href : 'playwright');
 const base = process.argv[2] ?? 'http://127.0.0.1:4174/';
-const output = resolve('validation/startup'); await mkdir(output, { recursive: true });
+const output = resolve(process.env.CAMPUS_QA_OUTPUT ?? 'validation/startup'); await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const results = [];
 try {
@@ -35,13 +35,23 @@ try {
         character: document.querySelector('#game').dataset.character, prepared: document.querySelector('#game').dataset.prepared,
         error: document.getElementById('error-message').textContent, phases: window.__startupPhases, longTasksMs: window.__startupTasks,
         transferredBytes: performance.getEntriesByType('resource').reduce((n, r) => n + r.transferSize, 0),
-        visibleChoices: [...document.querySelectorAll('.char-pill:not([hidden])')].map(button => button.innerText.trim()),
+        menuPaintMs: Number(document.body.dataset.menuPaintMs), menuReadyMs: Number(document.body.dataset.menuReadyMs),
+        visibleChoices: [...document.querySelectorAll('.char-pill:not([hidden])')].map(button => button.querySelector('.char-pill__name').textContent.trim()),
       }));
       assert.equal(report.state, 'ready', report.error); assert.equal(report.prepared, 'true');
       assert.equal(report.character, visit === 'cold' ? 'niqab' : 'hujur');
       assert.deepEqual(report.visibleChoices, ['Male', 'Female']);
       assert.equal(await page.locator('#enterButton').isEnabled(), true);
       await page.screenshot({ path: resolve(output, `${mobile ? 'mobile' : 'desktop'}-${visit}-landing.png`) });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+      if (visit === 'cold') {
+        await page.locator('#mainGateView').click();
+        await page.waitForFunction(() => document.getElementById('landing').classList.contains('gate-live'));
+        await page.waitForFunction(() => getComputedStyle(document.querySelector('.gate-poster')).opacity === '0');
+        await page.screenshot({ path: resolve(output, `${mobile ? 'mobile' : 'desktop'}-gate-preview.png`) });
+        await page.keyboard.press('Escape');
+        assert.equal(await page.locator('#mainGateView').getAttribute('aria-pressed'), 'false');
+      }
       for (const type of ['hujur', 'niqab', 'hujur', report.character]) {
         await page.locator(`[data-char="${type}"]`).click();
         await page.waitForFunction(() => !document.querySelector('#enterButton').disabled);
@@ -54,8 +64,11 @@ try {
       if (!mobile) {
         await page.keyboard.down('w'); await page.waitForTimeout(650); await page.keyboard.up('w');
         assert.notEqual(await page.locator('#game').getAttribute('data-position'), before);
-        await page.keyboard.press('Space'); await page.waitForTimeout(140);
-        assert.equal(await page.locator('#game').getAttribute('data-grounded'), 'false');
+        await page.waitForFunction(() => document.querySelector('#game').dataset.grounded === 'true');
+        await page.keyboard.press('Space');
+        // DOM diagnostics sample at 250 ms; observe the actual update instead
+        // of inspecting a stale snapshot after an arbitrary 140 ms delay.
+        await page.waitForFunction(() => document.querySelector('#game').dataset.grounded === 'false', null, { timeout: 2500 });
       }
       await page.waitForTimeout(700);
       await page.screenshot({ path: resolve(output, `${mobile ? 'mobile' : 'desktop'}-${visit}-gameplay.png`) });

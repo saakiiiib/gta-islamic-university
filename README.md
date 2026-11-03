@@ -2,13 +2,15 @@
 
 The landing page offers **Male** (the existing Hujur Scholar, selected on every fresh visit) and **Female** (the existing Niqab Student). Choices made during loading are retained. The original Campus Student implementation remains available internally; it is hidden from the menu. Select **Enter Campus** when the opening view is ready. Controls help is available beside the entry button.
 
+The Main Gate now fills the right side of the start screen, beside a compact forest-green and gold menu with portraits of the existing characters. Portrait phones show the gate above the choices. The poster and baked portraits appear independently of WebGL; they do not create extra 3D characters or a second renderer. The corner arrow expands the gate and, once ready, shows the actual in-game gate using the existing renderer. Escape or the return arrow closes that view. Enter blends briefly into the unchanged chase camera; reduced-motion preferences skip the blend. Waiting at the normal menu no longer renders the hidden campus continuously.
+
 ## Faster startup
 
-The menu initializes independently of Three.js. Production builds prepare the unchanged campus road surfaces, vegetation/furniture placements and connected navigation once, rather than recomputing them on every visit. Preparation is checked against the source-map checksum, schema and payload checksum; missing or invalid preparation falls back to the source generators. `npm run dev` and `npm run build` automatically refresh this preparation when relevant sources change. `npm run prepare:campus` can also be run explicitly.
+The menu initializes and gets a paint opportunity before Three.js loads. Production builds prepare campus road surfaces, vegetation/furniture placements and connected navigation once, using the same **trimmed campus** model as the game. This fixes the former mismatch that silently discarded prebuilt data after campus trimming was introduced. Map and preparation requests start together. Preparation is checked against the source-map checksum, normalized map, schema and payload checksum; missing or invalid preparation falls back to the source generators. `npm run dev` and `npm run build` automatically refresh this preparation when relevant sources change. `npm run prepare:campus` can also be run explicitly.
 
 Map and visual downloads overlap CPU preparation. The selected character, gameplay systems, complete opening-view materials and first rendered frame are prepared before entry is enabled. Remaining visual enhancements complete in the background at the original desktop/mobile resolution. Progress describes the current stage with actual downloaded bytes or an indeterminate indicator for CPU/GPU work. Failed optional artwork retains its visible fallback; required map errors provide a retry button.
 
-Checksum-versioned browser caching accelerates later visits and rejects corrupt cached bytes. Network URLs are versioned too, avoiding stale files after deployment. Private/unavailable storage falls back to normal requests. There is no service worker, PWA or installation step. Models, animations, voices, campus geography, Main Gate, red bus, ambulance and controls are preserved. See [startup validation](VALIDATION-STARTUP.md) for timings, screenshots and testing limits.
+Checksum-versioned browser caching accelerates later visits and rejects corrupt cached bytes. Network URLs are versioned too, avoiding stale files after deployment. Private/unavailable storage falls back to normal requests. There is no service worker, PWA or installation step. Models, animations, voices, campus geography, Main Gate, red bus, ambulance and controls are preserved. See [Main Gate validation](VALIDATION-GATE-LANDING.md) for current timings, screenshots and testing limits; [earlier startup validation](VALIDATION-STARTUP.md) records the preceding release.
 
 A playable third-person browser prototype of Islamic University, Kushtia, Bangladesh. The existing campus layout is preserved from the supplied `map.osm`, using Three.js, JavaScript ES modules and Vite. Eight electric cargo vans, visible drivers/passengers and thirty reacting students bring activity to the existing routes. Map data and the four supplied human voice recordings are bundled locally. No speech synthesis, remote voice service, paid API or backend is used.
 
@@ -52,7 +54,7 @@ npm install
 npm run dev
 ```
 
-Open the localhost URL printed by Vite (normally `http://127.0.0.1:5173/`), then select **STEP INTO CAMPUS**. Use a modern desktop or mobile browser with WebGL 2. The first map load builds collision/navigation geometry and may take a while on slower devices.
+Open the localhost URL printed by Vite (normally `http://127.0.0.1:5173/`), then select **Enter Campus**. Use a modern desktop or mobile browser with WebGL 2. The menu appears while the game prepares; entry time still depends on device speed and connection.
 
 The production build is already included in `dist/`. To rebuild and test it:
 

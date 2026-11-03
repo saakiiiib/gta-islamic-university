@@ -7,7 +7,8 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve, extname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(process.env.PLAYWRIGHT_MODULE).href : 'playwright');
-const exec = promisify(execFile), revision = '5f2c051241f7ada24a29dfb2fb42fed601d92fbb';
+const exec = promisify(execFile), revision = process.env.CAMPUS_BASELINE ?? '5f2c051241f7ada24a29dfb2fb42fed601d92fbb';
+const output = process.env.CAMPUS_QA_OUTPUT ?? 'validation/startup';
 const gitFile = async path => (await exec('git', ['show', `${revision}:docs/${path}`], { encoding: 'buffer', maxBuffer: 5_000_000 })).stdout;
 const files = new Map([['index.html', await gitFile('index.html')]]);
 const assetList = (await exec('git', ['ls-tree', '-r', '--name-only', revision, 'docs/assets'])).stdout.trim().split('\n');
@@ -40,6 +41,8 @@ try {
       await page.waitForFunction(() => !document.querySelector('#enterButton')?.disabled, null, { timeout: 120000 });
       const result = await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve({
         buttonReadyMs: Math.round(window.__readyAt), stableFrameMs: Math.round(performance.now()), longestTaskMs: Math.round(Math.max(0, ...window.__longTasks)),
+        menuPaintMs: Math.round(performance.getEntriesByName('first-contentful-paint')[0]?.startTime ?? 0),
+        prepared: document.getElementById('game').dataset.prepared,
         transferredBytes: performance.getEntriesByType('resource').reduce((n, r) => n + r.transferSize, 0),
       })))));
       assert.ok(result.buttonReadyMs > 0); results.push({ run, build, visit, ...result }); console.log(JSON.stringify(results.at(-1)));
@@ -52,7 +55,7 @@ try {
     const group = results.filter(r => r.build === build && r.visit === visit);
     return [visit, { readyMedianMs: median(group.map(r => r.buttonReadyMs)), stableFrameMedianMs: median(group.map(r => r.stableFrameMs)), longestTaskMedianMs: median(group.map(r => r.longestTaskMs)) }];
   }))]));
-  await mkdir('validation/startup', { recursive: true });
-  await writeFile('validation/startup/benchmark.json', JSON.stringify({ baseline: revision, environment: 'Temporary headless Chrome, desktop 1365×768, local HTTP servers; alternating build order, three fresh-context pairs per build. This is not a physical-phone or Internet-speed benchmark.', results, summary }, null, 2));
+  await mkdir(output, { recursive: true });
+  await writeFile(resolve(output, 'benchmark.json'), JSON.stringify({ baseline: revision, environment: 'Temporary headless Chrome, desktop 1365×768, local HTTP servers; alternating build order, three fresh-context pairs per build. This is not a physical-phone or Internet-speed benchmark.', results, summary }, null, 2));
   console.log(JSON.stringify(summary));
 } finally { await browser.close(); server.close(); }
