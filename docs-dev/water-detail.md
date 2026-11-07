@@ -1,0 +1,9 @@
+# Separate waterbodies and bounded seasonal detail
+
+Task 15 retains all three OSM water polygons individually. Hall pond w1317423252, lake w1317423265 and unnamed pond w1317423275 remain separate; common/historical lake aliases are not reassigned to the other ponds. Exact lake-name/photo extent remains unresolved. Bridge w1317423268 retains its mapped centerline and existing unmeasured 2.2 m width/0.45 m deck/4 m ramp defaults.
+
+The licensed [2021 lake](https://commons.wikimedia.org/wiki/File:IU_Lake,_also_called_Mofiz_Lake.jpg) and [mosque-backdrop view](https://commons.wikimedia.org/wiki/File:Islamic_University_Lake_with_Central_Mosque_View.jpg) support a green-water art palette and sparse aquatic vegetation. The shared green palette is an artistic regional cue, not a surveyed condition for every pond. Seasonal leaves/reeds stay inside water and clear of bridge approaches, holes and banks. At most 250 instances use two opaque draws; this extract produces 241 instances. No per-plant objects, transparent sorting, collision or animated vertices.
+
+[Historical hall-pond steps](https://commons.wikimedia.org/wiki/File:Stair_of_the_ponds_at_sheikh_mujib_hall,_Islamic_university_kushtia_-_1.jpg) do not establish current bank extents. No guessed masonry steps, bridge dimensions/rails, benches or ground obstructions are added. Bank survey, exact named lake extent and current bridge/plant evidence remain pending. The model exposes each feature's ID, mapped name and source-inspired/non-surveyed placement status.
+
+Six focused geometry/world tests check finite bounded instancing, source immutability, every transformed plant vertex inside water, full bridge clearance, missing/invalid geometry and idempotent disposal. Standard preparation/build passes. Navigation/collision remain the existing mapped model; interactive bridge review is pending.
