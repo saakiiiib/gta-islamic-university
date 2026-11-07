@@ -386,12 +386,22 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "storeys": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": 5,
+        "status": "reported",
+        "confidence": "medium",
+        "sourceUrl": "https://www.jagonews24.com/campus/news/818981",
+        "observedAt": "2022-12-19",
+        "reason": "Official five/six-storey extension target plus later completed-extension reporting; exact per-wing elevations and current condition remain unmeasured.",
+        "supportingSources": [
+          {
+            "url": "https://iu.ac.bd/public/images/notice/51598e5e3d44198ddf6e68ca24859da4.pdf",
+            "role": "Explicit development target, printed pages 9-10"
+          },
+          {
+            "url": "https://www.jagonews24.com/campus/news/818981",
+            "role": "Completed upward extensions reported December 2022"
+          }
+        ]
       },
       "wallColor": {
         "value": null,
@@ -434,7 +444,9 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {},
+    "renderStoreyEnvelope": true,
+    "storeyEnvelopeNote": "Explicitly opted-in provisional uniform body envelope at 3.2 m/storey. Not a measured height; per-wing variation and rooftop cores await dated elevations."
   },
   {
     "osmType": "relation",
@@ -460,12 +472,22 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "storeys": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": 6,
+        "status": "reported",
+        "confidence": "medium",
+        "sourceUrl": "https://shikshabarta.com/157002/",
+        "observedAt": "2023-09-03",
+        "reason": "Official five/six-storey extension target plus later completed-extension reporting; exact per-wing elevations and current condition remain unmeasured.",
+        "supportingSources": [
+          {
+            "url": "https://iu.ac.bd/public/images/notice/51598e5e3d44198ddf6e68ca24859da4.pdf",
+            "role": "Explicit development target, printed pages 9-10"
+          },
+          {
+            "url": "https://www.jagonews24.com/campus/news/818981",
+            "role": "Completed upward extensions reported December 2022"
+          }
+        ]
       },
       "wallColor": {
         "value": null,
@@ -508,7 +530,9 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {},
+    "renderStoreyEnvelope": true,
+    "storeyEnvelopeNote": "Explicitly opted-in provisional uniform body envelope at 3.2 m/storey. Not a measured height; per-wing variation and rooftop cores await dated elevations."
   },
   {
     "osmType": "way",

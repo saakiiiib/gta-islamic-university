@@ -27,12 +27,27 @@ test('all imported buildings expose honest height provenance without claiming me
     if(b.heightSource==='building:levels') { assert.equal(b.heightEvidence.source,'osm'); assert.equal(b.heightEvidence.metresPerStorey,3.2); }
   }
   for(const c of heightPolicyChanges) {
-    const b=map.buildings.find(b=>b.id===c.id); assert.equal(b.height,c.after.height); assert.equal(b.heightSource,c.after.heightSource);
+    const b=map.buildings.find(b=>b.id===c.id); assert.ok(Math.abs(b.height-c.after.height)<1e-9); assert.equal(b.heightSource,c.after.heightSource);
   }
-  assert.deepEqual(heightPolicyChanges.filter(c=>c.before.height!==c.after.height).map(c=>c.id),['1317423300']);
+  assert.deepEqual(heightPolicyChanges.filter(c=>c.before.height!==c.after.height).map(c=>c.id).sort(),['1317423300','18079384','18079386']);
 });
 test('planned dimensions cannot be activated in the registry', () => {
   const r=structuredClone(CAMPUS_LANDMARKS[0]); r.renderHeight=true;
   r.fields.heightMeters={value:45.7,status:'planned',confidence:'medium',sourceUrl:'https://iu.ac.bd/',observedAt:'2026-11-07'};
   assert.throws(()=>validateCampusLandmarks([r]),/Unverified height/);
+});
+
+test('reported extension storeys use explicit provisional envelopes, not measured heights', () => {
+  for (const [id, expected] of [['18079384',16],['18079386',19.2]]) {
+    const b=map.buildings.find(b=>b.id===id);
+    assert.ok(Math.abs(b.height-expected)<1e-9); assert.equal(b.heightEvidence.status,'provisional');
+    assert.equal(b.heightEvidence.measured,false); assert.equal(b.heightEvidence.metresPerStorey,3.2);
+    assert.equal(b.heightEvidence.source,'reported-storey-art-envelope');
+  }
+  const record=structuredClone(CAMPUS_LANDMARKS.find(r=>r.osmId==='532464097'));
+  record.renderStoreyEnvelope=true; record.storeyEnvelopeNote='Must not activate disputed floors';
+  assert.throws(()=>validateCampusLandmarks([record]),/Unverified storey/);
+  const bba=CAMPUS_LANDMARKS.find(r=>r.osmId==='18079386');
+  assert.equal(estimateHeight({height:'11 m'},bba).height,11);
+  assert.equal(estimateHeight({'building:levels':'4'},bba).height,12.8);
 });
