@@ -46,3 +46,6 @@ Added src/world/landmarks/martyrsMemorial.js, tests/martyrsMemorial.test.js and 
 
 ## 2026-11-07 — Codex — Task 8: main-gate audit
 Added verified CC BY-SA 3.0 front photograph main-gate-front-2013.jpg (Shohan6), manifest/SOURCES attribution, docs-dev/landmarks/main-gate-audit.md, and source evidence metadata in mainGate.js. Corrected research report's three-portal misreading: front view confirms four arches, already matching the game. Exact proportions/upper frieze/current 2026 calligraphy layout remain unverified. Existing geometry/spawn/colliders unchanged; six gate/boundary tests and standard build pass. Collection now 34 licensed images. Next: library dispute handling and sourced academic/hall changes; no blanket claim that all gate dimensions are verified.
+
+## 2026-11-07 — Codex — Task 9: library dispute retained
+Structured library evidence in campus-landmark-records.js and docs-dev/landmarks/library-evidence.md: official three storeys, disputed four apparent photo bands, dated color/roof/window observations, physical height unknown. No library facade/height override activated before the requested resolution. Five registry tests and standard build pass; preparation refreshed. Task 9 remains partial pending an elevation/section/current survey. Next: source-backed academic storey envelopes, courtyard-safe refinements and hall observations.
