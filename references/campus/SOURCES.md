@@ -69,3 +69,11 @@ Downloads use Commons-provided reduced-resolution versions (maximum requested wi
 - The Aisha hall photograph shows its entrance gate, not enough of the residential blocks to establish their height or facade.
 - The 2010 field, pond-steps, garden and sky photos are especially old. Use them for surface/vegetation cues only, pending a current survey.
 - Colors in photographs vary with exposure, grading, weather and repainting. Visible color is evidence for a starting palette, not measured albedo or a verified construction material.
+
+## Added during the main-gate audit, 7 November 2026
+
+| File | Photo date / author | Source | License / changes |
+|---|---|---|---|
+| [main-gate-front-2013.jpg](main-gate-front-2013.jpg) | 21 February 2013; Shohan6 at English Wikipedia, own work by original uploader | [Commons file](https://commons.wikimedia.org/wiki/File:Islamic_University_Bangladesh,_Islamic_Unviersity_gate,_iu_gate.jpg) | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/); Commons reduced-resolution version, renamed, no crop/retouch |
+
+This front view confirms four arches; it corrects the earlier three-portal reading of the oblique aerial. It is historical evidence and does not establish the exact form of the September 2026 steel calligraphy addition. The collection now has 34 photos. A second candidate credited to a newspaper was not downloaded because its ownership provenance was less clear.

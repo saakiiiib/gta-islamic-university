@@ -3021,5 +3021,94 @@
         "hidden": ""
       }
     }
+  },
+  {
+    "file": "main-gate-front-2013.jpg",
+    "title": "File:Islamic University Bangladesh, Islamic Unviersity gate, iu gate.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Islamic_University_Bangladesh,_Islamic_Unviersity_gate,_iu_gate.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Islamic_University_Bangladesh%2C_Islamic_Unviersity_gate%2C_iu_gate.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Islamic_University_Bangladesh%2C_Islamic_Unviersity_gate%2C_iu_gate.jpg/1280px-Islamic_University_Bangladesh%2C_Islamic_Unviersity_gate%2C_iu_gate.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "artist": "<a href=\"https://en.wikipedia.org/wiki/User:Shohan6\" class=\"extiw\" title=\"w:User:Shohan6\">Shohan6</a> at <a href=\"https://en.wikipedia.org/wiki/\" class=\"extiw\" title=\"w:\">English Wikipedia</a>",
+    "credit": "<span class=\"int-own-work\" lang=\"\">own work by the original uploader</span>",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+    "date": "2013-02-21",
+    "description": "Islamic University gate",
+    "sha256": "da21c175f94f7bad363617fe8e362cb4c32c1828049abba82ac965be4ba30110",
+    "metadata": {
+      "DateTime": {
+        "value": "2013-08-18 12:10:20",
+        "source": "mediawiki-metadata",
+        "hidden": ""
+      },
+      "ObjectName": {
+        "value": "Islamic University Bangladesh, Islamic Unviersity gate, iu gate",
+        "source": "mediawiki-metadata"
+      },
+      "CommonsMetadataExtension": {
+        "value": 1.2,
+        "source": "extension",
+        "hidden": ""
+      },
+      "Categories": {
+        "value": "GFDL|Taken with Nikon D3000|Location possible|Islamic University, Bangladesh|License migration redundant|Self-published work|Gateways",
+        "source": "commons-categories",
+        "hidden": ""
+      },
+      "Assessments": {
+        "value": "",
+        "source": "commons-categories",
+        "hidden": ""
+      },
+      "ImageDescription": {
+        "value": "Islamic University gate",
+        "source": "commons-desc-page"
+      },
+      "DateTimeOriginal": {
+        "value": "2013-02-21",
+        "source": "commons-desc-page"
+      },
+      "Credit": {
+        "value": "<span class=\"int-own-work\" lang=\"\">own work by the original uploader</span>",
+        "source": "commons-desc-page"
+      },
+      "Artist": {
+        "value": "<a href=\"https://en.wikipedia.org/wiki/User:Shohan6\" class=\"extiw\" title=\"w:User:Shohan6\">Shohan6</a> at <a href=\"https://en.wikipedia.org/wiki/\" class=\"extiw\" title=\"w:\">English Wikipedia</a>",
+        "source": "commons-desc-page"
+      },
+      "LicenseShortName": {
+        "value": "CC BY-SA 3.0",
+        "source": "commons-desc-page",
+        "hidden": ""
+      },
+      "UsageTerms": {
+        "value": "Creative Commons Attribution-Share Alike 3.0",
+        "source": "commons-desc-page"
+      },
+      "AttributionRequired": {
+        "value": "true",
+        "source": "commons-desc-page",
+        "hidden": ""
+      },
+      "LicenseUrl": {
+        "value": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "commons-desc-page"
+      },
+      "Copyrighted": {
+        "value": "True",
+        "source": "commons-desc-page",
+        "hidden": ""
+      },
+      "Restrictions": {
+        "value": "",
+        "source": "commons-desc-page",
+        "hidden": ""
+      },
+      "License": {
+        "value": "cc-by-sa-3.0",
+        "source": "commons-templates",
+        "hidden": ""
+      }
+    }
   }
 ]

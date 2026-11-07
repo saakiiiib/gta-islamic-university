@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildMainGate, MAIN_GATE_CONFIG } from '../src/world/mainGate.js';
 
-test('Main Gate constructs authentic 4-arch Roman-Islamic architecture with calligraphy and landscape', () => {
+test('Main Gate constructs the source-counted four-arch game assembly with calligraphy and landscape', () => {
   const gate = buildMainGate();
 
   assert.ok(gate.group.isGroup);
