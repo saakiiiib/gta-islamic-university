@@ -702,9 +702,11 @@ export const landmarkRecords = [
     "osmType": "way",
     "osmId": "532464653",
     "names": {
-      "en": "Grarage",
+      "en": "Garage",
       "bn": null,
-      "aliases": []
+      "aliases": [
+        "Grarage"
+      ]
     },
     "identitySource": {
       "url": "https://www.openstreetmap.org/way/532464653",
@@ -768,7 +770,8 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {},
+    "displayNameNote": "English spelling correction for display only; raw OSM Grarage retained, not a newly verified official plaque."
   },
   {
     "osmType": "way",
