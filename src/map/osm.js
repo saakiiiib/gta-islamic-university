@@ -151,7 +151,7 @@ export function buildMapData(parsed, userConfig = {}) {
     }
     const outerTags = outerMembers.map(m => ways.get(m.ref)?.tags || {}).reduce((a, b) => ({...a, ...b}), {});
     const tags = {...outerTags, ...relation.tags};
-    const feature = {id: relation.id, name: named(tags), tags, polygons, sourceWayIds: outerMembers.map(m => m.ref)};
+    const feature = {id: relation.id, osmType: 'relation', name: named(tags), tags, polygons, sourceWayIds: outerMembers.map(m => m.ref)};
     if (isBuilding && intersectsBounds(polygons, bounds)) data.buildings.push({...feature, ...estimateHeight(tags)});
     else if (!isBuilding) {
       const clipped = clipPolygons(polygons, bounds);
@@ -181,7 +181,7 @@ export function buildMapData(parsed, userConfig = {}) {
     const tags = way.tags;
     if (building(tags) && !represented.has(way.id)) {
       const ring = wayRing(way, positions, diagnostics.warnings);
-      if (ring && intersectsBounds([[ring]], bounds)) data.buildings.push({id: way.id, name: named(tags), tags,
+      if (ring && intersectsBounds([[ring]], bounds)) data.buildings.push({id: way.id, osmType: 'way', name: named(tags), tags,
         polygons: [[ring]], sourceWayIds: [way.id], ...estimateHeight(tags)});
     }
     const green = greenKind(tags), water = waterKind(tags);
