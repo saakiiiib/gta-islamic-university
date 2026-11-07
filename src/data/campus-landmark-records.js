@@ -30,28 +30,28 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#b98172",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Architectures_of_Islamic_University,_Bangladesh._Birshreshtha_Hamidur_Rahman_Auditorium.jpg",
+        "observedAt": "2021-04-04",
+        "reason": "Historical licensed photograph; palette/form art interpretation, physical dimensions and current repainting unverified."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#d4c7b6",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Architectures_of_Islamic_University,_Bangladesh._Birshreshtha_Hamidur_Rahman_Auditorium.jpg",
+        "observedAt": "2021-04-04",
+        "reason": "Historical licensed photograph; palette/form art interpretation, physical dimensions and current repainting unverified."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Layered flat hall and entry roofs; raised main volume.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Architectures_of_Islamic_University,_Bangladesh._Birshreshtha_Hamidur_Rahman_Auditorium.jpg",
+        "observedAt": "2021-04-04",
+        "reason": "Historical licensed photograph; palette/form art interpretation, physical dimensions and current repainting unverified."
       },
       "facadeMaterial": {
         "value": null,
@@ -62,15 +62,18 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "windowPattern": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Tall arched front composition and pale arch trim; roof/window bands do not establish occupied storeys.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Architectures_of_Islamic_University,_Bangladesh._Birshreshtha_Hamidur_Rahman_Auditorium.jpg",
+        "observedAt": "2021-04-04",
+        "reason": "Historical licensed photograph; palette/form art interpretation, physical dimensions and current repainting unverified."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "relation",

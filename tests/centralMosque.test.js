@@ -91,10 +91,10 @@ test('world integrates one mosque model and owns its lifetime without adding col
   const { collisionFingerprint } = await import('./helpers/integrity.js');
   const map = buildMapData(parseOsm(readFileSync(new URL('../public/data/map.osm', import.meta.url), 'utf8')), { trimToCampus: true });
   const world = buildWorld(map);
-  assert.equal(world.landmarkModels.length, 1);
+  assert.equal(world.landmarkModels.filter(m => m.diagnostics.osmId === '1317423259').length, 1);
   assert.ok(world.group.getObjectByName('central-mosque-landmark'));
   assert.equal(world.collisionGroup.getObjectByName('central-mosque-domes-and-arches'), undefined);
-  const model = world.landmarkModels[0], mesh = model.group.children[0];
+  const model = world.landmarkModels.find(m => m.diagnostics.osmId === '1317423259'), mesh = model.group.children[0];
   let disposals = 0; mesh.geometry.addEventListener('dispose', () => disposals++);
   world.dispose(); assert.equal(disposals, 1); assert.equal(model.group.parent, null);
 });
