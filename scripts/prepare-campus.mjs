@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { parseOsm, buildMapData } from '../src/map/index.js';
 import { buildRoadAppearance } from '../src/world/roads.js';
-import { planVegetation } from '../src/world/vegetation.js';
+import { planReferenceVegetation } from '../src/world/referenceVegetation.js';
 import { planScenery } from '../src/world/scenery.js';
 import { buildMainGate } from '../src/world/mainGate.js';
 import { CampusQueries } from '../src/navigation/campusQueries.js';
@@ -37,7 +37,7 @@ try {
 // Match the map shape used by loadMap at runtime. The untrimmed source remains
 // unchanged; only the derived preparation uses the campus view.
 const map = buildMapData(parseOsm(mapBytes.toString('utf8')), { trimToCampus: true }), started = performance.now();
-const roads = buildRoadAppearance(map), vegetation = planVegetation(map), scenery = planScenery(map, { vegetation });
+const roads = buildRoadAppearance(map), vegetation = planReferenceVegetation(map), scenery = planScenery(map, { vegetation });
 const gate = buildMainGate({ mapData: map });
 const queries = new CampusQueries(map, { obstacles: [...scenery, ...gate.obstacles] });
 const pedestrianGraph = buildPedestrianGraph(map, queries), vehicleNetwork = buildVehicleRoutes(map, queries);
