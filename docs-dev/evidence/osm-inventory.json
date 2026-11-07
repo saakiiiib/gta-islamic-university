@@ -1,0 +1,4064 @@
+{
+  "createdAt": "2026-11-07T07:21:31.635Z",
+  "bbox": [
+    23.71545,
+    89.14043,
+    23.72694,
+    89.16244
+  ],
+  "sourceSha256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
+  "bundled": {
+    "rawCounts": {
+      "nodes": 3260,
+      "ways": 482,
+      "relations": 14
+    },
+    "scope": "Objects whose representative center lies in the stated bbox; not a campus-only survey. Coordinate averages for ways/relations; these are representative anchors, not surveyed entrances or polygon centroids.",
+    "elements": 3023,
+    "types": {
+      "node": 2534,
+      "way": 476,
+      "relation": 13
+    },
+    "buildings": 402,
+    "buildingTagCoverage": {
+      "name": 40,
+      "name:en": 1,
+      "name:bn": 1,
+      "building:levels": 2,
+      "height": 0,
+      "min_height": 0,
+      "building:colour": 0,
+      "building:material": 0,
+      "roof:shape": 0,
+      "roof:height": 0,
+      "roof:colour": 0,
+      "roof:material": 0,
+      "width": 0,
+      "surface": 0,
+      "entrance": 0,
+      "barrier": 0,
+      "natural": 0,
+      "water": 0,
+      "landuse": 0,
+      "leisure": 0,
+      "highway": 0
+    },
+    "allTagCoverage": {
+      "name": 86,
+      "name:en": 7,
+      "name:bn": 6,
+      "building:levels": 2,
+      "height": 0,
+      "min_height": 0,
+      "building:colour": 0,
+      "building:material": 0,
+      "roof:shape": 0,
+      "roof:height": 0,
+      "roof:colour": 0,
+      "roof:material": 0,
+      "width": 0,
+      "surface": 1,
+      "entrance": 5,
+      "barrier": 0,
+      "natural": 5,
+      "water": 3,
+      "landuse": 4,
+      "leisure": 12,
+      "highway": 41
+    },
+    "tagValues": {
+      "building": {
+        "construction": 3,
+        "hospital": 1,
+        "school": 2,
+        "university": 2,
+        "yes": 394
+      },
+      "highway": {
+        "bus_stop": 1,
+        "path": 2,
+        "service": 36,
+        "trunk": 1,
+        "unclassified": 1
+      },
+      "landuse": {
+        "forest": 2,
+        "orchard": 2
+      },
+      "leisure": {
+        "garden": 8,
+        "park": 1,
+        "pitch": 3
+      },
+      "natural": {
+        "tree": 1,
+        "tree_row": 1,
+        "water": 3
+      },
+      "water": {
+        "lake": 1,
+        "pond": 2
+      },
+      "barrier": {}
+    },
+    "named": [
+      {
+        "type": "node",
+        "id": "4748459173",
+        "center": {
+          "lat": 23.7188402,
+          "lon": 89.155316
+        },
+        "tags": {
+          "bus": "yes",
+          "highway": "bus_stop",
+          "name": "Sheikhpara Bus Stop",
+          "public_transport": "stop_position"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166875953",
+        "center": {
+          "lat": 23.7229843,
+          "lon": 89.1543126
+        },
+        "tags": {
+          "name": "রবি ঠাকুর বিপণী",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166876831",
+        "center": {
+          "lat": 23.7228321,
+          "lon": 89.1543823
+        },
+        "tags": {
+          "name": "ই বি স্ন্যাক্ স",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166880124",
+        "center": {
+          "lat": 23.7198028,
+          "lon": 89.156343
+        },
+        "tags": {
+          "name": "Ershad Cosmetics এরশাদ প্রসাধনী",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166885212",
+        "center": {
+          "lat": 23.7194798,
+          "lon": 89.1558725
+        },
+        "tags": {
+          "name": "Sonar Tori Jewellers সোনার টোরি গহনা",
+          "shop": "jewelry"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166885218",
+        "center": {
+          "lat": 23.7191421,
+          "lon": 89.155643
+        },
+        "tags": {
+          "name": "Mama Vagne Rice Store",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166886611",
+        "center": {
+          "lat": 23.718896,
+          "lon": 89.1555023
+        },
+        "tags": {
+          "name": "New Vai Vai Store ( নিউ ভাই ভাই স্টোর)",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166886968",
+        "center": {
+          "lat": 23.7183584,
+          "lon": 89.1545183
+        },
+        "tags": {
+          "name": "Nandi Mistanna Bhandar",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166887727",
+        "center": {
+          "lat": 23.7185164,
+          "lon": 89.1546753
+        },
+        "tags": {
+          "name": "Tipu Telecom",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166887991",
+        "center": {
+          "lat": 23.7179103,
+          "lon": 89.1556689
+        },
+        "tags": {
+          "healthcare": "hospice",
+          "name": "আদর্শ হোমিও ক্লিনিক"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166888245",
+        "center": {
+          "lat": 23.7185091,
+          "lon": 89.1552721
+        },
+        "tags": {
+          "name": "Jannat Electronics জান্নাত ইলেক্ট্রনিক্স",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166888321",
+        "center": {
+          "lat": 23.71854,
+          "lon": 89.1555115
+        },
+        "tags": {
+          "name": "Muslim Sweet Store",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166888468",
+        "center": {
+          "lat": 23.718078,
+          "lon": 89.1560812
+        },
+        "tags": {
+          "name": "Siddik store",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166888829",
+        "center": {
+          "lat": 23.7170086,
+          "lon": 89.1555943
+        },
+        "tags": {
+          "name": "Turmeric shop",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166889020",
+        "center": {
+          "lat": 23.7184019,
+          "lon": 89.1553828
+        },
+        "tags": {
+          "amenity": "fast_food",
+          "name": "Rasel Fastfood রাসেল ফাস্টফুডের"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166890937",
+        "center": {
+          "lat": 23.7176964,
+          "lon": 89.1553967
+        },
+        "tags": {
+          "name": "চায়ের দোকান চায়ের দোকান",
+          "shop": "tea"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166891225",
+        "center": {
+          "lat": 23.7173112,
+          "lon": 89.1558074
+        },
+        "tags": {
+          "amenity": "marketplace",
+          "name": "Sheikh Supermarket শেখ সুপার মার্কেট"
+        }
+      },
+      {
+        "type": "node",
+        "id": "9027931168",
+        "center": {
+          "lat": 23.7227843,
+          "lon": 89.153833
+        },
+        "tags": {
+          "entrance": "yes",
+          "ref": "Main Gate"
+        }
+      },
+      {
+        "type": "node",
+        "id": "9706366710",
+        "center": {
+          "lat": 23.7267253,
+          "lon": 89.1516998
+        },
+        "tags": {
+          "amenity": "school",
+          "name": "Islamic University Laboratory School and College"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096016",
+        "center": {
+          "lat": 23.7227121,
+          "lon": 89.1514035
+        },
+        "tags": {
+          "name": "Bot tola",
+          "natural": "tree"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096223",
+        "center": {
+          "lat": 23.7194973,
+          "lon": 89.1515946
+        },
+        "tags": {
+          "name": "Shahid Ziaur Rahman mor"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096226",
+        "center": {
+          "lat": 23.7194404,
+          "lon": 89.1550494
+        },
+        "tags": {
+          "door": "revolving",
+          "entrance": "yes",
+          "name": "Pocket Gate",
+          "wheelchair": "no"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096228",
+        "center": {
+          "lat": 23.7174045,
+          "lon": 89.1515266
+        },
+        "tags": {
+          "entrance": "yes",
+          "ref": "Pocket Gate"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096322",
+        "center": {
+          "lat": 23.7207735,
+          "lon": 89.1538179
+        },
+        "tags": {
+          "amenity": "police",
+          "name": "Islamic University Police Station",
+          "operator": "Bangladesh Government"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096368",
+        "center": {
+          "lat": 23.7249426,
+          "lon": 89.1529663
+        },
+        "tags": {
+          "entrance": "yes",
+          "name": "Second Gate",
+          "ref": "Second Gate"
+        }
+      },
+      {
+        "type": "way",
+        "id": "237819447",
+        "center": {
+          "lat": 23.722962356521737,
+          "lon": 89.14920627826086
+        },
+        "tags": {
+          "amenity": "university",
+          "name": "ইসলামী বিশ্ববিদ্যালয়",
+          "name:bn": "ইসলামী বিশ্ববিদ্যালয়",
+          "name:en": "Islamic University",
+          "wikidata": "Q3347861",
+          "wikipedia": "bn:ইসলামী বিশ্ববিদ্যালয়, বাংলাদেশ",
+          "wikipedia:en": "Islamic University, Bangladesh"
+        }
+      },
+      {
+        "type": "way",
+        "id": "276712534",
+        "center": {
+          "lat": 23.72345109846153,
+          "lon": 89.14884418923074
+        },
+        "tags": {
+          "highway": "trunk",
+          "lanes": "2",
+          "maxspeed": "60",
+          "name": "কুষ্টিয়া-ঝিনাইদহ মহাসড়ক",
+          "name:en": "Kushtia-Jhenaidah Highway",
+          "ref": "N704",
+          "surface": "asphalt"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532463950",
+        "center": {
+          "lat": 23.7255904,
+          "lon": 89.15154065
+        },
+        "tags": {
+          "leisure": "park",
+          "name": "Residential Park"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532463974",
+        "center": {
+          "lat": 23.72354764,
+          "lon": 89.15260448000001
+        },
+        "tags": {
+          "building": "yes",
+          "name": "University Administrator Building বিশ্ববিদ্যালয় প্রশাসক বিল্ডিং"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464097",
+        "center": {
+          "lat": 23.723953253846148,
+          "lon": 89.15036707692308
+        },
+        "tags": {
+          "amenity": "library",
+          "building": "yes",
+          "name": "Central Library"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464180",
+        "center": {
+          "lat": 23.72337956,
+          "lon": 89.15096538
+        },
+        "tags": {
+          "building": "yes",
+          "building:levels": "4",
+          "name": "Faculty of Applied Science and Technology"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464243",
+        "center": {
+          "lat": 23.72217438,
+          "lon": 89.15094804
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Faculty Building, Islamic University"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464301",
+        "center": {
+          "lat": 23.72398987619048,
+          "lon": 89.14831996190476
+        },
+        "tags": {
+          "amenity": "hospital",
+          "healthcare": "hospital",
+          "name": "Islamic University Medical Centre"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464636",
+        "center": {
+          "lat": 23.72110533076923,
+          "lon": 89.15159385384617
+        },
+        "tags": {
+          "amenity": "restaurant",
+          "building": "yes",
+          "name": "Central Cafeteria কেন্দ্রীয় ক্যাফেটেরিয়া"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464653",
+        "center": {
+          "lat": 23.724516639999997,
+          "lon": 89.14779218
+        },
+        "tags": {
+          "amenity": "bus_station",
+          "building": "yes",
+          "name": "Grarage"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464712",
+        "center": {
+          "lat": 23.72016062,
+          "lon": 89.15209641999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Saddam Hossain Hall সাদ্দাম হোসেন হল",
+          "tourism": "hostel"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464760",
+        "center": {
+          "lat": 23.71913,
+          "lon": 89.15319398
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Lalon Shah Hall লালন শাহ হলের",
+          "tourism": "hostel"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464837",
+        "center": {
+          "lat": 23.717792047058825,
+          "lon": 89.15069055882354
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Shah Azizur Rahman Hall",
+          "tourism": "hostel"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464846",
+        "center": {
+          "lat": 23.71887936,
+          "lon": 89.1480519
+        },
+        "tags": {
+          "building": "yes",
+          "name": "July-36 Hall",
+          "tourism": "hostel"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464907",
+        "center": {
+          "lat": 23.720298775,
+          "lon": 89.150850125
+        },
+        "tags": {
+          "leisure": "pitch",
+          "name": "Cricket Field, IU",
+          "sport": "cricket"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532465115",
+        "center": {
+          "lat": 23.72159206,
+          "lon": 89.15418553999999
+        },
+        "tags": {
+          "amenity": "post_office",
+          "building": "yes",
+          "name": "Post Office Iu"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532465285",
+        "center": {
+          "lat": 23.72016045714286,
+          "lon": 89.15645314285715
+        },
+        "tags": {
+          "amenity": "hospital",
+          "healthcare": "hospital",
+          "name": "Rimi Homeo Clinic রিমি হোমিও ক্লিনিক"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532466329",
+        "center": {
+          "lat": 23.7185824,
+          "lon": 89.15515522000001
+        },
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "heikhpara Jame Mosque শেখপাড়া জামে মসজিদ",
+          "religion": "muslim"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532466676",
+        "center": {
+          "lat": 23.71783638,
+          "lon": 89.15575125999999
+        },
+        "tags": {
+          "amenity": "bank",
+          "building": "yes",
+          "name": "সোনালি ব্যাংক লিমিটেড",
+          "name:en": "Sonali Bank Limited"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532466753",
+        "center": {
+          "lat": 23.716861020000003,
+          "lon": 89.15548642
+        },
+        "tags": {
+          "amenity": "fuel",
+          "name": "M. Jasheb Filling Station"
+        }
+      },
+      {
+        "type": "way",
+        "id": "929202588",
+        "center": {
+          "lat": 23.723955355555557,
+          "lon": 89.15133938888887
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Ibn Sina Science Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "929202651",
+        "center": {
+          "lat": 23.72435329333333,
+          "lon": 89.15244542666667
+        },
+        "tags": {
+          "building": "construction",
+          "name": "New Administrative Builiding"
+        }
+      },
+      {
+        "type": "way",
+        "id": "929433965",
+        "center": {
+          "lat": 23.72562332,
+          "lon": 89.1495853
+        },
+        "tags": {
+          "building": "yes",
+          "name": "নতুন শিক্ষক ডরমিটরি"
+        }
+      },
+      {
+        "type": "way",
+        "id": "929434313",
+        "center": {
+          "lat": 23.7252389,
+          "lon": 89.15234247999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Guest House, IU"
+        }
+      },
+      {
+        "type": "way",
+        "id": "930117137",
+        "center": {
+          "lat": 23.72584364,
+          "lon": 89.15211338
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Teacher Dormitory 2"
+        }
+      },
+      {
+        "type": "way",
+        "id": "967967197",
+        "center": {
+          "lat": 23.7192274,
+          "lon": 89.15215520000001
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Shahid Ziaur Rahman Hall"
+        }
+      },
+      {
+        "type": "way",
+        "id": "967967198",
+        "center": {
+          "lat": 23.71864641428572,
+          "lon": 89.15199632857141
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Shahid Anas Hall"
+        }
+      },
+      {
+        "type": "way",
+        "id": "970015480",
+        "center": {
+          "lat": 23.720738115384616,
+          "lon": 89.14785267692308
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Khaleda Zia Hall, IU"
+        }
+      },
+      {
+        "type": "way",
+        "id": "970015482",
+        "center": {
+          "lat": 23.719758812499997,
+          "lon": 89.14794484999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Ummul Mu'mineen Aisha Siddiqa Hall"
+        }
+      },
+      {
+        "type": "way",
+        "id": "970122772",
+        "center": {
+          "lat": 23.72052444,
+          "lon": 89.14962693999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Central Gymnasium, IU"
+        }
+      },
+      {
+        "type": "way",
+        "id": "986372422",
+        "center": {
+          "lat": 23.724632987499998,
+          "lon": 89.1601158625
+        },
+        "tags": {
+          "building": "yes",
+          "name": "#WeAreLilly"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1053233987",
+        "center": {
+          "lat": 23.720344779999998,
+          "lon": 89.15693794
+        },
+        "tags": {
+          "building": "yes",
+          "building:levels": "2",
+          "name": "1"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423240",
+        "center": {
+          "lat": 23.723857514285708,
+          "lon": 89.14960674285713
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Mir Mosharraf Hossain Academic Building",
+          "name:bn": "মীর মোশাররফ হোসেন একাডেমিক বিল্ডিং"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423241",
+        "center": {
+          "lat": 23.721987844444445,
+          "lon": 89.1483990888889
+        },
+        "tags": {
+          "alt_name": "IIER Building",
+          "building": "yes",
+          "name": "Islamic Institute of Education and Research"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423243",
+        "center": {
+          "lat": 23.72137381904762,
+          "lon": 89.15072106666668
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Rabindro Najrul Arts Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423245",
+        "center": {
+          "lat": 23.72174094,
+          "lon": 89.15255601999999
+        },
+        "tags": {
+          "leisure": "pitch",
+          "name": "Football Playground,IU",
+          "sport": "soccer"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423252",
+        "center": {
+          "lat": 23.718722233333335,
+          "lon": 89.15060293333333
+        },
+        "tags": {
+          "name": "শাহ আজিজুর রহমান হল (প্রাক্তন বঙ্গবন্ধু হল) পুকুর",
+          "natural": "water",
+          "salt": "no",
+          "water": "pond"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423253",
+        "center": {
+          "lat": 23.72014666,
+          "lon": 89.15410276
+        },
+        "tags": {
+          "building": "construction",
+          "name": "New Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423254",
+        "center": {
+          "lat": 23.719616660000003,
+          "lon": 89.15438758
+        },
+        "tags": {
+          "building": "construction",
+          "name": "New Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423257",
+        "center": {
+          "lat": 23.72550024374999,
+          "lon": 89.150733925
+        },
+        "tags": {
+          "building": "yes",
+          "name": "VC Residency"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423258",
+        "center": {
+          "lat": 23.724855124999998,
+          "lon": 89.150583825
+        },
+        "tags": {
+          "highway": "service",
+          "name": "Paradise Road"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423259",
+        "center": {
+          "lat": 23.722731753846155,
+          "lon": 89.1493577923077
+        },
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "Central Mosque",
+          "religion": "muslim"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423260",
+        "center": {
+          "lat": 23.722716335,
+          "lon": 89.151410885
+        },
+        "tags": {
+          "name": "Bot tola"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423263",
+        "center": {
+          "lat": 23.721479729729726,
+          "lon": 89.14971530270275
+        },
+        "tags": {
+          "building": "university",
+          "name": "Business Administration Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423267",
+        "center": {
+          "lat": 23.724506605714293,
+          "lon": 89.14732019142856
+        },
+        "tags": {
+          "highway": "path",
+          "name": "Lake road"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423269",
+        "center": {
+          "lat": 23.72562852222222,
+          "lon": 89.14792294444445
+        },
+        "tags": {
+          "garden:type": "botanical",
+          "leisure": "garden",
+          "name": "IU Botanical Garden"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423272",
+        "center": {
+          "lat": 23.726924725,
+          "lon": 89.1515450375
+        },
+        "tags": {
+          "amenity": "school",
+          "name": "Islamic University Laboratory School and College"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423287",
+        "center": {
+          "lat": 23.72273575384615,
+          "lon": 89.15231478846152
+        },
+        "tags": {
+          "access": "yes",
+          "fee": "no",
+          "garden:type": "botanical",
+          "leisure": "garden",
+          "name": "Diana Chattar",
+          "name:bn": "ডায়না চত্বর",
+          "operator": "Islamic University",
+          "operator:type": "university"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423288",
+        "center": {
+          "lat": 23.72273574,
+          "lon": 89.15323733333334
+        },
+        "tags": {
+          "access": "yes",
+          "fee": "no",
+          "garden:type": "botanical",
+          "leisure": "garden",
+          "name": "Diana Chattar",
+          "name:bn": "ডায়না চত্বর",
+          "operator": "Islamic University",
+          "operator:type": "university"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423290",
+        "center": {
+          "lat": 23.722041830000002,
+          "lon": 89.15185994999999
+        },
+        "tags": {
+          "landuse": "orchard",
+          "name": "Mango Garden"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423295",
+        "center": {
+          "lat": 23.723366549999998,
+          "lon": 89.15177701666668
+        },
+        "tags": {
+          "landuse": "orchard",
+          "name": "Jhal Orchard"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423300",
+        "center": {
+          "lat": 23.71967682,
+          "lon": 89.15184158
+        },
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "Jia Hall Mosque",
+          "religion": "muslim"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1468680463",
+        "center": {
+          "lat": 23.723987176190473,
+          "lon": 89.14832126190475
+        },
+        "tags": {
+          "building": "hospital",
+          "name": "Islamic University Medical Centre ইসলামী বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "7650711",
+        "center": {
+          "lat": 23.721415794999995,
+          "lon": 89.15170873999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Auditorium, Islamic university, Kushtia.",
+          "shop": "music",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "9517082",
+        "center": {
+          "lat": 23.71811311785714,
+          "lon": 89.146695025
+        },
+        "tags": {
+          "admin_level": "5",
+          "boundary": "administrative",
+          "ISO3166-2": "BD-30",
+          "name": "কুষ্টিয়া জেলা",
+          "name:bn": "কুষ্টিয়া জেলা",
+          "name:en": "Kushtia District",
+          "name:ko": "쿠슈티아구",
+          "name:uk": "Куштія",
+          "name:zh": "库什蒂亚县",
+          "type": "boundary",
+          "wikidata": "Q956895",
+          "wikipedia": "bn:কুষ্টিয়া জেলা"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "9521179",
+        "center": {
+          "lat": 23.71811311785714,
+          "lon": 89.146695025
+        },
+        "tags": {
+          "admin_level": "5",
+          "boundary": "administrative",
+          "ISO3166-2": "BD-23",
+          "name": "ঝিনাইদহ জেলা",
+          "name:bn": "ঝিনাইদহ জেলা",
+          "name:en": "Jhenaidah District",
+          "name:ko": "제나이다구",
+          "type": "boundary",
+          "wikidata": "Q2188750",
+          "wikipedia": "bn:ঝিনাইদহ জেলা"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "14326634",
+        "center": {
+          "lat": 23.71811311785714,
+          "lon": 89.146695025
+        },
+        "tags": {
+          "admin_level": "6",
+          "boundary": "administrative",
+          "DIST_CODE": "44",
+          "DIST_NAME": "Jhenaidaha",
+          "DIV_CODE": "5",
+          "DIV_NAME": "Khulna Division",
+          "GEOCODE": "44480",
+          "name": "শৈলকুপা উপজেলা",
+          "name:en": "Shailkupa Upazila",
+          "type": "boundary",
+          "wikidata": "Q3348563",
+          "wikipedia": "bn:শৈলকুপা উপজেলা"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "17674651",
+        "center": {
+          "lat": 23.71811311785714,
+          "lon": 89.146695025
+        },
+        "tags": {
+          "admin_level": "6",
+          "alt_name": "কুষ্টিয়া",
+          "boundary": "administrative",
+          "name": "মিরপুর",
+          "name:en": "Mirpur",
+          "type": "boundary",
+          "wikidata": "Q3348470",
+          "wikipedia": "en:Mirpur Upazila"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079380",
+        "center": {
+          "lat": 23.723516092857142,
+          "lon": 89.15255828571428
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Admin Building",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079382",
+        "center": {
+          "lat": 23.72137381904762,
+          "lon": 89.15072106666668
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Rabindra Arts building",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079384",
+        "center": {
+          "lat": 23.7240048,
+          "lon": 89.15135268947368
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Ibn Sina Science Building",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079385",
+        "center": {
+          "lat": 23.722716335,
+          "lon": 89.151410885
+        },
+        "tags": {
+          "leisure": "garden",
+          "name": "Banyan Tree",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079386",
+        "center": {
+          "lat": 23.721480409999995,
+          "lon": 89.14971696800004
+        },
+        "tags": {
+          "building": "university",
+          "name": "BBA building",
+          "type": "multipolygon"
+        }
+      }
+    ]
+  },
+  "gameDerived": {
+    "origin": {
+      "lat": 23.72220495,
+      "lon": 89.15084115
+    },
+    "campus": "237819447",
+    "counts": {
+      "buildings": 57,
+      "roads": 40,
+      "greens": 16,
+      "water": 3,
+      "bridges": 1,
+      "trees": 1,
+      "treeRows": 1,
+      "entrances": 5,
+      "places": 53
+    },
+    "diagnostics": {
+      "counts": {
+        "sourceNodes": 3260,
+        "sourceWays": 482,
+        "sourceRelations": 14,
+        "buildings": 189,
+        "roads": 42,
+        "greens": 16,
+        "water": 4,
+        "bridges": 1,
+        "trees": 1,
+        "treeRows": 1
+      },
+      "warnings": [
+        "Reattached courtyard way 1317423251 from outer-less relation 18079383 to uniquely enclosing building 18079382.",
+        "Reattached courtyard way 1317423250 from outer-less relation 18079383 to uniquely enclosing building 18079382."
+      ],
+      "repairs": [
+        {
+          "type": "orphan-courtyard",
+          "fromRelation": "18079383",
+          "toBuilding": "18079382",
+          "wayId": "1317423251"
+        },
+        {
+          "type": "orphan-courtyard",
+          "fromRelation": "18079383",
+          "toBuilding": "18079382",
+          "wayId": "1317423250"
+        }
+      ]
+    },
+    "buildingTagCoverage": {
+      "name": 32,
+      "name:en": 0,
+      "name:bn": 1,
+      "building:levels": 1,
+      "height": 0,
+      "min_height": 0,
+      "building:colour": 0,
+      "building:material": 0,
+      "roof:shape": 0,
+      "roof:height": 0,
+      "roof:colour": 0,
+      "roof:material": 0,
+      "width": 0,
+      "surface": 0,
+      "entrance": 0,
+      "barrier": 0,
+      "natural": 0,
+      "water": 0,
+      "landuse": 0,
+      "leisure": 0,
+      "highway": 0
+    },
+    "buildings": [
+      {
+        "id": "7650711",
+        "name": "Auditorium, Islamic university, Kushtia.",
+        "tags": {
+          "building": "yes",
+          "name": "Auditorium, Islamic university, Kushtia.",
+          "shop": "music",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "532464608"
+        ],
+        "osmType": "relation",
+        "center": {
+          "lat": 23.721415794999995,
+          "lon": 89.15170873999999
+        }
+      },
+      {
+        "id": "18079379",
+        "name": "Faculty of Applied Science and Technology",
+        "tags": {
+          "building": "yes",
+          "building:levels": "4",
+          "name": "Faculty of Applied Science and Technology",
+          "type": "multipolygon"
+        },
+        "height": 12.8,
+        "heightSource": "building:levels",
+        "sourceWayIds": [
+          "532464180"
+        ],
+        "osmType": "relation",
+        "center": {
+          "lat": 23.7233624,
+          "lon": 89.15099946000001
+        }
+      },
+      {
+        "id": "18079380",
+        "name": "Admin Building",
+        "tags": {
+          "building": "yes",
+          "name": "Admin Building",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "532463974"
+        ],
+        "osmType": "relation",
+        "center": {
+          "lat": 23.723516092857142,
+          "lon": 89.15255828571428
+        }
+      },
+      {
+        "id": "18079381",
+        "name": "Faculty Building, Islamic University",
+        "tags": {
+          "building": "yes",
+          "name": "Faculty Building, Islamic University",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "532464243"
+        ],
+        "osmType": "relation",
+        "center": {
+          "lat": 23.72215515,
+          "lon": 89.15095747
+        }
+      },
+      {
+        "id": "18079382",
+        "name": "Rabindra Arts building",
+        "tags": {
+          "building": "yes",
+          "name": "Rabindra Arts building",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "1317423243"
+        ],
+        "osmType": "relation",
+        "center": {
+          "lat": 23.72137381904762,
+          "lon": 89.15072106666668
+        }
+      },
+      {
+        "id": "18079384",
+        "name": "Ibn Sina Science Building",
+        "tags": {
+          "building": "yes",
+          "name": "Ibn Sina Science Building",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "929202588"
+        ],
+        "osmType": "relation",
+        "center": {
+          "lat": 23.7240048,
+          "lon": 89.15135268947368
+        }
+      },
+      {
+        "id": "18079386",
+        "name": "BBA building",
+        "tags": {
+          "building": "university",
+          "name": "BBA building",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "1317423263"
+        ],
+        "osmType": "relation",
+        "center": {
+          "lat": 23.721480409999995,
+          "lon": 89.14971696800004
+        }
+      },
+      {
+        "id": "532464097",
+        "name": "Central Library",
+        "tags": {
+          "amenity": "library",
+          "building": "yes",
+          "name": "Central Library"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "532464097"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.723953253846148,
+          "lon": 89.15036707692308
+        }
+      },
+      {
+        "id": "532464636",
+        "name": "Central Cafeteria কেন্দ্রীয় ক্যাফেটেরিয়া",
+        "tags": {
+          "amenity": "restaurant",
+          "building": "yes",
+          "name": "Central Cafeteria কেন্দ্রীয় ক্যাফেটেরিয়া"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "532464636"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72110533076923,
+          "lon": 89.15159385384617
+        }
+      },
+      {
+        "id": "532464653",
+        "name": "Grarage",
+        "tags": {
+          "amenity": "bus_station",
+          "building": "yes",
+          "name": "Grarage"
+        },
+        "height": 3.2,
+        "heightSource": "estimate:shed",
+        "sourceWayIds": [
+          "532464653"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.724516639999997,
+          "lon": 89.14779218
+        }
+      },
+      {
+        "id": "532464712",
+        "name": "Saddam Hossain Hall সাদ্দাম হোসেন হল",
+        "tags": {
+          "building": "yes",
+          "name": "Saddam Hossain Hall সাদ্দাম হোসেন হল",
+          "tourism": "hostel"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "532464712"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72016062,
+          "lon": 89.15209641999999
+        }
+      },
+      {
+        "id": "532464760",
+        "name": "Lalon Shah Hall লালন শাহ হলের",
+        "tags": {
+          "building": "yes",
+          "name": "Lalon Shah Hall লালন শাহ হলের",
+          "tourism": "hostel"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "532464760"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.71913,
+          "lon": 89.15319398
+        }
+      },
+      {
+        "id": "532464837",
+        "name": "Shah Azizur Rahman Hall",
+        "tags": {
+          "building": "yes",
+          "name": "Shah Azizur Rahman Hall",
+          "tourism": "hostel"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "532464837"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.717792047058825,
+          "lon": 89.15069055882354
+        }
+      },
+      {
+        "id": "532464846",
+        "name": "July-36 Hall",
+        "tags": {
+          "building": "yes",
+          "name": "July-36 Hall",
+          "tourism": "hostel"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "532464846"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.71887936,
+          "lon": 89.1480519
+        }
+      },
+      {
+        "id": "532465115",
+        "name": "Post Office Iu",
+        "tags": {
+          "amenity": "post_office",
+          "building": "yes",
+          "name": "Post Office Iu"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "532465115"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72159206,
+          "lon": 89.15418553999999
+        }
+      },
+      {
+        "id": "929202651",
+        "name": "New Administrative Builiding",
+        "tags": {
+          "building": "construction",
+          "name": "New Administrative Builiding"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "929202651"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72435329333333,
+          "lon": 89.15244542666667
+        }
+      },
+      {
+        "id": "929203013",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "929203013"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72377764,
+          "lon": 89.15282906000002
+        }
+      },
+      {
+        "id": "929433965",
+        "name": "নতুন শিক্ষক ডরমিটরি",
+        "tags": {
+          "building": "yes",
+          "name": "নতুন শিক্ষক ডরমিটরি"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "929433965"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72562332,
+          "lon": 89.1495853
+        }
+      },
+      {
+        "id": "929434313",
+        "name": "Guest House, IU",
+        "tags": {
+          "building": "yes",
+          "name": "Guest House, IU"
+        },
+        "height": 6.4,
+        "heightSource": "estimate:house",
+        "sourceWayIds": [
+          "929434313"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.7252389,
+          "lon": 89.15234247999999
+        }
+      },
+      {
+        "id": "930117132",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930117132"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72643796,
+          "lon": 89.15092
+        }
+      },
+      {
+        "id": "930117133",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930117133"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72673236,
+          "lon": 89.15071408
+        }
+      },
+      {
+        "id": "930117134",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930117134"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.726727919999995,
+          "lon": 89.15051656
+        }
+      },
+      {
+        "id": "930117135",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930117135"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72642914,
+          "lon": 89.15075621999999
+        }
+      },
+      {
+        "id": "930117136",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930117136"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72600048,
+          "lon": 89.1515329
+        }
+      },
+      {
+        "id": "930117137",
+        "name": "Teacher Dormitory 2",
+        "tags": {
+          "building": "yes",
+          "name": "Teacher Dormitory 2"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "930117137"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72584364,
+          "lon": 89.15211338
+        }
+      },
+      {
+        "id": "930117138",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930117138"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72563814,
+          "lon": 89.15208093999999
+        }
+      },
+      {
+        "id": "930117139",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930117139"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.725508339999998,
+          "lon": 89.15242187999999
+        }
+      },
+      {
+        "id": "930862510",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930862510"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.725885919999996,
+          "lon": 89.14861110000001
+        }
+      },
+      {
+        "id": "930862511",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930862511"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72545924,
+          "lon": 89.14861968
+        }
+      },
+      {
+        "id": "930862512",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "930862512"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.725219699999997,
+          "lon": 89.14861592000001
+        }
+      },
+      {
+        "id": "967965555",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "967965555"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.71978116,
+          "lon": 89.15503215999999
+        }
+      },
+      {
+        "id": "967965556",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "967965556"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.719734879999997,
+          "lon": 89.15503853999999
+        }
+      },
+      {
+        "id": "967965557",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "967965557"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.7196665,
+          "lon": 89.15503146
+        }
+      },
+      {
+        "id": "967965558",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "967965558"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.71951472,
+          "lon": 89.15506888
+        }
+      },
+      {
+        "id": "967967197",
+        "name": "Shahid Ziaur Rahman Hall",
+        "tags": {
+          "building": "yes",
+          "name": "Shahid Ziaur Rahman Hall"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "967967197"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.7192274,
+          "lon": 89.15215520000001
+        }
+      },
+      {
+        "id": "967967198",
+        "name": "Shahid Anas Hall",
+        "tags": {
+          "building": "yes",
+          "name": "Shahid Anas Hall"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "967967198"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.71864641428572,
+          "lon": 89.15199632857141
+        }
+      },
+      {
+        "id": "970015480",
+        "name": "Khaleda Zia Hall, IU",
+        "tags": {
+          "building": "yes",
+          "name": "Khaleda Zia Hall, IU"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "970015480"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.720738115384616,
+          "lon": 89.14785267692308
+        }
+      },
+      {
+        "id": "970015481",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "970015481"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72033904,
+          "lon": 89.14820122
+        }
+      },
+      {
+        "id": "970015482",
+        "name": "Ummul Mu'mineen Aisha Siddiqa Hall",
+        "tags": {
+          "building": "yes",
+          "name": "Ummul Mu'mineen Aisha Siddiqa Hall"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "970015482"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.719758812499997,
+          "lon": 89.14794484999999
+        }
+      },
+      {
+        "id": "970015483",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "970015483"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.720618899999998,
+          "lon": 89.14827444000001
+        }
+      },
+      {
+        "id": "970122772",
+        "name": "Central Gymnasium, IU",
+        "tags": {
+          "building": "yes",
+          "name": "Central Gymnasium, IU"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "970122772"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72052444,
+          "lon": 89.14962693999999
+        }
+      },
+      {
+        "id": "970122774",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "970122774"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72145746,
+          "lon": 89.15370376000001
+        }
+      },
+      {
+        "id": "970122775",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "970122775"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.720823160000002,
+          "lon": 89.15355975999998
+        }
+      },
+      {
+        "id": "986167436",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "986167436"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.720758099999998,
+          "lon": 89.15482691999999
+        }
+      },
+      {
+        "id": "986167437",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "986167437"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.720239099999997,
+          "lon": 89.15480602
+        }
+      },
+      {
+        "id": "1317423240",
+        "name": "Mir Mosharraf Hossain Academic Building",
+        "tags": {
+          "building": "yes",
+          "name": "Mir Mosharraf Hossain Academic Building",
+          "name:bn": "মীর মোশাররফ হোসেন একাডেমিক বিল্ডিং"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "1317423240"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.723857514285708,
+          "lon": 89.14960674285713
+        }
+      },
+      {
+        "id": "1317423241",
+        "name": "Islamic Institute of Education and Research",
+        "tags": {
+          "alt_name": "IIER Building",
+          "building": "yes",
+          "name": "Islamic Institute of Education and Research"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "1317423241"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.721987844444445,
+          "lon": 89.1483990888889
+        }
+      },
+      {
+        "id": "1317423253",
+        "name": "New Building",
+        "tags": {
+          "building": "construction",
+          "name": "New Building"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "1317423253"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72014666,
+          "lon": 89.15410276
+        }
+      },
+      {
+        "id": "1317423254",
+        "name": "New Building",
+        "tags": {
+          "building": "construction",
+          "name": "New Building"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "1317423254"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.719616660000003,
+          "lon": 89.15438758
+        }
+      },
+      {
+        "id": "1317423257",
+        "name": "VC Residency",
+        "tags": {
+          "building": "yes",
+          "name": "VC Residency"
+        },
+        "height": 6.4,
+        "heightSource": "estimate:house",
+        "sourceWayIds": [
+          "1317423257"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72550024374999,
+          "lon": 89.150733925
+        }
+      },
+      {
+        "id": "1317423259",
+        "name": "Central Mosque",
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "Central Mosque",
+          "religion": "muslim"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "1317423259"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.722731753846155,
+          "lon": 89.1493577923077
+        }
+      },
+      {
+        "id": "1317423270",
+        "name": null,
+        "tags": {
+          "building": "school"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "1317423270"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.726887319999996,
+          "lon": 89.15168137999999
+        }
+      },
+      {
+        "id": "1317423271",
+        "name": null,
+        "tags": {
+          "building": "school"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "1317423271"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72645912,
+          "lon": 89.15168988
+        }
+      },
+      {
+        "id": "1317423300",
+        "name": "Jia Hall Mosque",
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "Jia Hall Mosque",
+          "religion": "muslim"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory",
+        "sourceWayIds": [
+          "1317423300"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.71967682,
+          "lon": 89.15184158
+        }
+      },
+      {
+        "id": "1468678933",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "1468678933"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.720758080000003,
+          "lon": 89.15403236
+        }
+      },
+      {
+        "id": "1468678934",
+        "name": null,
+        "tags": {
+          "building": "yes"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified",
+        "sourceWayIds": [
+          "1468678934"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.72370546,
+          "lon": 89.14768956
+        }
+      },
+      {
+        "id": "1468680463",
+        "name": "Islamic University Medical Centre ইসলামী বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার",
+        "tags": {
+          "building": "hospital",
+          "name": "Islamic University Medical Centre ইসলামী বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic",
+        "sourceWayIds": [
+          "1468680463"
+        ],
+        "osmType": "way",
+        "center": {
+          "lat": 23.723987176190473,
+          "lon": 89.14832126190475
+        }
+      }
+    ],
+    "namedBuildings": [
+      {
+        "id": "7650711",
+        "name": "Auditorium, Islamic university, Kushtia.",
+        "tags": {
+          "building": "yes",
+          "name": "Auditorium, Islamic university, Kushtia.",
+          "shop": "music",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "18079379",
+        "name": "Faculty of Applied Science and Technology",
+        "tags": {
+          "building": "yes",
+          "building:levels": "4",
+          "name": "Faculty of Applied Science and Technology",
+          "type": "multipolygon"
+        },
+        "height": 12.8,
+        "heightSource": "building:levels"
+      },
+      {
+        "id": "18079380",
+        "name": "Admin Building",
+        "tags": {
+          "building": "yes",
+          "name": "Admin Building",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "18079381",
+        "name": "Faculty Building, Islamic University",
+        "tags": {
+          "building": "yes",
+          "name": "Faculty Building, Islamic University",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "18079382",
+        "name": "Rabindra Arts building",
+        "tags": {
+          "building": "yes",
+          "name": "Rabindra Arts building",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "18079384",
+        "name": "Ibn Sina Science Building",
+        "tags": {
+          "building": "yes",
+          "name": "Ibn Sina Science Building",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "18079386",
+        "name": "BBA building",
+        "tags": {
+          "building": "university",
+          "name": "BBA building",
+          "type": "multipolygon"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "532464097",
+        "name": "Central Library",
+        "tags": {
+          "amenity": "library",
+          "building": "yes",
+          "name": "Central Library"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "532464636",
+        "name": "Central Cafeteria কেন্দ্রীয় ক্যাফেটেরিয়া",
+        "tags": {
+          "amenity": "restaurant",
+          "building": "yes",
+          "name": "Central Cafeteria কেন্দ্রীয় ক্যাফেটেরিয়া"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified"
+      },
+      {
+        "id": "532464653",
+        "name": "Grarage",
+        "tags": {
+          "amenity": "bus_station",
+          "building": "yes",
+          "name": "Grarage"
+        },
+        "height": 3.2,
+        "heightSource": "estimate:shed"
+      },
+      {
+        "id": "532464712",
+        "name": "Saddam Hossain Hall সাদ্দাম হোসেন হল",
+        "tags": {
+          "building": "yes",
+          "name": "Saddam Hossain Hall সাদ্দাম হোসেন হল",
+          "tourism": "hostel"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "532464760",
+        "name": "Lalon Shah Hall লালন শাহ হলের",
+        "tags": {
+          "building": "yes",
+          "name": "Lalon Shah Hall লালন শাহ হলের",
+          "tourism": "hostel"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "532464837",
+        "name": "Shah Azizur Rahman Hall",
+        "tags": {
+          "building": "yes",
+          "name": "Shah Azizur Rahman Hall",
+          "tourism": "hostel"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "532464846",
+        "name": "July-36 Hall",
+        "tags": {
+          "building": "yes",
+          "name": "July-36 Hall",
+          "tourism": "hostel"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "532465115",
+        "name": "Post Office Iu",
+        "tags": {
+          "amenity": "post_office",
+          "building": "yes",
+          "name": "Post Office Iu"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified"
+      },
+      {
+        "id": "929202651",
+        "name": "New Administrative Builiding",
+        "tags": {
+          "building": "construction",
+          "name": "New Administrative Builiding"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "929433965",
+        "name": "নতুন শিক্ষক ডরমিটরি",
+        "tags": {
+          "building": "yes",
+          "name": "নতুন শিক্ষক ডরমিটরি"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "929434313",
+        "name": "Guest House, IU",
+        "tags": {
+          "building": "yes",
+          "name": "Guest House, IU"
+        },
+        "height": 6.4,
+        "heightSource": "estimate:house"
+      },
+      {
+        "id": "930117137",
+        "name": "Teacher Dormitory 2",
+        "tags": {
+          "building": "yes",
+          "name": "Teacher Dormitory 2"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "967967197",
+        "name": "Shahid Ziaur Rahman Hall",
+        "tags": {
+          "building": "yes",
+          "name": "Shahid Ziaur Rahman Hall"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "967967198",
+        "name": "Shahid Anas Hall",
+        "tags": {
+          "building": "yes",
+          "name": "Shahid Anas Hall"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "970015480",
+        "name": "Khaleda Zia Hall, IU",
+        "tags": {
+          "building": "yes",
+          "name": "Khaleda Zia Hall, IU"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "970015482",
+        "name": "Ummul Mu'mineen Aisha Siddiqa Hall",
+        "tags": {
+          "building": "yes",
+          "name": "Ummul Mu'mineen Aisha Siddiqa Hall"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "970122772",
+        "name": "Central Gymnasium, IU",
+        "tags": {
+          "building": "yes",
+          "name": "Central Gymnasium, IU"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified"
+      },
+      {
+        "id": "1317423240",
+        "name": "Mir Mosharraf Hossain Academic Building",
+        "tags": {
+          "building": "yes",
+          "name": "Mir Mosharraf Hossain Academic Building",
+          "name:bn": "মীর মোশাররফ হোসেন একাডেমিক বিল্ডিং"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "1317423241",
+        "name": "Islamic Institute of Education and Research",
+        "tags": {
+          "alt_name": "IIER Building",
+          "building": "yes",
+          "name": "Islamic Institute of Education and Research"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      },
+      {
+        "id": "1317423253",
+        "name": "New Building",
+        "tags": {
+          "building": "construction",
+          "name": "New Building"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified"
+      },
+      {
+        "id": "1317423254",
+        "name": "New Building",
+        "tags": {
+          "building": "construction",
+          "name": "New Building"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified"
+      },
+      {
+        "id": "1317423257",
+        "name": "VC Residency",
+        "tags": {
+          "building": "yes",
+          "name": "VC Residency"
+        },
+        "height": 6.4,
+        "heightSource": "estimate:house"
+      },
+      {
+        "id": "1317423259",
+        "name": "Central Mosque",
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "Central Mosque",
+          "religion": "muslim"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:unclassified"
+      },
+      {
+        "id": "1317423300",
+        "name": "Jia Hall Mosque",
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "Jia Hall Mosque",
+          "religion": "muslim"
+        },
+        "height": 12.8,
+        "heightSource": "estimate:dormitory"
+      },
+      {
+        "id": "1468680463",
+        "name": "Islamic University Medical Centre ইসলামী বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার",
+        "tags": {
+          "building": "hospital",
+          "name": "Islamic University Medical Centre ইসলামী বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার"
+        },
+        "height": 9.6,
+        "heightSource": "estimate:academic"
+      }
+    ],
+    "heightSources": {
+      "estimate:academic": 13,
+      "building:levels": 1,
+      "estimate:unclassified": 29,
+      "estimate:shed": 1,
+      "estimate:dormitory": 11,
+      "estimate:house": 2
+    }
+  },
+  "liveEndpoint": "https://overpass.private.coffee/api/interpreter",
+  "live": {
+    "osmBase": "2026-06-01T08:52:28Z",
+    "sha256": "1e3416c573737762a07689047a4d9a7b63e96c14db70c182fd3417458df14589",
+    "rawElementCounts": {
+      "node": 2525,
+      "way": 482,
+      "relation": 13
+    },
+    "scope": "Objects whose representative center lies in the stated bbox; not a campus-only survey. Coordinate averages for ways/relations; these are representative anchors, not surveyed entrances or polygon centroids.",
+    "elements": 3010,
+    "types": {
+      "node": 2525,
+      "way": 476,
+      "relation": 9
+    },
+    "buildings": 402,
+    "buildingTagCoverage": {
+      "name": 39,
+      "name:en": 1,
+      "name:bn": 0,
+      "building:levels": 2,
+      "height": 0,
+      "min_height": 0,
+      "building:colour": 0,
+      "building:material": 0,
+      "roof:shape": 0,
+      "roof:height": 0,
+      "roof:colour": 0,
+      "roof:material": 0,
+      "width": 0,
+      "surface": 0,
+      "entrance": 0,
+      "barrier": 0,
+      "natural": 0,
+      "water": 0,
+      "landuse": 0,
+      "leisure": 0,
+      "highway": 0
+    },
+    "allTagCoverage": {
+      "name": 77,
+      "name:en": 2,
+      "name:bn": 1,
+      "building:levels": 2,
+      "height": 0,
+      "min_height": 0,
+      "building:colour": 0,
+      "building:material": 0,
+      "roof:shape": 0,
+      "roof:height": 0,
+      "roof:colour": 0,
+      "roof:material": 0,
+      "width": 0,
+      "surface": 0,
+      "entrance": 5,
+      "barrier": 0,
+      "natural": 5,
+      "water": 3,
+      "landuse": 4,
+      "leisure": 12,
+      "highway": 41
+    },
+    "tagValues": {
+      "building": {
+        "construction": 3,
+        "hospital": 1,
+        "school": 2,
+        "university": 2,
+        "yes": 394
+      },
+      "highway": {
+        "bus_stop": 1,
+        "path": 2,
+        "service": 37,
+        "unclassified": 1
+      },
+      "landuse": {
+        "forest": 2,
+        "orchard": 2
+      },
+      "leisure": {
+        "garden": 8,
+        "park": 1,
+        "pitch": 3
+      },
+      "natural": {
+        "tree": 1,
+        "tree_row": 1,
+        "water": 3
+      },
+      "water": {
+        "lake": 1,
+        "pond": 2
+      },
+      "barrier": {}
+    },
+    "named": [
+      {
+        "type": "node",
+        "id": "4748459173",
+        "center": {
+          "lat": 23.7188402,
+          "lon": 89.155316
+        },
+        "tags": {
+          "bus": "yes",
+          "highway": "bus_stop",
+          "name": "Sheikhpara Bus Stop",
+          "public_transport": "stop_position"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166875953",
+        "center": {
+          "lat": 23.7229843,
+          "lon": 89.1543126
+        },
+        "tags": {
+          "name": "রবি ঠাকুর বিপণী",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166876831",
+        "center": {
+          "lat": 23.7228321,
+          "lon": 89.1543823
+        },
+        "tags": {
+          "name": "ই বি স্ন্যাক্ স",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166880124",
+        "center": {
+          "lat": 23.7198028,
+          "lon": 89.156343
+        },
+        "tags": {
+          "name": "Ershad Cosmetics এরশাদ প্রসাধনী",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166885212",
+        "center": {
+          "lat": 23.7194798,
+          "lon": 89.1558725
+        },
+        "tags": {
+          "name": "Sonar Tori Jewellers সোনার টোরি গহনা",
+          "shop": "jewelry"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166885218",
+        "center": {
+          "lat": 23.7191421,
+          "lon": 89.155643
+        },
+        "tags": {
+          "name": "Mama Vagne Rice Store",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166886611",
+        "center": {
+          "lat": 23.718896,
+          "lon": 89.1555023
+        },
+        "tags": {
+          "name": "New Vai Vai Store ( নিউ ভাই ভাই স্টোর)",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166886968",
+        "center": {
+          "lat": 23.7183584,
+          "lon": 89.1545183
+        },
+        "tags": {
+          "name": "Nandi Mistanna Bhandar",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166887727",
+        "center": {
+          "lat": 23.7185164,
+          "lon": 89.1546753
+        },
+        "tags": {
+          "name": "Tipu Telecom",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166887991",
+        "center": {
+          "lat": 23.7179103,
+          "lon": 89.1556689
+        },
+        "tags": {
+          "healthcare": "hospice",
+          "name": "আদর্শ হোমিও ক্লিনিক"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166888245",
+        "center": {
+          "lat": 23.7185091,
+          "lon": 89.1552721
+        },
+        "tags": {
+          "name": "Jannat Electronics জান্নাত ইলেক্ট্রনিক্স",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166888321",
+        "center": {
+          "lat": 23.71854,
+          "lon": 89.1555115
+        },
+        "tags": {
+          "name": "Muslim Sweet Store",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166888468",
+        "center": {
+          "lat": 23.718078,
+          "lon": 89.1560812
+        },
+        "tags": {
+          "name": "Siddik store",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166888829",
+        "center": {
+          "lat": 23.7170086,
+          "lon": 89.1555943
+        },
+        "tags": {
+          "name": "Turmeric shop",
+          "shop": "yes"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166889020",
+        "center": {
+          "lat": 23.7184019,
+          "lon": 89.1553828
+        },
+        "tags": {
+          "amenity": "fast_food",
+          "name": "Rasel Fastfood রাসেল ফাস্টফুডের"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166890937",
+        "center": {
+          "lat": 23.7176964,
+          "lon": 89.1553967
+        },
+        "tags": {
+          "name": "চায়ের দোকান চায়ের দোকান",
+          "shop": "tea"
+        }
+      },
+      {
+        "type": "node",
+        "id": "5166891225",
+        "center": {
+          "lat": 23.7173112,
+          "lon": 89.1558074
+        },
+        "tags": {
+          "amenity": "marketplace",
+          "name": "Sheikh Supermarket শেখ সুপার মার্কেট"
+        }
+      },
+      {
+        "type": "node",
+        "id": "9027931168",
+        "center": {
+          "lat": 23.7227843,
+          "lon": 89.153833
+        },
+        "tags": {
+          "entrance": "yes",
+          "ref": "Main Gate"
+        }
+      },
+      {
+        "type": "node",
+        "id": "9706366710",
+        "center": {
+          "lat": 23.7267253,
+          "lon": 89.1516998
+        },
+        "tags": {
+          "amenity": "school",
+          "name": "Islamic University Laboratory School and College"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096016",
+        "center": {
+          "lat": 23.7227121,
+          "lon": 89.1514035
+        },
+        "tags": {
+          "name": "Bot tola",
+          "natural": "tree"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096223",
+        "center": {
+          "lat": 23.7194973,
+          "lon": 89.1515946
+        },
+        "tags": {
+          "name": "Shahid Ziaur Rahman mor"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096226",
+        "center": {
+          "lat": 23.7194404,
+          "lon": 89.1550494
+        },
+        "tags": {
+          "door": "revolving",
+          "entrance": "yes",
+          "name": "Pocket Gate",
+          "wheelchair": "no"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096228",
+        "center": {
+          "lat": 23.7174045,
+          "lon": 89.1515266
+        },
+        "tags": {
+          "entrance": "yes",
+          "ref": "Pocket Gate"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096322",
+        "center": {
+          "lat": 23.7207735,
+          "lon": 89.1538179
+        },
+        "tags": {
+          "amenity": "police",
+          "name": "Islamic University Police Station",
+          "operator": "Bangladesh Government"
+        }
+      },
+      {
+        "type": "node",
+        "id": "12193096368",
+        "center": {
+          "lat": 23.7249426,
+          "lon": 89.1529663
+        },
+        "tags": {
+          "entrance": "yes",
+          "name": "Second Gate",
+          "ref": "Second Gate"
+        }
+      },
+      {
+        "type": "way",
+        "id": "237819447",
+        "center": {
+          "lat": 23.722962356521737,
+          "lon": 89.14920627826086
+        },
+        "tags": {
+          "amenity": "university",
+          "name": "ইসলামী বিশ্ববিদ্যালয়",
+          "name:bn": "ইসলামী বিশ্ববিদ্যালয়",
+          "name:en": "Islamic University",
+          "wikidata": "Q3347861",
+          "wikipedia": "bn:ইসলামী বিশ্ববিদ্যালয়, বাংলাদেশ",
+          "wikipedia:en": "Islamic University, Bangladesh"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532463950",
+        "center": {
+          "lat": 23.7255904,
+          "lon": 89.15154065
+        },
+        "tags": {
+          "leisure": "park",
+          "name": "Residential Park"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532463974",
+        "center": {
+          "lat": 23.72354764,
+          "lon": 89.15260448000001
+        },
+        "tags": {
+          "building": "yes",
+          "name": "University Administrator Building বিশ্ববিদ্যালয় প্রশাসক বিল্ডিং"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464097",
+        "center": {
+          "lat": 23.723953253846148,
+          "lon": 89.15036707692308
+        },
+        "tags": {
+          "amenity": "library",
+          "building": "yes",
+          "name": "Central Library"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464180",
+        "center": {
+          "lat": 23.72337956,
+          "lon": 89.15096538
+        },
+        "tags": {
+          "building": "yes",
+          "building:levels": "4",
+          "name": "Faculty of Applied Science and Technology"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464243",
+        "center": {
+          "lat": 23.72217438,
+          "lon": 89.15094804
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Faculty Building, Islamic University"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464301",
+        "center": {
+          "lat": 23.72398987619048,
+          "lon": 89.14831996190476
+        },
+        "tags": {
+          "amenity": "hospital",
+          "healthcare": "hospital",
+          "name": "Islamic University Medical Centre"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464636",
+        "center": {
+          "lat": 23.72110533076923,
+          "lon": 89.15159385384617
+        },
+        "tags": {
+          "amenity": "restaurant",
+          "building": "yes",
+          "name": "Central Cafeteria কেন্দ্রীয় ক্যাফেটেরিয়া"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464653",
+        "center": {
+          "lat": 23.724516639999997,
+          "lon": 89.14779218
+        },
+        "tags": {
+          "amenity": "bus_station",
+          "building": "yes",
+          "name": "Grarage"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464712",
+        "center": {
+          "lat": 23.72016062,
+          "lon": 89.15209641999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Saddam Hossain Hall সাদ্দাম হোসেন হল",
+          "tourism": "hostel"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464760",
+        "center": {
+          "lat": 23.71913,
+          "lon": 89.15319398
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Lalon Shah Hall লালন শাহ হলের",
+          "tourism": "hostel"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464837",
+        "center": {
+          "lat": 23.717792047058825,
+          "lon": 89.15069055882354
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Shah Azizur Rahman Hall",
+          "tourism": "hostel"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464846",
+        "center": {
+          "lat": 23.71887936,
+          "lon": 89.1480519
+        },
+        "tags": {
+          "building": "yes",
+          "name": "July-36 Hall",
+          "tourism": "hostel"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532464907",
+        "center": {
+          "lat": 23.720298775,
+          "lon": 89.150850125
+        },
+        "tags": {
+          "leisure": "pitch",
+          "name": "Cricket Field, IU",
+          "sport": "cricket"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532465115",
+        "center": {
+          "lat": 23.72159206,
+          "lon": 89.15418553999999
+        },
+        "tags": {
+          "amenity": "post_office",
+          "building": "yes",
+          "name": "Post Office Iu"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532465285",
+        "center": {
+          "lat": 23.72016045714286,
+          "lon": 89.15645314285715
+        },
+        "tags": {
+          "amenity": "hospital",
+          "healthcare": "hospital",
+          "name": "Rimi Homeo Clinic রিমি হোমিও ক্লিনিক"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532466329",
+        "center": {
+          "lat": 23.7185824,
+          "lon": 89.15515522000001
+        },
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "heikhpara Jame Mosque শেখপাড়া জামে মসজিদ",
+          "religion": "muslim"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532466676",
+        "center": {
+          "lat": 23.71783638,
+          "lon": 89.15575125999999
+        },
+        "tags": {
+          "amenity": "bank",
+          "building": "yes",
+          "name": "সোনালি ব্যাংক লিমিটেড",
+          "name:en": "Sonali Bank Limited"
+        }
+      },
+      {
+        "type": "way",
+        "id": "532466753",
+        "center": {
+          "lat": 23.716861020000003,
+          "lon": 89.15548642
+        },
+        "tags": {
+          "amenity": "fuel",
+          "name": "M. Jasheb Filling Station"
+        }
+      },
+      {
+        "type": "way",
+        "id": "929202588",
+        "center": {
+          "lat": 23.723955355555557,
+          "lon": 89.15133938888887
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Ibn Sina Science Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "929202651",
+        "center": {
+          "lat": 23.72435329333333,
+          "lon": 89.15244542666667
+        },
+        "tags": {
+          "building": "construction",
+          "name": "New Administrative Builiding"
+        }
+      },
+      {
+        "type": "way",
+        "id": "929433965",
+        "center": {
+          "lat": 23.72562332,
+          "lon": 89.1495853
+        },
+        "tags": {
+          "building": "yes",
+          "name": "নতুন শিক্ষক ডরমিটরি"
+        }
+      },
+      {
+        "type": "way",
+        "id": "929434313",
+        "center": {
+          "lat": 23.7252389,
+          "lon": 89.15234247999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Guest House, IU"
+        }
+      },
+      {
+        "type": "way",
+        "id": "930117137",
+        "center": {
+          "lat": 23.72584364,
+          "lon": 89.15211338
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Teacher Dormitory 2"
+        }
+      },
+      {
+        "type": "way",
+        "id": "967967197",
+        "center": {
+          "lat": 23.7192274,
+          "lon": 89.15215520000001
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Shahid Ziaur Rahman Hall"
+        }
+      },
+      {
+        "type": "way",
+        "id": "967967198",
+        "center": {
+          "lat": 23.71864641428572,
+          "lon": 89.15199632857141
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Shahid Anas Hall"
+        }
+      },
+      {
+        "type": "way",
+        "id": "970015480",
+        "center": {
+          "lat": 23.720738115384616,
+          "lon": 89.14785267692308
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Khaleda Zia Hall, IU"
+        }
+      },
+      {
+        "type": "way",
+        "id": "970015482",
+        "center": {
+          "lat": 23.719758812499997,
+          "lon": 89.14794484999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Ummul Mu'mineen Aisha Siddiqa Hall"
+        }
+      },
+      {
+        "type": "way",
+        "id": "970122772",
+        "center": {
+          "lat": 23.72052444,
+          "lon": 89.14962693999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Central Gymnasium, IU"
+        }
+      },
+      {
+        "type": "way",
+        "id": "986372422",
+        "center": {
+          "lat": 23.724632987499998,
+          "lon": 89.1601158625
+        },
+        "tags": {
+          "building": "yes",
+          "name": "#WeAreLilly"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1053233987",
+        "center": {
+          "lat": 23.720344779999998,
+          "lon": 89.15693794
+        },
+        "tags": {
+          "building": "yes",
+          "building:levels": "2",
+          "name": "1"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423241",
+        "center": {
+          "lat": 23.721987844444445,
+          "lon": 89.1483990888889
+        },
+        "tags": {
+          "alt_name": "IIER Building",
+          "building": "yes",
+          "name": "Islamic Institute of Education and Research"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423243",
+        "center": {
+          "lat": 23.72137381904762,
+          "lon": 89.15072106666668
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Rabindro Najrul Arts Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423245",
+        "center": {
+          "lat": 23.72174094,
+          "lon": 89.15255601999999
+        },
+        "tags": {
+          "leisure": "pitch",
+          "name": "Football Playground,IU",
+          "sport": "soccer"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423253",
+        "center": {
+          "lat": 23.72014666,
+          "lon": 89.15410276
+        },
+        "tags": {
+          "building": "construction",
+          "name": "New Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423254",
+        "center": {
+          "lat": 23.719616660000003,
+          "lon": 89.15438758
+        },
+        "tags": {
+          "building": "construction",
+          "name": "New Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423257",
+        "center": {
+          "lat": 23.72550024374999,
+          "lon": 89.150733925
+        },
+        "tags": {
+          "building": "yes",
+          "name": "VC Residency"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423258",
+        "center": {
+          "lat": 23.724855124999998,
+          "lon": 89.150583825
+        },
+        "tags": {
+          "highway": "service",
+          "name": "Paradise Road"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423259",
+        "center": {
+          "lat": 23.722731753846155,
+          "lon": 89.1493577923077
+        },
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "Central Mosque",
+          "religion": "muslim"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423260",
+        "center": {
+          "lat": 23.722716335,
+          "lon": 89.151410885
+        },
+        "tags": {
+          "name": "Bot tola"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423263",
+        "center": {
+          "lat": 23.721479729729726,
+          "lon": 89.14971530270275
+        },
+        "tags": {
+          "building": "university",
+          "name": "Business Administration Building"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423267",
+        "center": {
+          "lat": 23.724506605714293,
+          "lon": 89.14732019142856
+        },
+        "tags": {
+          "highway": "path",
+          "name": "Lake road"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423269",
+        "center": {
+          "lat": 23.72562852222222,
+          "lon": 89.14792294444445
+        },
+        "tags": {
+          "garden:type": "botanical",
+          "leisure": "garden",
+          "name": "IU Botanical Garden"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423272",
+        "center": {
+          "lat": 23.726924725,
+          "lon": 89.1515450375
+        },
+        "tags": {
+          "amenity": "school",
+          "name": "Islamic University Laboratory School and College"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423290",
+        "center": {
+          "lat": 23.722041830000002,
+          "lon": 89.15185994999999
+        },
+        "tags": {
+          "landuse": "orchard",
+          "name": "Mango Garden"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423295",
+        "center": {
+          "lat": 23.723366549999998,
+          "lon": 89.15177701666668
+        },
+        "tags": {
+          "landuse": "orchard",
+          "name": "Jhal Orchard"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1317423300",
+        "center": {
+          "lat": 23.71967682,
+          "lon": 89.15184158
+        },
+        "tags": {
+          "amenity": "place_of_worship",
+          "building": "yes",
+          "name": "Jia Hall Mosque",
+          "religion": "muslim"
+        }
+      },
+      {
+        "type": "way",
+        "id": "1468680463",
+        "center": {
+          "lat": 23.723987176190473,
+          "lon": 89.14832126190475
+        },
+        "tags": {
+          "building": "hospital",
+          "name": "Islamic University Medical Centre ইসলামী বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "7650711",
+        "center": {
+          "lat": 23.721415794999995,
+          "lon": 89.15170873999999
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Auditorium, Islamic university, Kushtia.",
+          "shop": "music",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079380",
+        "center": {
+          "lat": 23.723516092857142,
+          "lon": 89.15255828571428
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Admin Building",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079382",
+        "center": {
+          "lat": 23.72137381904762,
+          "lon": 89.15072106666668
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Rabindra Arts building",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079384",
+        "center": {
+          "lat": 23.7240048,
+          "lon": 89.15135268947368
+        },
+        "tags": {
+          "building": "yes",
+          "name": "Ibn Sina Science Building",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079385",
+        "center": {
+          "lat": 23.722716335,
+          "lon": 89.151410885
+        },
+        "tags": {
+          "leisure": "garden",
+          "name": "Banyan Tree",
+          "type": "multipolygon"
+        }
+      },
+      {
+        "type": "relation",
+        "id": "18079386",
+        "center": {
+          "lat": 23.721480409999995,
+          "lon": 89.14971696800004
+        },
+        "tags": {
+          "building": "university",
+          "name": "BBA building",
+          "type": "multipolygon"
+        }
+      }
+    ]
+  },
+  "comparison": {
+    "warning": "Absence from the live bbox query is not proof of deletion. Node coordinates and way references are compared when available (official XML fallback); no geometric shape matching for changed IDs.",
+    "changes": [
+      {
+        "id": "way/1317423240",
+        "change": "tags-differ",
+        "changes": [
+          {
+            "key": "name",
+            "bundled": "Mir Mosharraf Hossain Academic Building",
+            "live": null
+          },
+          {
+            "key": "name:bn",
+            "bundled": "মীর মোশাররফ হোসেন একাডেমিক বিল্ডিং",
+            "live": null
+          }
+        ]
+      },
+      {
+        "id": "way/1317423252",
+        "change": "tags-differ",
+        "changes": [
+          {
+            "key": "name",
+            "bundled": "শাহ আজিজুর রহমান হল (প্রাক্তন বঙ্গবন্ধু হল) পুকুর",
+            "live": null
+          },
+          {
+            "key": "salt",
+            "bundled": "no",
+            "live": null
+          }
+        ]
+      },
+      {
+        "id": "way/1317423277",
+        "change": "tags-differ",
+        "changes": [
+          {
+            "key": "highway",
+            "bundled": "unclassified",
+            "live": "service"
+          },
+          {
+            "key": "layer",
+            "bundled": "1",
+            "live": null
+          },
+          {
+            "key": "name",
+            "bundled": "Shekhpara - Tribeni Road",
+            "live": null
+          },
+          {
+            "key": "oneway",
+            "bundled": "no",
+            "live": null
+          },
+          {
+            "key": "nodeRefs",
+            "bundled": [
+              "9027931138",
+              "12193096227",
+              "12193096228",
+              "12193096229",
+              "12193096230",
+              "12193096231",
+              "4748460786",
+              "14028735378",
+              "14028735379",
+              "14028735380",
+              "14028735381",
+              "14028735382",
+              "14028735383",
+              "14028735384",
+              "14028735385",
+              "14028735386",
+              "14028735387",
+              "14028735388",
+              "14028735389",
+              "14028735390",
+              "14028735391",
+              "14028735392",
+              "14028735393",
+              "14028735394",
+              "14028735395",
+              "14028735396",
+              "14028735397",
+              "14028735398",
+              "14028735399",
+              "14028735400",
+              "14028829701",
+              "14028829702",
+              "14028829703",
+              "14028829704",
+              "14028829705",
+              "14028829706",
+              "14028829707",
+              "14028829708",
+              "14028829709",
+              "14028829710",
+              "14028829711",
+              "14028829712",
+              "14028829713",
+              "14028829714",
+              "14028829715",
+              "14028829716",
+              "14028829717",
+              "14028829718",
+              "14028829719",
+              "14028829720",
+              "14028829721",
+              "14028829722",
+              "14028829723",
+              "14028829724",
+              "14028829725",
+              "14028829726",
+              "14028829727",
+              "14028829728",
+              "14028829729",
+              "14028829730",
+              "14028829731",
+              "14028829732",
+              "14028829733",
+              "14028829734",
+              "14028829735",
+              "14028829736",
+              "14028829737",
+              "14028829738",
+              "14028829739",
+              "14028829740",
+              "14028829741",
+              "14028829742",
+              "14028829743",
+              "14028829744",
+              "14028829745",
+              "14028829746",
+              "14028829747",
+              "14028829748",
+              "14028829749",
+              "14028829750",
+              "14028829751",
+              "14028829752",
+              "14028829753",
+              "14028829754"
+            ],
+            "live": [
+              "9027931138",
+              "12193096227",
+              "12193096228",
+              "12193096229",
+              "12193096230",
+              "12193096231",
+              "4748460786"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "way/1317423287",
+        "change": "tags-differ",
+        "changes": [
+          {
+            "key": "access",
+            "bundled": "yes",
+            "live": null
+          },
+          {
+            "key": "fee",
+            "bundled": "no",
+            "live": null
+          },
+          {
+            "key": "garden:type",
+            "bundled": "botanical",
+            "live": null
+          },
+          {
+            "key": "name",
+            "bundled": "Diana Chattar",
+            "live": null
+          },
+          {
+            "key": "name:bn",
+            "bundled": "ডায়না চত্বর",
+            "live": null
+          },
+          {
+            "key": "operator",
+            "bundled": "Islamic University",
+            "live": null
+          },
+          {
+            "key": "operator:type",
+            "bundled": "university",
+            "live": null
+          }
+        ]
+      },
+      {
+        "id": "way/1317423288",
+        "change": "tags-differ",
+        "changes": [
+          {
+            "key": "access",
+            "bundled": "yes",
+            "live": null
+          },
+          {
+            "key": "fee",
+            "bundled": "no",
+            "live": null
+          },
+          {
+            "key": "garden:type",
+            "bundled": "botanical",
+            "live": null
+          },
+          {
+            "key": "name",
+            "bundled": "Diana Chattar",
+            "live": null
+          },
+          {
+            "key": "name:bn",
+            "bundled": "ডায়না চত্বর",
+            "live": null
+          },
+          {
+            "key": "operator",
+            "bundled": "Islamic University",
+            "live": null
+          },
+          {
+            "key": "operator:type",
+            "bundled": "university",
+            "live": null
+          }
+        ]
+      }
+    ],
+    "bundledCentersAbsent": [
+      "node/14028735378",
+      "node/14028735379",
+      "node/14028735380",
+      "node/14028735381",
+      "node/14028735382",
+      "node/14028735383",
+      "node/14028735384",
+      "node/14028735385",
+      "node/14028735386"
+    ]
+  },
+  "officialApiCrosscheck": {
+    "endpoint": "https://api.openstreetmap.org/api/0.6/map?bbox=89.14043,23.71545,89.16244,23.72694",
+    "sha256": "425338d2c623c0b49a5755e387686a8c6f2e641605fbb97ecac9b6dedb77b991",
+    "rawCounts": {
+      "nodes": 3260,
+      "ways": 482,
+      "relations": 14
+    },
+    "comparedFields": "Coordinates, tags, way node refs, relation members, as returned by parseOsm (metadata/version ordering excluded).",
+    "differentOrAddedIds": [],
+    "absentFromResponse": []
+  }
+}
