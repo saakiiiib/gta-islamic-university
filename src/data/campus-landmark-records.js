@@ -94,7 +94,7 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "storeys": {
-        "value": 4.0,
+        "value": 4,
         "status": "mapped",
         "confidence": "medium",
         "sourceUrl": "https://www.openstreetmap.org/relation/18079379",
@@ -797,28 +797,28 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#c6c0ad",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Saddam_Hossain_hall,Islamic_University.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Pale cream/gray visible parapets and limited wall strips; aerial coverage is roof-dominant. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#958c85",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Saddam_Hossain_hall,Islamic_University.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Muted warm gray/brown roof tone averages sunlit patches and weathering; no roof-material identification. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat weathered roof slabs and low parapets across connected courtyard wings.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Saddam_Hossain_hall,Islamic_University.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "facadeMaterial": {
         "value": null,
@@ -837,7 +837,10 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "way",
@@ -869,28 +872,28 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#c9c8b9",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lalon_Shah_Hall,_resident_hall_of_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Pale cream/gray exposed facade bands and parapets around the angular court. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#9d968e",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lalon_Shah_Hall,_resident_hall_of_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Weathered gray/beige roof surfaces vary strongly between sun and shadow. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat parapeted roofs on angular courtyard wings with projecting stair/core volumes.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lalon_Shah_Hall,_resident_hall_of_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "facadeMaterial": {
         "value": null,
@@ -909,7 +912,10 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "way",
@@ -943,28 +949,28 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#ce8e72",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Father_of_the_Nation_Bangabandhu_Sheikh_Mujibur_Rahman_Hall,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Warm orange/salmon wall panels contrast with pale piers and bands; one wall color is an art approximation. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#878180",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Father_of_the_Nation_Bangabandhu_Sheikh_Mujibur_Rahman_Hall,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Weathered warm-gray rooftop average excludes dark pooled/shadow patches. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat parapeted roof slabs on connected wings and lower central volumes, with small raised enclosures.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Father_of_the_Nation_Bangabandhu_Sheikh_Mujibur_Rahman_Hall,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "facadeMaterial": {
         "value": null,
@@ -975,15 +981,18 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "windowPattern": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Repeated rectangular dark bays, pale vertical piers and horizontal corridor/balcony bands; some rounded-top recessed bays.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Father_of_the_Nation_Bangabandhu_Sheikh_Mujibur_Rahman_Hall,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "way",
@@ -1017,12 +1026,12 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#d2c58f",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Deshratna_Sheikh_Hasina_Hall,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-16",
+        "reason": "Backlit cream/light-yellow main facade, with salmon accents; exposure limits exact color interpretation. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofColor": {
         "value": null,
@@ -1033,12 +1042,12 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat parapeted main wings with projecting eaves; triangular canopy/pediment belongs to the entrance.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Deshratna_Sheikh_Hasina_Hall,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-16",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "facadeMaterial": {
         "value": null,
@@ -1049,15 +1058,17 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "windowPattern": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Narrow dark horizontal window bands and pale framing; salmon recessed vertical entry bays.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Deshratna_Sheikh_Hasina_Hall,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-16",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor"
+    }
   },
   {
     "osmType": "way",
@@ -2531,28 +2542,28 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#e0ddcc",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shahid_ziaur_rahman_hall.jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Cream/off-white courtyard-facing surfaces in the historical aerial view. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#7e7771",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shahid_ziaur_rahman_hall.jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Muted brown-gray weathered roof average; dark patches are not a roof-material claim. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat parapeted roofs on long parallel wings, transverse bridges and raised stair enclosures.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shahid_ziaur_rahman_hall.jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "facadeMaterial": {
         "value": null,
@@ -2563,15 +2574,18 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "windowPattern": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Repeated dark courtyard bays with rounded upper profiles and continuous corridor bands; outer-window detail unresolved.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shahid_ziaur_rahman_hall.jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "way",
@@ -2607,28 +2621,28 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#d49650",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sheikh_Russel_Hall_of_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Ochre/orange panels contrast with white bands on the photographed old block only; no appearance claim for a later second block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#8c8982",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sheikh_Russel_Hall_of_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Gray weathered roof surface on the old block only; dark patches are not a structural/material diagnosis. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat parapeted roofs and raised white stair/core enclosures on the photographed old block.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sheikh_Russel_Hall_of_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "facadeMaterial": {
         "value": null,
@@ -2639,15 +2653,18 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "windowPattern": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Orange/ochre panels in a white rectangular grid, narrow dark horizontal openings and a tall framed entrance bay.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sheikh_Russel_Hall_of_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "way",
@@ -2679,28 +2696,28 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#d3bfbb",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ladies_hall_(khaleda_zia_hall).jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Pale pink/cream courtyard wing surfaces in an oblique historical aerial photograph. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#a29d98",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ladies_hall_(khaleda_zia_hall).jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Gray/beige weathered slab average varies by wing and sun exposure. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat parapeted roofs on courtyard wings of differing elevations, with raised stair/core enclosures.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ladies_hall_(khaleda_zia_hall).jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       },
       "facadeMaterial": {
         "value": null,
@@ -2711,15 +2728,18 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "windowPattern": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Repeated dark rectangular openings in pale framed vertical bays; low courtyard connectors include arched openings.",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ladies_hall_(khaleda_zia_hall).jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Visible on the photographed established hall block. Historical photograph; the lighting-dependent art palette is not a current survey or measured material/color. Visible bands are not measured storeys."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "way",
