@@ -3642,28 +3642,28 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "storeys": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": 4,
+        "status": "reported",
+        "confidence": "medium",
+        "sourceUrl": "https://thedailycampus.com/public-university/138124",
+        "observedAt": "2024-03-16",
+        "reason": "Reported storeys; main dome datum and above-ground/body heights remain unresolved."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#d9d3be",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Central_Mosque_architectures_of_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Historical photo palette; lighting-dependent art color, not measured albedo or proof of current finish."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#c8c3b3",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Central_Mosque_architectures_of_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-02",
+        "reason": "Historical photo palette; lighting-dependent art color, not measured albedo or proof of current finish."
       },
       "roofShape": {
         "value": null,
@@ -3690,7 +3690,10 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "way",
