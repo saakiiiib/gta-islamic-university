@@ -6,6 +6,8 @@ import { InputController } from './player/index.js';
 import { HUD } from './ui/hud.js';
 import { InspectionCamera, InspectionSession } from './player/inspection.js';
 import { PlaceLabels } from './ui/labels.js';
+import { mountPlaceSearch } from './ui/placeSearch.js';
+import './ui/placeSearch.css';
 import { CampusSimulation } from './game/simulation.js';
 import { TravelCamera } from './vehicle/camera.js';
 import { ReactionAudio } from './audio/reactions.js';
@@ -25,6 +27,7 @@ document.body.classList.toggle('touch-device', device.touch);
 $('touch-instructions').hidden = !device.touch;
 let state = 'loading', renderer, scene, camera, world, mapData, player, input, chase, hud, sun;
 let inspection, inspectionSession, labels, gameplayFog;
+let placeSearch, placeSearchOpen = false;
 let simulation;
 let reactions;
 let touch, shadowElapsed = Infinity;
@@ -59,6 +62,7 @@ function resize() {
 }
 function syncTouch() {
   document.body.dataset.gameState = state;
+  if (!['playing', 'inspection'].includes(state)) setPlaceSearchVisible(false);
   if (!touch) return;
   touch.setMode(inspectionSession.active ? 'inspection' : simulation.session.driving ? 'van' : 'foot');
   touch.setEnabled(['playing', 'inspection'].includes(state));
@@ -119,6 +123,7 @@ function resetPlayer() {
 
 function syncView() {
   const active = inspectionSession.active;
+  if (!active) setPlaceSearchVisible(false);
   scene.fog = active ? null : gameplayFog;
   simulation.setSuspended(active);
   reactions?.setSuspended(active);
@@ -149,6 +154,18 @@ function toggleLabels() {
   labels.setEnabled(!labels.enabled);
   $('labels-button').setAttribute('aria-pressed', String(labels.enabled));
   hud.toast(`Place labels ${labels.enabled ? 'on' : 'off'}.`, 1800);
+}
+function setPlaceSearchVisible(visible) {
+  placeSearchOpen = !!visible;
+  placeSearch?.setVisible(placeSearchOpen);
+  $('place-search-button').setAttribute('aria-expanded', String(placeSearchOpen));
+}
+function togglePlaceSearch() {
+  if (!placeSearch || !['playing', 'inspection'].includes(state)) return;
+  if (placeSearchOpen) { setPlaceSearchVisible(false); canvas.focus({ preventScroll: true }); return; }
+  if (!inspectionSession.active) toggleInspection();
+  input.clear(); inspection.clear();
+  setPlaceSearchVisible(true); placeSearch.focus();
 }
 function toggleAlignment() {
   if (!world) return;
@@ -319,6 +336,18 @@ async function initialize() {
     inspection.attach(canvas, pause);
     inspectionSession = new InspectionSession(input, inspection, document);
     labels = new PlaceLabels($('place-labels'), world.labelAnchors, world.buildingMeshes);
+    placeSearch = mountPlaceSearch({ places: mapData.places, parent: $('app'), onSelect: place => {
+      input.clear(); inspection.clear();
+      inspection.target.set(place.x, Math.max(0, place.y - 3.5), place.z);
+      inspection.distance = 160; inspection.adjusted = true; inspection.apply();
+      setPlaceSearchVisible(false); canvas.focus({ preventScroll: true }); labels.elapsed = 1;
+      hud.toast(place.displayName ?? place.name, 4000);
+    } });
+    placeSearch.input.addEventListener('focus', () => { input.clear(); inspection.clear(); });
+    placeSearch.input.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !event.isComposing) { setPlaceSearchVisible(false); canvas.focus({ preventScroll: true }); }
+    });
+    setPlaceSearchVisible(false);
     lighting(); resize();
     if (device.touch) {
       $('inspection-banner').querySelector('p').textContent = 'Left stick: pan · Swipe right: orbit · Zoom buttons · Tap Back to return';
@@ -420,6 +449,7 @@ $('pause-button').addEventListener('click', () => pause());
 $('reset-button').addEventListener('click', () => { resetPlayer(); play(); });
 $('inspection-button').addEventListener('click', toggleInspection);
 $('labels-button').addEventListener('click', toggleLabels);
+$('place-search-button').addEventListener('click', togglePlaceSearch);
 $('alignment-button').addEventListener('click', toggleAlignment);
 function saveAudioPreferences() { try { localStorage.setItem('iu-reaction-audio', JSON.stringify({ muted: reactions.muted, volume: reactions.volume })); } catch { /* Storage is optional. */ } }
 function toggleSound() { if (!reactions) return; reactions.setMuted(!reactions.muted); if (!reactions.muted) reactions.unlock(); saveAudioPreferences(); }

@@ -1,7 +1,8 @@
 import { pointInPolygon, pointToSegmentDistance, ringBounds } from './geometry.js';
+import { enrichPlaceNames } from './placeNames.js';
 
 export function sourceName(tags = {}, entrance = false) {
-  for (const key of ['name:en', 'name', ...(entrance ? ['ref'] : [])]) {
+  for (const key of ['name:en', 'name', 'name:bn', ...(entrance ? ['ref'] : [])]) {
     if (tags[key]?.trim()) return { name: tags[key].trim(), nameTag: key };
   }
   return null;
@@ -52,7 +53,9 @@ export function buildPlaceMetadata(map, nodes, positions) {
     }
     const named = sourceName(node.tags, isEntrance);
     if (named && (isEntrance || node.tags.place || node.tags.amenity || node.tags.historic || node.tags.tourism)) {
-      places.push({ id: `node:${node.id}`, sourceIds: [`node:${node.id}`], ...named, kind: isEntrance ? 'entrance' : 'place', x: p[0], y: 3, z: p[1] });
+      places.push({ id: `node:${node.id}`, sourceIds: [`node:${node.id}`], ...named,
+        names: {en:node.tags['name:en'] ?? null,bn:node.tags['name:bn'] ?? null},
+        kind: isEntrance ? 'entrance' : 'place', x: p[0], y: 3, z: p[1] });
     }
   }
   for (const type of ['buildings', 'greens', 'water', 'roads', 'bridges']) for (const feature of map[type]) {
@@ -62,7 +65,9 @@ export function buildPlaceMetadata(map, nodes, positions) {
     if (type === 'roads' && feature.paths?.[0]?.length) point = feature.paths[0][Math.floor(feature.paths[0].length / 2)];
     if (!point || !inBounds(point)) continue;
     places.push({ id: `${type}:${feature.id}`, sourceIds: [`${type}:${feature.id}`], ...named, kind: type === 'buildings' ? 'building' : type,
+      names: {en:feature.tags['name:en'] ?? null,bn:feature.tags['name:bn'] ?? null},
+      buildingOsmType: type === 'buildings' ? feature.osmType : null,
       buildingId: type === 'buildings' ? feature.id : null, x: point[0], y: (type === 'buildings' ? feature.height : 0) + 3.5, z: point[1] });
   }
-  return { entrances, places: deduplicatePlaces(places) };
+  return { entrances, places: enrichPlaceNames(deduplicatePlaces(places)) };
 }
