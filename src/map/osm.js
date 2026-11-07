@@ -55,6 +55,8 @@ export function estimateHeight(tags, landmark = null) {
   if (Number.isFinite(levels) && levels > 0) return {height: levels * 3.2, heightSource: 'building:levels'};
   const art = landmark?.fields?.heightMeters;
   if (landmark?.renderHeight === true && ['observed', 'reported'].includes(art?.status) && ['medium', 'high'].includes(art.confidence) && Number.isFinite(art.value) && art.value > 0 && art.sourceUrl && art.observedAt) return { height: art.value, heightSource: `art:${art.status}` };
+  const storeys = landmark?.fields?.storeys;
+  if (landmark?.renderStoreyEnvelope === true && ['observed', 'reported'].includes(storeys?.status) && ['medium', 'high'].includes(storeys.confidence) && !storeys.disputed && Number.isFinite(storeys.value) && storeys.value > 0 && storeys.sourceUrl && storeys.observedAt) return { height: storeys.value * 3.2, heightSource: 'art:storeys-envelope' };
   const use = classifyBuilding({ tags });
   if (use === 'worship') return { height: 9.6, heightSource: 'estimate:worship' };
   if (use === 'construction') return { height: 9.6, heightSource: 'estimate:construction' };
@@ -75,18 +77,19 @@ export function estimateHeight(tags, landmark = null) {
 export function buildingHeight(tags, feature) {
   const record = getCampusLandmark(feature), estimate = estimateHeight(tags, record);
   const sourceUrl = feature?.osmType && feature.id ? `https://www.openstreetmap.org/${feature.osmType}/${feature.id}` : null;
-  const art = estimate.heightSource.startsWith('art:') ? record.fields.heightMeters : null;
+  const envelope = estimate.heightSource === 'art:storeys-envelope';
+  const art = envelope ? record.fields.storeys : estimate.heightSource.startsWith('art:') ? record.fields.heightMeters : null;
   const mapped = ['height', 'building:levels'].includes(estimate.heightSource);
   return { ...estimate, heightEvidence: {
-    status: art?.status ?? (mapped ? 'mapped' : 'inferred'),
-    source: art ? 'art-override' : mapped ? 'osm' : 'heuristic',
+    status: envelope ? 'provisional' : art?.status ?? (mapped ? 'mapped' : 'inferred'),
+    source: envelope ? 'reported-storey-art-envelope' : art ? 'art-override' : mapped ? 'osm' : 'heuristic',
     sourceUrl: art?.sourceUrl ?? (mapped ? sourceUrl : null),
     observedAt: art?.observedAt ?? null,
-    confidence: art?.confidence ?? (mapped ? 'medium' : 'low'),
+    confidence: envelope ? 'low' : art?.confidence ?? (mapped ? 'medium' : 'low'),
     basis: estimate.heightSource,
-    metresPerStorey: estimate.heightSource === 'building:levels' ? 3.2 : null,
+    metresPerStorey: envelope || estimate.heightSource === 'building:levels' ? 3.2 : null,
     measured: false,
-    note: mapped ? 'OSM value; not an independent measurement. Levels use a 3.2 m art envelope.' : art ? 'Source-backed art envelope; retain source datum and observation date.' : 'Unmeasured fallback; not a physical survey.'
+    note: envelope ? record.storeyEnvelopeNote : mapped ? 'OSM value; not an independent measurement. Levels use a 3.2 m art envelope.' : art ? 'Source-backed art envelope; retain source datum and observation date.' : 'Unmeasured fallback; not a physical survey.'
   } };
 }
 

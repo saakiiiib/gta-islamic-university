@@ -30,6 +30,8 @@ export function validateCampusLandmarks(records, features = null) {
         if (['wallColor', 'roofColor'].includes(field) && !/^#[0-9a-f]{6}$/i.test(evidence.value)) throw new Error(`Invalid color ${key}:${field}`);
       }
     }
+    if (r.renderStoreyEnvelope !== undefined && typeof r.renderStoreyEnvelope !== 'boolean') throw new Error(`Invalid storey envelope ${key}`);
+    if (r.renderStoreyEnvelope === true && (!['observed', 'reported'].includes(r.fields.storeys.status) || !['medium', 'high'].includes(r.fields.storeys.confidence) || r.fields.storeys.disputed || !r.storeyEnvelopeNote)) throw new Error(`Unverified storey envelope ${key}`);
     if (r.renderHeight !== undefined && typeof r.renderHeight !== 'boolean') throw new Error(`Invalid height activation ${key}`);
     if (r.renderHeight === true && (!['observed', 'reported'].includes(r.fields.heightMeters.status) || !['medium', 'high'].includes(r.fields.heightMeters.confidence))) throw new Error(`Unverified height override ${key}`);
     for (const [target, field] of Object.entries(r.renderAppearance ?? {})) {
