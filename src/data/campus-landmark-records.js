@@ -531,23 +531,32 @@ export const landmarkRecords = [
         "confidence": "unknown",
         "sourceUrl": null,
         "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "reason": "Unknown physical height; storey/basement interpretation remains disputed."
       },
       "storeys": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": 3,
+        "status": "reported",
+        "confidence": "medium",
+        "sourceUrl": "https://iu.ac.bd/index.php/pages/view_1/Nzc=",
+        "observedAt": "2026-11-07",
+        "disputed": true,
+        "reason": "Official overview says three; 2018 photo has four apparent window bands. No independent section/elevation resolves basement/mezzanine interpretation.",
+        "alternatives": [
+          {
+            "value": 4,
+            "basis": "apparent window bands, not verified floors",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Central_library_of_IU.jpg",
+            "observedAt": "2018-11-21"
+          }
+        ]
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#ddb537",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Central_library_of_IU.jpg",
+        "observedAt": "2018-11-21",
+        "reason": "Historical visible finish/form only, not a measured current elevation."
       },
       "roofColor": {
         "value": null,
@@ -558,12 +567,12 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat slab-like roof with deep projecting overhang",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Central_library_of_IU.jpg",
+        "observedAt": "2018-11-21",
+        "reason": "Historical visible finish/form only, not a measured current elevation."
       },
       "facadeMaterial": {
         "value": null,
@@ -574,12 +583,12 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "windowPattern": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Dark rectangular steel/grille grids, two tall arched recesses and white forked capitals",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Central_library_of_IU.jpg",
+        "observedAt": "2018-11-21",
+        "reason": "Historical visible finish/form only, not a measured current elevation."
       }
     },
     "renderAppearance": {}
