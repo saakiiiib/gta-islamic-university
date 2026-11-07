@@ -40,3 +40,6 @@ Integrated src/world/landmarks/centralMosque.js into buildWorld, with historical
 
 ## 2026-11-07 — Codex — Task 6: unplaced Shaheed Minar asset
 Added src/world/landmarks/shaheedMinar.js, tests/shaheedMinar.test.js and docs-dev/landmarks/shaheed-minar.md. One merged local-origin asset has five open frames/red disc/plaza, caller-supplied height, provisional proportions, no colliders and idempotent disposal. Four focused tests and standard build pass. No guessed camera-coordinate placement is activated; exact anchor/orientation/scale acceptance remains pending. Next: separate brick memorial asset, then remaining independently supported improvements.
+
+## 2026-11-07 — Codex — Task 7: unplaced separate brick memorial
+Added src/world/landmarks/martyrsMemorial.js, tests/martyrsMemorial.test.js and docs-dev/landmarks/martyrs-memorial.md. Deep curved shell/soffit, nested pierced layers and pale wing bases are one mesh, caller-scaled and provisional. Four focused tests pass; the unchanged app integration built during task 6 with this file present. No colliders or production location guess. Exact placement/dimensions remain pending, so task 7 is partial. Next: main-gate audit, library conflict handling, academic/hall observations and remaining tasks.
