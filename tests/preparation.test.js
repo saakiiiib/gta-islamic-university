@@ -1,3 +1,4 @@
+import { phase1HeightMap } from './helpers/phase1-height-policy.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -54,7 +55,7 @@ test('prepared world preserves source collider triangles and does not mutate the
   const generated = buildWorld(trimmedMap);
   assert.deepEqual(collisionFingerprint(world.collisionGroup), collisionFingerprint(generated.collisionGroup));
   generated.dispose();
-  const original = buildWorld(map);
+  const original = buildWorld(phase1HeightMap(map));
   assert.deepEqual(collisionFingerprint(original.collisionGroup), baseline.collision);
   original.dispose();
   assert.equal(hash(packet.data), packet.payloadSha256);

@@ -1,0 +1,7 @@
+# Height provenance
+
+Dimensions follow this order: valid OSM height (metres or feet), valid OSM building:levels times the explicitly artistic 3.2 m/storey envelope, an explicitly activated sourced art body-height override, then a use-based fallback. Full-string parsing rejects ranges, trailing junk and nonfinite/nonpositive dimensions. Worship and construction take priority over names containing Hall. Raw tags stay intact.
+
+Every derived building exposes heightEvidence with source, status, confidence, source URL where applicable, basis, and a measurement disclaimer. An OSM dimension is mapped evidence, not an independently surveyed height. Unknown heights remain unknown in the landmark registry. A future art override must have an observed/reported value and medium/high confidence; planned/provisional dimensions cannot activate extrusion. Overall dome/finial height must be handled separately from ordinary building-body height.
+
+Only Jia Hall Mosque's numerical fallback changes here (12.8 to 9.6 m); it remains an unmeasured envelope. Five other records receive clearer worship/construction provenance without numeric changes. tests/height-policy-changes.json records all six intentional differences. Historical Phase 1 fixtures are retained: compatibility tests restore only those reviewed differences to prove unrelated footprints/triangles are unchanged, while dedicated tests assert the actual new policy and dimensions.

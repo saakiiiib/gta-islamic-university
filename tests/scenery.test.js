@@ -1,3 +1,4 @@
+import { phase1HeightMap } from './helpers/phase1-height-policy.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -57,7 +58,7 @@ test('surface and facade UVs retain metre-scaled texture coordinates without mov
 
 test('batched textured world preserves the canonical map collider and roof/wall UV attributes', () => {
   const baseline = JSON.parse(readFileSync(new URL('./phase1-baseline.json', import.meta.url)));
-  const world = buildWorld(map);
+  const world = buildWorld(phase1HeightMap(map));
   assert.deepEqual(collisionFingerprint(world.collisionGroup), baseline.collision);
   assert.ok(world.scenery.collisionGroup.children.length > 40);
   for (const mesh of world.buildingMeshes) {

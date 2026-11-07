@@ -30,6 +30,8 @@ export function validateCampusLandmarks(records, features = null) {
         if (['wallColor', 'roofColor'].includes(field) && !/^#[0-9a-f]{6}$/i.test(evidence.value)) throw new Error(`Invalid color ${key}:${field}`);
       }
     }
+    if (r.renderHeight !== undefined && typeof r.renderHeight !== 'boolean') throw new Error(`Invalid height activation ${key}`);
+    if (r.renderHeight === true && (!['observed', 'reported'].includes(r.fields.heightMeters.status) || !['medium', 'high'].includes(r.fields.heightMeters.confidence))) throw new Error(`Unverified height override ${key}`);
     for (const [target, field] of Object.entries(r.renderAppearance ?? {})) {
       if (!['wall', 'roof', 'accent'].includes(target) || !['wallColor', 'roofColor'].includes(field)) throw new Error(`Invalid render field ${key}`);
       const e = r.fields[field];
