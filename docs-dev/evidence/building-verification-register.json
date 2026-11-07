@@ -1,0 +1,1592 @@
+[
+  {
+    "key": "relation/7650711",
+    "names": {
+      "en": "Birshreshtha Hamidur Rahman Auditorium",
+      "bn": "বীরশ্রেষ্ঠ হামিদুর রহমান মিলনায়তন",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/relation/7650711",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "auditorium.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Architectures_of_Islamic_University,_Bangladesh._Birshreshtha_Hamidur_Rahman_Auditorium.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "facadeMaterial"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/relation/7650711"
+  },
+  {
+    "key": "relation/18079379",
+    "names": {
+      "en": "Faculty of Applied Science and Technology",
+      "bn": "ফলিত বিজ্ঞান ও প্রযুক্তি অনুষদ ভবন",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/relation/18079379",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "science-faculty.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:The_faculty_of_science,_Islamic_University.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "facadeMaterial"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/relation/18079379"
+  },
+  {
+    "key": "relation/18079380",
+    "names": {
+      "en": "Administration Building",
+      "bn": "প্রশাসন ভবন",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/relation/18079380",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/relation/18079380"
+  },
+  {
+    "key": "relation/18079381",
+    "names": {
+      "en": "Faculty Building",
+      "bn": "অনুষদ ভবন",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/relation/18079381",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "arts-faculty.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Faculty_of_Arts_building,_Islamic_University,_Bangladesh.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "facadeMaterial"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/relation/18079381"
+  },
+  {
+    "key": "relation/18079382",
+    "names": {
+      "en": "Rabindra–Nazrul Arts Building",
+      "bn": "রবীন্দ্র–নজরুল কলা ভবন",
+      "aliases": [
+        "Rabindra Arts building"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/relation/18079382",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "rabindra-nazrul.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Inner_View_of_Rabindra_Nazrul.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/relation/18079382"
+  },
+  {
+    "key": "relation/18079384",
+    "names": {
+      "en": "Ibn Sina Science Building",
+      "bn": "ইবনে সিনা বিজ্ঞান ভবন",
+      "aliases": [
+        "M. A. Wazed Miah Science Building"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/relation/18079384",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "ibn-sina-historical.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Nuclear_Scientist_M.A._Wazed_Miah_Science_Building_(IU).jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/relation/18079384"
+  },
+  {
+    "key": "relation/18079386",
+    "names": {
+      "en": "Business Administration Building",
+      "bn": "ব্যবসায় প্রশাসন অনুষদ ভবন",
+      "aliases": [
+        "BBA building"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/relation/18079386",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "business-faculty.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Business_faculty_2.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/relation/18079386"
+  },
+  {
+    "key": "way/532464097",
+    "names": {
+      "en": "Central Library",
+      "bn": "কেন্দ্রীয় গ্রন্থাগার",
+      "aliases": [
+        "King Fahad Bin Abdul Aziz Central Library"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/532464097",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "central-library.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Central_library_of_IU.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "roofColor",
+      "facadeMaterial"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/532464097"
+  },
+  {
+    "key": "way/532464636",
+    "names": {
+      "en": "Central Cafeteria কেন্দ্রীয় ক্যাফেটেরিয়া",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/532464636",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/532464636"
+  },
+  {
+    "key": "way/532464653",
+    "names": {
+      "en": "Garage",
+      "bn": null,
+      "aliases": [
+        "Grarage"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/532464653",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/532464653"
+  },
+  {
+    "key": "way/532464712",
+    "names": {
+      "en": "Saddam Hossain Hall",
+      "bn": "সাদ্দাম হোসেন হল",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/532464712",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "saddam-hall.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Saddam_Hossain_hall,Islamic_University.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/532464712"
+  },
+  {
+    "key": "way/532464760",
+    "names": {
+      "en": "Lalon Shah Hall",
+      "bn": "লালন শাহ হল",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/532464760",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "lalon-hall.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Lalon_Shah_Hall,_resident_hall_of_Islamic_University,_Bangladesh.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/532464760"
+  },
+  {
+    "key": "way/532464837",
+    "names": {
+      "en": "Shah Azizur Rahman Hall",
+      "bn": "শাহ আজিজুর রহমান হল",
+      "aliases": [
+        "Bangabandhu Sheikh Mujibur Rahman Hall"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/532464837",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "shah-aziz-historical.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Father_of_the_Nation_Bangabandhu_Sheikh_Mujibur_Rahman_Hall,_Islamic_University,_Bangladesh.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "facadeMaterial"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/532464837"
+  },
+  {
+    "key": "way/532464846",
+    "names": {
+      "en": "July-36 Hall",
+      "bn": "জুলাই-৩৬ হল",
+      "aliases": [
+        "Deshratna Sheikh Hasina Hall"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/532464846",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "july-36-historical.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Deshratna_Sheikh_Hasina_Hall,_Islamic_University,_Bangladesh.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "roofColor",
+      "facadeMaterial"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/532464846"
+  },
+  {
+    "key": "way/532465115",
+    "names": {
+      "en": "Post Office Iu",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/532465115",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/532465115"
+  },
+  {
+    "key": "way/929202651",
+    "names": {
+      "en": "New Administrative Building",
+      "bn": "নতুন প্রশাসন ভবন",
+      "aliases": [
+        "New Administrative Builiding"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/929202651",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/929202651"
+  },
+  {
+    "key": "way/929203013",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/929203013",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/929203013"
+  },
+  {
+    "key": "way/929433965",
+    "names": {
+      "en": "নতুন শিক্ষক ডরমিটরি",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/929433965",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/929433965"
+  },
+  {
+    "key": "way/929434313",
+    "names": {
+      "en": "Guest House, IU",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/929434313",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/929434313"
+  },
+  {
+    "key": "way/930117132",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930117132",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930117132"
+  },
+  {
+    "key": "way/930117133",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930117133",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930117133"
+  },
+  {
+    "key": "way/930117134",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930117134",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930117134"
+  },
+  {
+    "key": "way/930117135",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930117135",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930117135"
+  },
+  {
+    "key": "way/930117136",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930117136",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930117136"
+  },
+  {
+    "key": "way/930117137",
+    "names": {
+      "en": "Teacher Dormitory 2",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930117137",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930117137"
+  },
+  {
+    "key": "way/930117138",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930117138",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930117138"
+  },
+  {
+    "key": "way/930117139",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930117139",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930117139"
+  },
+  {
+    "key": "way/930862510",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930862510",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930862510"
+  },
+  {
+    "key": "way/930862511",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930862511",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930862511"
+  },
+  {
+    "key": "way/930862512",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/930862512",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/930862512"
+  },
+  {
+    "key": "way/967965555",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/967965555",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/967965555"
+  },
+  {
+    "key": "way/967965556",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/967965556",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/967965556"
+  },
+  {
+    "key": "way/967965557",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/967965557",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/967965557"
+  },
+  {
+    "key": "way/967965558",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/967965558",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/967965558"
+  },
+  {
+    "key": "way/967967197",
+    "names": {
+      "en": "Shahid Ziaur Rahman Hall",
+      "bn": "শহীদ জিয়াউর রহমান হল",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/967967197",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "shahid-zia-hall.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Shahid_ziaur_rahman_hall.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "facadeMaterial"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/967967197"
+  },
+  {
+    "key": "way/967967198",
+    "names": {
+      "en": "Shahid Anas Hall",
+      "bn": "শহীদ আনাছ হল",
+      "aliases": [
+        "Sheikh Russel Hall",
+        "Sheikh Russell Hall",
+        "শহীদ আনাস হল"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/967967198",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "shahid-anas-historical.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Sheikh_Russel_Hall_of_Islamic_University,_Bangladesh.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "facadeMaterial"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/967967198"
+  },
+  {
+    "key": "way/970015480",
+    "names": {
+      "en": "Khaleda Zia Hall",
+      "bn": "খালেদা জিয়া হল",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/970015480",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "khaleda-hall.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Ladies_hall_(khaleda_zia_hall).jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "facadeMaterial"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/970015480"
+  },
+  {
+    "key": "way/970015481",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/970015481",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/970015481"
+  },
+  {
+    "key": "way/970015482",
+    "names": {
+      "en": "Ummul Mu’mineen Aisha Siddiqa Hall",
+      "bn": "উম্মুল মু’মিনীন আয়েশা সিদ্দিকা হল",
+      "aliases": [
+        "Bangamata Begum Fazilatunnessa Mujib Hall"
+      ]
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/970015482",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "aisha-hall-historical.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Mother_of_the_Bengal_Begum_Fazilatunnesa_Mujib_Hall,_Islamic_University,_Bangladesh.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/970015482"
+  },
+  {
+    "key": "way/970015483",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/970015483",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/970015483"
+  },
+  {
+    "key": "way/970122772",
+    "names": {
+      "en": "Central Gymnasium, IU",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/970122772",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/970122772"
+  },
+  {
+    "key": "way/970122774",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/970122774",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/970122774"
+  },
+  {
+    "key": "way/970122775",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/970122775",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/970122775"
+  },
+  {
+    "key": "way/986167436",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/986167436",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/986167436"
+  },
+  {
+    "key": "way/986167437",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/986167437",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/986167437"
+  },
+  {
+    "key": "way/1317423240",
+    "names": {
+      "en": "Mir Mosharraf Hossain Academic Building",
+      "bn": "মীর মোশাররফ হোসেন একাডেমিক ভবন",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1317423240",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "mir-mosharraf.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Mir_Mosharraf_Hossain_Academic_building.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1317423240"
+  },
+  {
+    "key": "way/1317423241",
+    "names": {
+      "en": "Islamic Institute of Education and Research",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1317423241",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1317423241"
+  },
+  {
+    "key": "way/1317423253",
+    "names": {
+      "en": "New Building",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1317423253",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1317423253"
+  },
+  {
+    "key": "way/1317423254",
+    "names": {
+      "en": "New Building",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1317423254",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1317423254"
+  },
+  {
+    "key": "way/1317423257",
+    "names": {
+      "en": "VC Residency",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1317423257",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "vc-residence.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:VC_Residence.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1317423257"
+  },
+  {
+    "key": "way/1317423259",
+    "names": {
+      "en": "Central Mosque",
+      "bn": "কেন্দ্রীয় মসজিদ",
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1317423259",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "central-mosque.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Central_Mosque_architectures_of_Islamic_University,_Bangladesh.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1317423259"
+  },
+  {
+    "key": "way/1317423270",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1317423270",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1317423270"
+  },
+  {
+    "key": "way/1317423271",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1317423271",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1317423271"
+  },
+  {
+    "key": "way/1317423300",
+    "names": {
+      "en": "Jia Hall Mosque",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1317423300",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1317423300"
+  },
+  {
+    "key": "way/1468678933",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1468678933",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1468678933"
+  },
+  {
+    "key": "way/1468678934",
+    "names": {
+      "en": null,
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1468678934",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [],
+    "imageSources": [],
+    "photoMatchStatus": "no-matched-open-image",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1468678934"
+  },
+  {
+    "key": "way/1468680463",
+    "names": {
+      "en": "Islamic University Medical Centre ইসলামী বিশ্ববিদ্যালয়ের মেডিকেল সেন্টার",
+      "bn": null,
+      "aliases": []
+    },
+    "checkedAt": "2026-11-07",
+    "identitySource": {
+      "url": "https://www.openstreetmap.org/way/1468680463",
+      "retrievedAt": "2026-11-07"
+    },
+    "imageFiles": [
+      "medical-center.jpg"
+    ],
+    "imageSources": [
+      "https://commons.wikimedia.org/wiki/File:Medical_Center,_Islamic_University,_Bangladesh.jpg"
+    ],
+    "photoMatchStatus": "historical-reference-not-current-survey",
+    "unresolvedFields": [
+      "heightMeters",
+      "storeys",
+      "wallColor",
+      "roofColor",
+      "roofShape",
+      "facadeMaterial",
+      "windowPattern"
+    ],
+    "requiredCapture": "Dated georeferenced street-level facade and entrance photos, floor/roof elevation, material/paint observation; distinguish adjacent footprints and construction state.",
+    "sourceMapUrl": "https://www.openstreetmap.org/way/1468680463"
+  }
+]
