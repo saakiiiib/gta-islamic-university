@@ -27,7 +27,7 @@ test('indexed planting and furniture preserve the original deterministic placeme
   // Fingerprints independently compared with the unmodified 5f2c051 generators.
   assert.equal(hash(vegetation), 'ba1b2d835451ecab15da8ba93f1ecb39b7ebccb7549e73df54721ac2ca1832e4');
   assert.equal(hash(scenery), '46100fa82a9daec35ab355434e3e31a66ac9843a10e7d01d1bde632221670fb5');
-  const trimmedVegetation = planVegetation(trimmedMap);
+  const trimmedVegetation = planReferenceVegetation(trimmedMap);
   assert.deepEqual(packet.data.vegetation, trimmedVegetation);
   assert.deepEqual(packet.data.scenery, planScenery(trimmedMap, { vegetation: trimmedVegetation }));
 });
@@ -86,3 +86,4 @@ test('stalled optional preparation aborts and leaves runtime generation availabl
   });
   assert.equal(result, null); assert.equal(aborted, true);
 });
+import { planReferenceVegetation } from '../src/world/referenceVegetation.js';

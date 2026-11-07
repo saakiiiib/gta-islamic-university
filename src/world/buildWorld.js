@@ -9,7 +9,7 @@ import { makeBridgeGeometries, measurePath, samplePath } from './bridge.js';
 import { buildRoadAppearance, ROAD_LEVELS } from './roads.js';
 import { buildingPalette, hashId, LAND_COLORS } from './appearance.js';
 import { facadeGeometry, tintGeometry, chooseEntries } from './facades.js';
-import { planVegetation } from './vegetation.js';
+import { planReferenceVegetation } from './referenceVegetation.js';
 import { horizontalUVs, facadeUVs, ensureBatchUVs, disposeWorldTextures } from './assets.js';
 import { buildScenery } from './scenery.js';
 import { buildMainGate } from './mainGate.js';
@@ -217,7 +217,7 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
   batches.finish();
   const waterDetails = buildWaterDetails(mapData);
   group.add(waterDetails.group);
-  const vegetation = preparedData?.vegetation ?? planVegetation(mapData);
+  const vegetation = preparedData?.vegetation ?? planReferenceVegetation(mapData);
   addTrees(mapData, group, materials, vegetation);
   const scenery = buildScenery(mapData, { vegetation, preparedProps: preparedData?.scenery });
   group.add(scenery.group);
