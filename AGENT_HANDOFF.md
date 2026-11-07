@@ -43,3 +43,6 @@ Added src/world/landmarks/shaheedMinar.js, tests/shaheedMinar.test.js and docs-d
 
 ## 2026-11-07 — Codex — Task 7: unplaced separate brick memorial
 Added src/world/landmarks/martyrsMemorial.js, tests/martyrsMemorial.test.js and docs-dev/landmarks/martyrs-memorial.md. Deep curved shell/soffit, nested pierced layers and pale wing bases are one mesh, caller-scaled and provisional. Four focused tests pass; the unchanged app integration built during task 6 with this file present. No colliders or production location guess. Exact placement/dimensions remain pending, so task 7 is partial. Next: main-gate audit, library conflict handling, academic/hall observations and remaining tasks.
+
+## 2026-11-07 — Codex — Task 8: main-gate audit
+Added verified CC BY-SA 3.0 front photograph main-gate-front-2013.jpg (Shohan6), manifest/SOURCES attribution, docs-dev/landmarks/main-gate-audit.md, and source evidence metadata in mainGate.js. Corrected research report's three-portal misreading: front view confirms four arches, already matching the game. Exact proportions/upper frieze/current 2026 calligraphy layout remain unverified. Existing geometry/spawn/colliders unchanged; six gate/boundary tests and standard build pass. Collection now 34 licensed images. Next: library dispute handling and sourced academic/hall changes; no blanket claim that all gate dimensions are verified.

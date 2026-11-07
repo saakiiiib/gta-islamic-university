@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 /**
  * Islamic University Main Gate (প্রধান ফটক) & Highway Approach Reconstruction.
- * Modeled based on official architectural photographs and OpenStreetMap coordinates.
+ * Procedural approximation anchored to OSM; audited evidence limits are below.
  * Features:
  * - 4 grand Roman-Islamic arches (2 central vehicular, 2 flanking pedestrian)
  * - Continuous upper frieze with golden Arabic Calligraphy ("لا إله إلا الله محمد رسول الله")
@@ -11,6 +11,14 @@ import * as THREE from 'three';
  * - Flanking blooming red Krishnachura (Delonix regia) tree canopies and Royal palms
  * - Solid pillar colliders allowing unobstructed transit through archways
  */
+
+export const MAIN_GATE_EVIDENCE = Object.freeze({
+  sourceUrl: 'https://commons.wikimedia.org/wiki/File:Islamic_University_Bangladesh,_Islamic_Unviersity_gate,_iu_gate.jpg',
+  observedAt: '2013-02-21', portalCount: 4, dimensionsStatus: 'unmeasured-art-proportions',
+  newerAdditionUrl: 'https://www.daily-sun.com/sun-campus/899668',
+  newerAdditionStatus: 'reported-steel-calligraphy-layout-unverified',
+  note: 'Front view confirms two large and two side arches; exact dimensions, upper beam/crown and current signs require dated elevation verification.',
+});
 
 export const MAIN_GATE_CONFIG = Object.freeze({
   position: { x: 304.91, y: 0.0, z: -64.49 }, // OSM Entrance Node 9027931168
@@ -239,6 +247,7 @@ function createRoyalPalm(x, z, height = 9.5) {
 export function buildMainGate(options = {}) {
   const group = new THREE.Group();
   group.name = 'islamic-university-main-gate';
+  group.userData.referenceEvidence = { ...MAIN_GATE_EVIDENCE };
 
   const collisionGroup = new THREE.Group();
   collisionGroup.name = 'main-gate-colliders';
