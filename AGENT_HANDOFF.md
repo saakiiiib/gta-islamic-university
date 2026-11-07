@@ -18,3 +18,7 @@ Left: implement the 20 separately scoped follow-ups only when requested. First o
 
 ### Publication result — 2026-11-07, Codex
 Research commit is local on `codex/campus-research`. Push failed because Git's GitHub credential helper could not supply authentication; direct PR creation returned HTTP 401 (requires authentication). No remote branch or PR was created in this attempt. Leave the local research commit intact and publish after GitHub access is restored. A user-facing report/reference export is provided in the originating chat's outputs folder.
+
+## 2026-11-07 — Codex — Research published
+
+After Mahin completed GitHub's device authorization, pushed `codex/campus-research` and opened https://github.com/saakiiiib/gta-islamic-university/pull/1 against `main`. This supersedes the earlier blocked-publication note. Research commit `e0f43b211da5ea72386389a1281b9becf02ac57d` is now on GitHub. The only additional repository change in this follow-up is this handoff entry; no game code or data changed. The local Git credential helper could not run, so publishing used the authorized CLI credential directly without printing it or adding it to project files. Left: review the research PR; implement the report's follow-up tasks separately when requested.
