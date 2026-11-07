@@ -1,3 +1,4 @@
+import { phase1HeightMap } from './helpers/phase1-height-policy.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -21,14 +22,14 @@ const road = (id, kind, width, path) => ({ id, kind, width, paths: [path], polyg
 const roadsMap = { bounds: { minX: -40, maxX: 40, minZ: -40, maxZ: 40 }, buildings: [], water: [],
   roads: [road('east-west', 'service', 6, [[-30, 0], [30, 0]]), road('north-south', 'service', 6, [[0, -30], [0, 30]]), road('walk', 'path', 2.2, [[12, 0], [12, 20]])], bridges: [] };
 
-test('Phase 1 raw map, feature counts, footprints, heights and heightSource are unchanged', () => {
+test('Phase 1 raw map and footprint baseline remain intact across reviewed height-policy changes', () => {
   assert.equal(checksum(raw), baseline.rawMapSha256);
   assert.deepEqual(map.diagnostics.counts, baseline.counts);
-  assert.equal(modelFingerprint(map), baseline.modelSha256);
+  assert.equal(modelFingerprint(phase1HeightMap(map)), baseline.modelSha256);
 });
 
-test('canonical collision triangles retain Phase 1 positions AND winding', () => {
-  const world = buildWorld(map);
+test('unrelated collision triangles retain Phase 1 positions AND winding', () => {
+  const world = buildWorld(phase1HeightMap(map));
   assert.deepEqual(collisionFingerprint(world.collisionGroup), baseline.collision);
   assert.equal(world.footprintDebug.visible, false);
   assert.equal(world.collisionGroup.children.some(m => /facade|curb|tree|road/.test(m.name)), false);

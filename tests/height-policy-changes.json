@@ -1,0 +1,80 @@
+[
+  {
+    "id": "532466329",
+    "name": "heikhpara Jame Mosque শেখপাড়া জামে মসজিদ",
+    "before": {
+      "id": "532466329",
+      "height": 9.6,
+      "heightSource": "estimate:unclassified"
+    },
+    "after": {
+      "height": 9.6,
+      "heightSource": "estimate:worship"
+    }
+  },
+  {
+    "id": "929202651",
+    "name": "New Administrative Builiding",
+    "before": {
+      "id": "929202651",
+      "height": 9.6,
+      "heightSource": "estimate:academic"
+    },
+    "after": {
+      "height": 9.6,
+      "heightSource": "estimate:construction"
+    }
+  },
+  {
+    "id": "1317423253",
+    "name": "New Building",
+    "before": {
+      "id": "1317423253",
+      "height": 9.6,
+      "heightSource": "estimate:unclassified"
+    },
+    "after": {
+      "height": 9.6,
+      "heightSource": "estimate:construction"
+    }
+  },
+  {
+    "id": "1317423254",
+    "name": "New Building",
+    "before": {
+      "id": "1317423254",
+      "height": 9.6,
+      "heightSource": "estimate:unclassified"
+    },
+    "after": {
+      "height": 9.6,
+      "heightSource": "estimate:construction"
+    }
+  },
+  {
+    "id": "1317423259",
+    "name": "Central Mosque",
+    "before": {
+      "id": "1317423259",
+      "height": 9.6,
+      "heightSource": "estimate:unclassified"
+    },
+    "after": {
+      "height": 9.6,
+      "heightSource": "estimate:worship"
+    }
+  },
+  {
+    "id": "1317423300",
+    "name": "Jia Hall Mosque",
+    "before": {
+      "id": "1317423300",
+      "height": 12.8,
+      "heightSource": "estimate:dormitory"
+    },
+    "after": {
+      "height": 9.6,
+      "heightSource": "estimate:worship"
+    }
+  }
+]
