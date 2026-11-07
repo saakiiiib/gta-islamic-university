@@ -20,7 +20,7 @@ await mkdir(resolve(root, 'src/generated'), { recursive: true });
 await writeFile(resolve(root, 'src/generated/campus-source.js'), `// Generated from the unchanged supplied map.\nexport const CAMPUS_MAP_SHA256 = '${mapSha256}';\nexport const CAMPUS_MAP_BYTES = ${mapBytes.byteLength};\n`);
 // A source fingerprint avoids regenerating on every preview/build while never
 // retaining stale placement or navigation when its implementation changes.
-for (const directory of ['src/map', 'src/world', 'src/navigation', 'src/activity', 'src/vehicle']) {
+for (const directory of ['src/map', 'src/world', 'src/navigation', 'src/activity', 'src/vehicle', 'src/data']) {
   for (const name of (await readdir(resolve(root, directory))).filter(n => n.endsWith('.js')).sort()) {
     sourceHash.update(`${directory}/${name}`); sourceHash.update(await readFile(resolve(root, directory, name)));
   }

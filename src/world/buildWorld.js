@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { getCampusLandmark } from '../data/campus-landmarks.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { buildingGeometry, surfaceGeometry, geometryMaterialPart, polygonCenter, lineSegmentsGeometry } from './geometry.js';
 import { makeBridgeGeometries, measurePath, samplePath } from './bridge.js';
@@ -211,6 +212,7 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
   let elapsed = 0;
   const world = {
     group, collisionGroup, materials, scenery, bridgeMeshes: batches.bridgeMeshes, buildingMeshes: batches.buildingMeshes,
+    landmarkRecords: (mapData.buildings ?? []).map(getCampusLandmark).filter(Boolean),
     decoration: { roads: roadAppearance, vegetation, entryTreatments }, footprintDebug, labelAnchors: mapData.places ?? [],
     update(dt) {
       elapsed += Math.max(0, dt);

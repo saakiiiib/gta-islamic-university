@@ -1,3 +1,5 @@
+import { landmarkAppearance } from '../data/campus-landmarks.js';
+
 export const hashId = id => [...String(id)].reduce((a, c) => ((a * 31 + c.charCodeAt(0)) >>> 0), 7);
 
 // Tags take priority; source names fill gaps in this particular OSM extract.
@@ -26,7 +28,7 @@ export const BUILDING_PALETTES = Object.freeze({
 
 export function buildingPalette(building) {
   const kind = classifyBuilding(building), family = BUILDING_PALETTES[kind];
-  return { kind, ...family, wall: family.walls[hashId(building.id) % family.walls.length] };
+  return { kind, ...family, wall: family.walls[hashId(building.id) % family.walls.length], ...landmarkAppearance(building) };
 }
 
 export const LAND_COLORS = Object.freeze({ ground: 0x7ba05f, grass: 0x76a35f, garden: 0x59964e, park: 0x6ca374,
