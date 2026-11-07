@@ -9,13 +9,15 @@ export function nearestPlace(position, mapData) {
   let name = 'Islamic University', distance = 110;
   const gate = Math.hypot(position.x - mapData.spawn.x, position.z - mapData.spawn.z);
   if (gate < 55) return 'Main Gate';
-  for (const feature of [...mapData.buildings, ...mapData.greens, ...mapData.water]) {
-    if (!feature.name || !feature.polygons?.[0]?.[0]?.length) continue;
+  for (const type of ['buildings', 'greens', 'water']) for (const feature of mapData[type]) {
+    const place = mapData.places?.find(p => p.sourceIds?.includes(`${type}:${feature.id}`));
+    const display = place?.displayName ?? feature.name;
+    if (!display || !feature.polygons?.[0]?.[0]?.length) continue;
     const ring = feature.polygons[0][0];
     const x = ring.reduce((sum, point) => sum + point[0], 0) / ring.length;
     const z = ring.reduce((sum, point) => sum + point[1], 0) / ring.length;
     const d = Math.hypot(x - position.x, z - position.z);
-    if (d < distance) { name = feature.name; distance = d; }
+    if (d < distance) { name = display; distance = d; }
   }
   return name;
 }

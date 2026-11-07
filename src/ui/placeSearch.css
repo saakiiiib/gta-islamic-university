@@ -1,0 +1,16 @@
+.place-search { position:absolute; z-index:5; top:152px; right:38px; width:min(360px,calc(100vw - 32px)); padding:14px; border:1px solid #d4dfc5; border-radius:5px; background:#14392ff5; color:#f5efd9; box-shadow:0 8px 28px #09291b55; font:14px/1.5 "Nirmala UI","Noto Sans Bengali",Vrinda,Arial,sans-serif; }
+.place-search[hidden],.place-search-results[hidden] { display:none; }
+.place-search-label { display:block; margin-bottom:7px; }
+.place-search-input { width:100%; min-height:44px; padding:9px 11px; color:#132e26; background:#faf8e9; border:2px solid transparent; border-radius:3px; font:inherit; }
+.place-search-input:focus-visible { outline:2px solid #edc26c; outline-offset:3px; }
+.place-search-results { list-style:none; margin:10px 0 0; padding:0; max-height:min(48vh,360px); overflow:auto; overscroll-behavior:contain; }
+.place-search-option { padding:10px; border-bottom:1px solid #d8e2c733; cursor:pointer; min-height:44px; }
+.place-search-option:hover,.place-search-option[aria-selected=true] { background:#48614a; outline:1px solid #edc26c; outline-offset:-1px; }
+.place-search-name,.place-search-name-bn { display:block; overflow-wrap:anywhere; }
+.place-search-name-bn { color:#f2d89b; }
+.place-search-status { margin:8px 0 0; font-size:12px; color:#d5e2ce; }
+.place-label b { font:11px/1.45 "Nirmala UI","Noto Sans Bengali",Vrinda,Arial,sans-serif; white-space:pre-line; }
+.location h2 { font-family:"Nirmala UI","Noto Sans Bengali",Vrinda,Georgia,serif; }
+@media(max-width:1000px) { .place-search { right:80px; top:92px; width:min(330px,calc(100vw - 100px)); } }
+@media(max-width:600px) { .place-search { left:12px; right:auto; top:74px; width:calc(100vw - 88px); padding:10px; } .place-search-results { max-height:42vh; } }
+@media(max-height:500px) { .place-search { top:64px; } .place-search-results { max-height:32vh; } }

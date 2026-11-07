@@ -13,8 +13,10 @@ export function selectLabels(anchors, camera, player, { width, height, inspectio
     if (world.clone().sub(camera.position).dot(forward) <= 0) continue;
     const p = world.clone().project(camera);
     if (p.z < -1 || p.z > 1 || Math.abs(p.x) > 1 || Math.abs(p.y) > 1) continue;
-    const labelWidth = Math.min(260, Math.max(110, anchor.name.length * 6.1 + 24));
-    const labelHeight = anchor.name.length * 6.1 > 236 ? 54 : 40;
+    const text = anchor.displayName ?? anchor.name;
+    const bilingual = !!(anchor.names?.en && anchor.names?.bn);
+    const labelWidth = Math.min(260, Math.max(110, text.length * 6.1 + 24));
+    const labelHeight = bilingual ? 100 : text.length * 6.1 > 236 ? 54 : 40;
     const x = (p.x + 1) * width / 2, y = (1 - p.y) * height / 2;
     const rect = { left: x - labelWidth / 2, top: y - labelHeight, right: x + labelWidth / 2, bottom: y };
     if (rect.left < 8 || rect.right > width - 8 || rect.top < 8 || rect.bottom > height - 12 || avoid.some(a => rectanglesOverlap(rect, a))) continue;
@@ -49,7 +51,7 @@ export class PlaceLabels {
     this.elapsed = 0; this.width = width; this.height = height;
     camera.updateMatrixWorld();
     const avoid = [];
-    for (const element of this.container.ownerDocument.querySelectorAll('.location,.minimap-card,.speed-card,.controls-strip,.game-header,.view-toolbar,.inspection-banner,.interaction-prompt,.player-health,.pedestrian-health,#debug-panel,.attribution,.touch-stick,.touch-actions,.touch-pause,#orientation-hint')) {
+    for (const element of this.container.ownerDocument.querySelectorAll('.location,.minimap-card,.speed-card,.controls-strip,.game-header,.view-toolbar,.place-search,.inspection-banner,.interaction-prompt,.player-health,.pedestrian-health,#debug-panel,.attribution,.touch-stick,.touch-actions,.touch-pause,#orientation-hint')) {
       const rect = element.getBoundingClientRect(); if (rect.width && rect.height) avoid.push(rect);
     }
     if (!inspection) avoid.push({ left: width / 2 - 65, right: width / 2 + 65, top: height * .5, bottom: height * .96 });
@@ -62,7 +64,9 @@ export class PlaceLabels {
     this.pool.forEach((slot, index) => {
       const item = selected[index]; slot.element.hidden = !item;
       if (!item) return;
-      slot.name.textContent = item.anchor.name; slot.distance.textContent = `${Math.round(item.distance)} m`;
+      slot.name.textContent = item.anchor.names?.en && item.anchor.names?.bn
+        ? `${item.anchor.names.en}\n${item.anchor.names.bn}` : item.anchor.displayName ?? item.anchor.name;
+      slot.distance.textContent = `${Math.round(item.distance)} m`;
       slot.element.style.transform = `translate(${Math.round(item.x)}px, ${Math.round(item.y)}px) translate(-50%, -100%)`;
       slot.element.style.width = `${item.width}px`; slot.element.style.opacity = item.opacity;
     });
