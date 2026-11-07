@@ -157,6 +157,9 @@ export function buildScenery(map, options = {}) {
   collisionGroup.updateMatrixWorld(true);
   return {
     group, collisionGroup, obstacles: props, meshes,
+    boundaryEvidence: { ...structuredClone(CAMPUS_BOUNDARY_EVIDENCE),
+      illustrativeFenceCount: props.filter(p => p.kind === 'fence' && p.source === 'illustrative').length,
+      illustrativeFenceStatus: 'existing-art-not-verified-wall', physicalPerimeterVerified: false },
     replaceBenchGeometry(geometry, benchMaterial) {
       for (const mesh of meshes.filter(m => m.userData.kind === 'bench')) { mesh.geometry = geometry; mesh.material = benchMaterial; mesh.computeBoundingSphere(); }
       this.importedBench = { geometry, material: benchMaterial };
@@ -176,3 +179,4 @@ export function buildScenery(map, options = {}) {
     },
   };
 }
+import { CAMPUS_BOUNDARY_EVIDENCE } from '../data/campus-boundary.js';
