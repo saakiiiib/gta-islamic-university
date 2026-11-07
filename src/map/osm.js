@@ -233,14 +233,16 @@ export function buildMapData(parsed, userConfig = {}) {
     }
     const isBridge = tags.bridge === 'yes' || way.id === '1317423268';
     if (isBridge) {
-      const width = parseMetres(tags.width) || 2.2;
-      data.bridges.push({id: way.id, name: named(tags) || 'Lake footbridge', tags, width, paths,
+      const evidence = resolveRoadWidth({id:way.id, kind:tags.highway || 'footway', sourceWidth:parseMetres(tags.width), tags, override:CAMPUS_ROAD_WIDTH_OVERRIDES[way.id] ?? null});
+      const { width } = evidence;
+      data.bridges.push({id: way.id, name: named(tags) || 'Lake footbridge', tags, ...evidence, paths,
         polygons: bufferPaths(paths, width, bounds), elevation: .45, rampLength: 4});
     }
     if (tags.highway) {
-      const kind = tags.highway, width = parseMetres(tags.width) || ({service: 6, unclassified: 6, path: 2.2,
-        footway: 2.2, pedestrian: 2.2, cycleway: 2.2, tertiary: 8, trunk: 7}[kind] || 6);
-      data.roads.push({id: way.id, name: named(tags), tags, kind, width, paths,
+      const kind = tags.highway;
+      const evidence = resolveRoadWidth({id:way.id, kind, sourceWidth:parseMetres(tags.width), tags, override:CAMPUS_ROAD_WIDTH_OVERRIDES[way.id] ?? null});
+      const { width } = evidence;
+      data.roads.push({id: way.id, name: named(tags), tags, kind, ...evidence, paths,
         
         polygons: bufferPaths(paths, width, bounds)});
     }
@@ -289,3 +291,5 @@ export async function loadMap(url, onProgress = () => {}, options = {}) {
   onProgress(`Loaded ${data.buildings.length} building footprints and ${data.roads.length} mapped roads.`);
   return data;
 }
+import { resolveRoadWidth } from './roadEvidence.js';
+import { CAMPUS_ROAD_WIDTH_OVERRIDES } from '../data/campus-roads.js';

@@ -67,3 +67,6 @@ Added service-building-verification.md and a dated 57-row typed building-verific
 
 ## 2026-11-07 — Codex — Task 15: separate waterbody detail
 Integrated waterDetail.js, green art palette and six geometry/world tests. Three water IDs remain separate; 241 seasonal leaf/reed instances use two opaque draws, all vertices inside water and clear of bridge approaches/holes. Existing bridge geometry/collision retained. Exact lake alias extent, bank steps and bridge dimensions remain unverified; no guessed structures added. Focused tests and standard preparation/build pass; current survey/interactive review pending. Next: road and boundary provenance.
+
+## 2026-11-07 — Codex — Task 16: road/bridge provenance
+Integrated strict roadEvidence resolver and empty source-backed width override table. All40 road widths/buffers unchanged; widthEvidence explicitly heuristic/unmeasured and surfaceEvidence only carries raw mapped tags (one asphalt road). Bridge retains2.2m fallback with provenance. Added complete road-survey-register.json and road-evidence.md. Twenty-two focused map/width tests and standard preparation/build pass. Actual width/surface/bridge surveys remain pending; no unverified dimensions activated. Next: boundary evidence and vegetation.
