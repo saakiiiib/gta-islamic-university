@@ -58,3 +58,6 @@ Added academicFacades.js and six geometry/integration tests; wired one whole-bui
 
 ## 2026-11-07 — Codex — Task 12: dated hall palettes
 Applied typed historical observations to the eight established hall records, retaining official names/historical aliases. Seven wall/six roof art palettes activated; Aisha residential appearance, July roof color, aerial-only window patterns and all unsourced materials/dimensions remain unknown. Added migration helper, five focused tests and halls.md. Footprints, heights and collision unchanged. Focused hall/registry checks and standard build pass; current facade/sign surveys remain pending. Next: auditorium and remaining landscape/name/lighting tasks.
+
+## 2026-11-07 — Codex — Task 13: auditorium massing
+Integrated dedicated auditorium augmentation and historical brick/pale palette for relation7650711. One merged mesh adds raised clipped hall, layered roofs and open double-height entry trim; suppresses generic rectangular facade. Source footprint/holes/body collider retained. Exact dimensions/front orientation remain illustrative; heights/storeys not promoted to surveyed. Six model/integration and mosque/registry checks plus standard preparation/build pass. Interactive visual review pending. Next: systematic unknown-building register and landscape tasks.

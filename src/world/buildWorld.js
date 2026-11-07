@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { getCampusLandmark } from '../data/campus-landmarks.js';
 import { buildCentralMosque, CENTRAL_MOSQUE_ID } from './landmarks/centralMosque.js';
 import { academicFacadeGeometry } from './academicFacades.js';
+import { buildAuditorium, AUDITORIUM_ID } from './landmarks/auditorium.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { buildingGeometry, surfaceGeometry, geometryMaterialPart, polygonCenter, lineSegmentsGeometry } from './geometry.js';
 import { makeBridgeGeometries, measurePath, samplePath } from './bridge.js';
@@ -170,6 +171,7 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
   const entryTreatments = [], landmarkModels = [], academicFacadeProfiles = [];
   for (const building of mapData.buildings ?? []) {
     const isCentralMosque = building.osmType === 'way' && building.id === CENTRAL_MOSQUE_ID;
+    const isAuditorium = building.osmType === 'relation' && building.id === AUDITORIUM_ID;
     const palette = buildingPalette(building), entries = chooseEntries(building, mapData.roads, mapData.entrances);
     const academicFacade = academicFacadeGeometry(building, palette, entries);
     entryTreatments.push(...entries.map(e => ({ buildingId: building.id, source: e.source, nodeId: e.nodeId, position: e.edge.at(e.distance, 0, 0) })));
@@ -183,7 +185,7 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
       batches.add(tintGeometry(horizontalUVs(geometryMaterialPart(geometry, 0), 3), palette.roof), roofMaterial, x, z, { collision: true, kind: 'building' });
       batches.add(tintGeometry(facadeUVs(geometryMaterialPart(geometry, 1), polygon, wallMaterial === materials.brick ? 2.5 : 3.5), palette.wall), wallMaterial, x, z, { collision: true, kind: 'building' });
       geometry.dispose();
-      const facade = isCentralMosque || academicFacade ? null : facadeGeometry(polygon, building.height, palette, entries);
+      const facade = isCentralMosque || isAuditorium || academicFacade ? null : facadeGeometry(polygon, building.height, palette, entries);
       if (facade) {
         batches.add(facade.windows, materials.windows, x, z, { kind: 'facade' });
         batches.add(facade.details, materials.decor, x, z, { kind: 'facade' });
@@ -194,6 +196,10 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
       batches.add(academicFacade.windows, materials.windows, x, z, { kind: 'facade' });
       batches.add(academicFacade.details, materials.decor, x, z, { kind: 'facade' });
       academicFacadeProfiles.push(academicFacade.diagnostics);
+    }
+    if (isAuditorium) {
+      const model = buildAuditorium(building, { entrances: entries.length ? entries : undefined, baseHeight: building.height });
+      landmarkModels.push(model); group.add(model.group);
     }
   }
   for (const building of mapData.buildings ?? []) {
