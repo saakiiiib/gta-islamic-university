@@ -12,4 +12,3 @@ export function classifyBuilding(building) {
   if (/cafeteria|canteen|medical|hospital|bank|post office|auditorium|gymnasium|substation|store|garage/.test(name)) return 'civic';
   return 'unclassified';
 }
-
