@@ -102,28 +102,28 @@ export const landmarkRecords = [
         "reason": "OSM levels tag, not an independently measured floor count."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#d9d2b9",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_faculty_of_science,_Islamic_University.jpg",
+        "observedAt": "2021-04-17",
+        "reason": "Historical photo-inspired finish/form; current per-wing elevations and measured albedo unverified."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#aaa99b",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_faculty_of_science,_Islamic_University.jpg",
+        "observedAt": "2021-04-17",
+        "reason": "Historical photo-inspired finish/form; current per-wing elevations and measured albedo unverified."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat slab-like roof; courtyard voids retained",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_faculty_of_science,_Islamic_University.jpg",
+        "observedAt": "2021-04-17",
+        "reason": "Historical photo-inspired finish/form; current per-wing elevations and measured albedo unverified."
       },
       "facadeMaterial": {
         "value": null,
@@ -134,15 +134,18 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "windowPattern": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Tall arched bay rhythm; exact spacing/divisions illustrative, not a storey survey",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_faculty_of_science,_Islamic_University.jpg",
+        "observedAt": "2021-04-17",
+        "reason": "Historical photo-inspired finish/form; current per-wing elevations and measured albedo unverified."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "relation",
@@ -246,28 +249,28 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "wallColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#d8cfb7",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Faculty_of_Arts_building,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Historical photo-inspired finish/form; current per-wing elevations and measured albedo unverified."
       },
       "roofColor": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "#aaa99b",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Faculty_of_Arts_building,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Historical photo-inspired finish/form; current per-wing elevations and measured albedo unverified."
       },
       "roofShape": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Flat slab-like roof; courtyard voids retained",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Faculty_of_Arts_building,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Historical photo-inspired finish/form; current per-wing elevations and measured albedo unverified."
       },
       "facadeMaterial": {
         "value": null,
@@ -278,15 +281,18 @@ export const landmarkRecords = [
         "reason": "No verified building-specific observation in the research register."
       },
       "windowPattern": {
-        "value": null,
-        "status": "unknown",
-        "confidence": "unknown",
-        "sourceUrl": null,
-        "observedAt": null,
-        "reason": "No verified building-specific observation in the research register."
+        "value": "Tall arched bay rhythm; exact spacing/divisions illustrative, not a storey survey",
+        "status": "observed",
+        "confidence": "medium",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Faculty_of_Arts_building,_Islamic_University,_Bangladesh.jpg",
+        "observedAt": "2021-04-15",
+        "reason": "Historical photo-inspired finish/form; current per-wing elevations and measured albedo unverified."
       }
     },
-    "renderAppearance": {}
+    "renderAppearance": {
+      "wall": "wallColor",
+      "roof": "roofColor"
+    }
   },
   {
     "osmType": "relation",
