@@ -13,6 +13,7 @@ import { planVegetation } from './vegetation.js';
 import { horizontalUVs, facadeUVs, ensureBatchUVs, disposeWorldTextures } from './assets.js';
 import { buildScenery } from './scenery.js';
 import { buildMainGate } from './mainGate.js';
+import { buildWaterDetails } from './waterDetail.js';
 
 export { bridgeHeightAt } from './bridge.js';
 
@@ -214,6 +215,8 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
     for (const rail of geometries.rails) batches.add(rail, materials.rail, ...centre, { kind: 'bridge-rail' });
   }
   batches.finish();
+  const waterDetails = buildWaterDetails(mapData);
+  group.add(waterDetails.group);
   const vegetation = preparedData?.vegetation ?? planVegetation(mapData);
   addTrees(mapData, group, materials, vegetation);
   const scenery = buildScenery(mapData, { vegetation, preparedProps: preparedData?.scenery });
@@ -235,7 +238,7 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
   let elapsed = 0;
   const world = {
     group, collisionGroup, materials, scenery, bridgeMeshes: batches.bridgeMeshes, buildingMeshes: batches.buildingMeshes,
-    landmarkModels, academicFacadeProfiles,
+    landmarkModels, academicFacadeProfiles, waterDetails,
     landmarkRecords: (mapData.buildings ?? []).map(getCampusLandmark).filter(Boolean),
     decoration: { roads: roadAppearance, vegetation, entryTreatments }, footprintDebug, labelAnchors: mapData.places ?? [],
     update(dt) {
@@ -247,6 +250,7 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
     },
     dispose() {
       landmarkModels.forEach(model => model.dispose());
+      waterDetails.dispose();
       disposeWorldTextures(world); scenery.dispose(); mainGate?.dispose();
       const geometries = new Set();
       group.traverse(object => { if (object.geometry) geometries.add(object.geometry); });

@@ -20,4 +20,4 @@ export function buildingPalette(building) {
 }
 
 export const LAND_COLORS = Object.freeze({ ground: 0x7ba05f, grass: 0x76a35f, garden: 0x59964e, park: 0x6ca374,
-  forest: 0x447953, orchard: 0x779751, pitch: 0x98b873, water: 0x258f9e });
+  forest: 0x447953, orchard: 0x779751, pitch: 0x98b873, water: 0x527759 });
