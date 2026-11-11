@@ -104,3 +104,13 @@ test('all 40 actual derived roads retain their widths and buffered geometry with
   }
   assert.equal(surfaces, 1); assert.equal(JSON.stringify(map.roads), before);
 });
+test('bridge fallback remains 2.2m independently of a service-road tag; explicit width still wins', () => {
+  const source=readFileSync(new URL('../public/data/map.osm',import.meta.url),'utf8');
+  const make=width=>{
+    const parsed=parseOsm(source), bridge=parsed.ways.get('1317423268');
+    bridge.tags.highway='service';
+    if(width) bridge.tags.width=width;
+    return buildMapData(parsed,{trimToCampus:true}).bridges.find(b=>b.id==='1317423268');
+  };
+  assert.equal(make().width,2.2); assert.ok(Math.abs(make('18 ft').width-5.4864)<1e-10);
+});

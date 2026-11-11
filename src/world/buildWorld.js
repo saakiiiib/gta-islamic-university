@@ -235,7 +235,7 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
   group.add(footprintDebug);
   group.updateMatrixWorld(true); collisionGroup.updateMatrixWorld(true);
   onProgress('Campus geometry ready');
-  let elapsed = 0;
+  let elapsed = 0, disposed = false;
   const world = {
     group, collisionGroup, materials, scenery, bridgeMeshes: batches.bridgeMeshes, buildingMeshes: batches.buildingMeshes,
     landmarkModels, academicFacadeProfiles, waterDetails,
@@ -249,11 +249,13 @@ export function buildWorld(mapData, { onProgress = () => {}, preparedData = null
       materials.water.color.setHex(LAND_COLORS.water).multiplyScalar(lightness);
     },
     dispose() {
+      if (disposed) return;
+      disposed = true;
       landmarkModels.forEach(model => model.dispose());
       waterDetails.dispose();
       disposeWorldTextures(world); scenery.dispose(); mainGate?.dispose();
       const geometries = new Set();
-      group.traverse(object => { if (object.geometry) geometries.add(object.geometry); });
+      group.traverse(object => { if (object.isInstancedMesh) object.dispose(); if (object.geometry) geometries.add(object.geometry); });
       collisionGroup.traverse(object => { if (object.geometry) geometries.add(object.geometry); });
       geometries.forEach(geometry => geometry.dispose());
       const allMaterials = new Set(Object.values(materials).flat());

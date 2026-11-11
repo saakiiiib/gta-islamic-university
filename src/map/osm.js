@@ -233,7 +233,7 @@ export function buildMapData(parsed, userConfig = {}) {
     }
     const isBridge = tags.bridge === 'yes' || way.id === '1317423268';
     if (isBridge) {
-      const evidence = resolveRoadWidth({id:way.id, kind:tags.highway || 'footway', sourceWidth:parseMetres(tags.width), tags, override:CAMPUS_ROAD_WIDTH_OVERRIDES[way.id] ?? null});
+      const evidence = resolveRoadWidth({id:way.id, kind:'footway', sourceWidth:parseMetres(tags.width), tags, override:CAMPUS_ROAD_WIDTH_OVERRIDES[way.id] ?? null});
       const { width } = evidence;
       data.bridges.push({id: way.id, name: named(tags) || 'Lake footbridge', tags, ...evidence, paths,
         polygons: bufferPaths(paths, width, bounds), elevation: .45, rampLength: 4});

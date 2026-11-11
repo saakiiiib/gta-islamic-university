@@ -144,6 +144,11 @@
       <button id="labels-button" type="button" aria-pressed="true" title="Toggle nearby place labels (L)"><kbd>L</kbd><span>Place labels</span></button>
       <button id="inspection-button" type="button" aria-pressed="false" title="Pause the student and inspect campus (I)"><kbd>I</kbd><span>Inspect campus</span></button>
       <button id="alignment-button" type="button" aria-pressed="false" title="Toggle original OSM road and footprint outlines (G)"><kbd>G</kbd><span>Map alignment</span></button>
+      <details class="lighting-controls"><summary>Sky</summary><div class="lighting-options">
+        <label>Season<select id="lighting-season"><option value="march">March</option><option value="june">June</option><option value="december">December</option></select></label>
+        <label>Sky<select id="lighting-sky"><option value="clear">Clear</option><option value="hazy" selected>Hazy</option><option value="overcast">Overcast</option></select></label>
+        <small>12:05 Dhaka · representative scene</small>
+      </div></details>
       <div class="sound-controls"><button id="sound-button" type="button" aria-pressed="false" title="Mute or unmute reactions (M)"><kbd>M</kbd><span id="sound-label">Sound on</span></button><label for="sound-volume" class="sr-only">Reaction volume</label><input id="sound-volume" type="range" min="0" max="100" value="55" aria-label="Reaction volume"><small id="sound-status">Bangla reactions</small></div>
     </nav>
     <aside id="inspection-banner" class="inspection-banner" hidden><b>CAMPUS VIEW <span>SIMULATION PAUSED</span></b><p>Drag / arrows orbit · Right drag / WASD pan · Scroll zoom</p><span>Press <kbd>I</kbd> or <kbd>ESC</kbd> to return</span></aside>

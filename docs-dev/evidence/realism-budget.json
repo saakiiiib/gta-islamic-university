@@ -1,0 +1,171 @@
+{
+  "label": "current-working-tree",
+  "sourceMapSha256": "8c1c2810c8eb01496b1d5bc19919c124ea5fec5bf2977da9a1a45cf2570d79d9",
+  "scope": "CPU inventory before asset loading; no browser renderer/GPU/frame/shadow measurement",
+  "baselineComparison": "Task19 and task20 use the same world geometry; the pre-task20 and post-task20 CPU snapshots both report 382 draw candidates, 696 instances and 232372 triangle candidates. Full pre-realism main-world GPU metrics were not measured. Legacy vegetation is an isolated same-map planner comparison.",
+  "map": {
+    "buildings": 57,
+    "roads": 40,
+    "greens": 16,
+    "water": 3,
+    "bridges": 1,
+    "trees": 1,
+    "treeRows": 1,
+    "places": 53,
+    "entrances": 5
+  },
+  "visibleWorld": {
+    "renderObjects": 382,
+    "meshObjects": 379,
+    "lineObjects": 3,
+    "instancedMeshes": 36,
+    "instances": 696,
+    "drawCandidatesNoCullingOrShadows": 382,
+    "triangleCandidatesIncludingInstances": 232372
+  },
+  "resourcesIncludingCollidersAndHiddenDebug": {
+    "uniqueGeometries": 442,
+    "uniqueMaterials": 73,
+    "uniqueTexturesPresent": 0,
+    "distinctArrayBufferBytes": 28890736
+  },
+  "colliders": [
+    {
+      "root": "campus-colliders",
+      "meshes": 43
+    },
+    {
+      "root": "scenery-colliders",
+      "meshes": 87
+    }
+  ],
+  "proceduralVegetation": {
+    "current": {
+      "trees": 300,
+      "shrubs": 65
+    },
+    "legacyPlannerSameMap": {
+      "trees": 240,
+      "shrubs": 48
+    }
+  },
+  "waterDetails": {
+    "instances": 241,
+    "draws": 2
+  },
+  "landmarkModels": [
+    {
+      "osmId": "7650711",
+      "draws": 1
+    },
+    {
+      "osmId": "1317423259",
+      "draws": 1
+    }
+  ],
+  "constructionMilliseconds": 6493.1,
+  "families": {
+    "mapped-pitch-boundary": {
+      "objects": 3,
+      "instances": 0,
+      "triangleCandidates": 0
+    },
+    "auditorium-layered-roof-and-arches": {
+      "objects": 1,
+      "instances": 0,
+      "triangleCandidates": 3408
+    },
+    "central-mosque-domes-and-arches": {
+      "objects": 1,
+      "instances": 0,
+      "triangleCandidates": 16756
+    },
+    "ground-chunk": {
+      "objects": 1,
+      "instances": 0,
+      "triangleCandidates": 2
+    },
+    "surface-chunk": {
+      "objects": 13,
+      "instances": 0,
+      "triangleCandidates": 145
+    },
+    "water-chunk": {
+      "objects": 3,
+      "instances": 0,
+      "triangleCandidates": 47
+    },
+    "road-chunk": {
+      "objects": 35,
+      "instances": 0,
+      "triangleCandidates": 16559
+    },
+    "building-chunk": {
+      "objects": 41,
+      "instances": 0,
+      "triangleCandidates": 1756
+    },
+    "facade-chunk": {
+      "objects": 58,
+      "instances": 0,
+      "triangleCandidates": 150340
+    },
+    "bridge-chunk": {
+      "objects": 1,
+      "instances": 0,
+      "triangleCandidates": 30
+    },
+    "bridge-rail-chunk": {
+      "objects": 1,
+      "instances": 0,
+      "triangleCandidates": 600
+    },
+    "aquatic-leaves": {
+      "objects": 1,
+      "instances": 174,
+      "triangleCandidates": 1392
+    },
+    "aquatic-reeds": {
+      "objects": 1,
+      "instances": 67,
+      "triangleCandidates": 335
+    },
+    "mapped-tree-canopies": {
+      "objects": 1,
+      "instances": 377,
+      "triangleCandidates": 22620
+    },
+    "scenery-bench": {
+      "objects": 7,
+      "instances": 27,
+      "triangleCandidates": 2592
+    },
+    "scenery-lamp": {
+      "objects": 9,
+      "instances": 27,
+      "triangleCandidates": 1944
+    },
+    "scenery-noticeboard": {
+      "objects": 6,
+      "instances": 9,
+      "triangleCandidates": 1404
+    },
+    "scenery-cyclestand": {
+      "objects": 8,
+      "instances": 9,
+      "triangleCandidates": 2376
+    },
+    "scenery-fence": {
+      "objects": 3,
+      "instances": 6,
+      "triangleCandidates": 2736
+    },
+    "Mesh": {
+      "objects": 188,
+      "instances": 0,
+      "triangleCandidates": 7330
+    }
+  },
+  "recordedAt": "2026-11-09",
+  "validatedAt": "2026-11-11"
+}

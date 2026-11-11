@@ -8,6 +8,7 @@ import { InspectionCamera, InspectionSession } from './player/inspection.js';
 import { PlaceLabels } from './ui/labels.js';
 import { mountPlaceSearch } from './ui/placeSearch.js';
 import './ui/placeSearch.css';
+import { campusLighting } from './world/solarLighting.js';
 import { CampusSimulation } from './game/simulation.js';
 import { TravelCamera } from './vehicle/camera.js';
 import { ReactionAudio } from './audio/reactions.js';
@@ -26,7 +27,7 @@ const device = deviceProfile(window);
 document.body.classList.toggle('touch-device', device.touch);
 $('touch-instructions').hidden = !device.touch;
 let state = 'loading', renderer, scene, camera, world, mapData, player, input, chase, hud, sun;
-let inspection, inspectionSession, labels, gameplayFog;
+let inspection, inspectionSession, labels, gameplayFog, hemisphere;
 let placeSearch, placeSearchOpen = false;
 let simulation;
 let reactions;
@@ -38,7 +39,9 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let assetPipeline, startupStage = 'map', latestAssetProgress;
 let accumulator = 0, lastTime = performance.now(), fps = 60;
 const STEP = 1 / 60;
-const sunOffset = new THREE.Vector3(-55, 110, -40);
+const sunOffset = new THREE.Vector3();
+const LIGHTING_DATES = { march:'2026-03-20T06:05:00.000Z', june:'2026-06-21T06:05:00.000Z', december:'2026-12-21T06:05:00.000Z' };
+let lightingConfig = campusLighting();
 
 const paint = () => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 function progress(message, counts) { landing.progress(message, counts); }
@@ -175,8 +178,8 @@ function toggleAlignment() {
 }
 
 function lighting() {
-  scene.add(new THREE.HemisphereLight(0xe4edf2, 0x829272, 1.6));
-  sun = new THREE.DirectionalLight(0xfff1dc, 2.15);
+  hemisphere = new THREE.HemisphereLight(); scene.add(hemisphere);
+  sun = new THREE.DirectionalLight();
   sun.castShadow = true;
   sun.shadow.mapSize.set(device.shadowSize, device.shadowSize);
   const extent = device.shadowExtent;
@@ -185,6 +188,23 @@ function lighting() {
   sun.shadow.intensity = .72;
   scene.add(sun, sun.target);
   sun.position.copy(player.position).add(sunOffset); sun.target.position.copy(player.position);
+  applyLighting();
+}
+function applyLighting() {
+  if (!sun || !hemisphere) return;
+  lightingConfig = campusLighting({ date:LIGHTING_DATES[$('lighting-season').value], preset:$('lighting-sky').value });
+  const config = lightingConfig;
+  scene.background.setHex(config.skyColor);
+  gameplayFog.color.setHex(config.fog.color); gameplayFog.near = config.fog.near; gameplayFog.far = config.fog.far;
+  sun.color.setHex(config.sun.color); sun.intensity = config.sun.intensity;
+  hemisphere.color.setHex(config.hemisphere.skyColor); hemisphere.groundColor.setHex(config.hemisphere.groundColor); hemisphere.intensity = config.hemisphere.intensity;
+  sunOffset.set(config.sunOffset.x,config.sunOffset.y,config.sunOffset.z);
+  sun.position.copy(sun.target.position).add(sunOffset);
+  sun.shadow.needsUpdate = true; renderer.shadowMap.needsUpdate = true; gateFrameDirty = true;
+  canvas.dataset.solarAltitude = config.solar.altitude.toFixed(3);
+  canvas.dataset.solarAzimuth = config.solar.azimuth.toFixed(3);
+  canvas.dataset.lightingDate = config.solar.date;
+  canvas.dataset.skyPreset = config.preset;
 }
 function tick(t) {
   const elapsed = Math.max(0, Math.min((t - lastTime) / 1000, .1)); lastTime = t;
@@ -312,8 +332,8 @@ async function initialize() {
     renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = device.touch ? THREE.BasicShadowMap : THREE.PCFShadowMap;
     renderer.shadowMap.autoUpdate = !device.touch; renderer.shadowMap.needsUpdate = true;
-    scene = new THREE.Scene(); scene.background = new THREE.Color(0xb3d5e6);
-    gameplayFog = new THREE.Fog(0xb3d5e6, 260, 850); scene.fog = gameplayFog;
+    scene = new THREE.Scene(); scene.background = new THREE.Color(lightingConfig.skyColor);
+    gameplayFog = new THREE.Fog(lightingConfig.fog.color, lightingConfig.fog.near, lightingConfig.fog.far); scene.fog = gameplayFog;
     scene.add(world.group, player.group, simulation.fleetGroup, simulation.busGroup, simulation.ambulanceGroup, simulation.occupants.group, simulation.crowd.group, simulation.sideCharactersGroup);
     camera = new THREE.PerspectiveCamera(60, 1, .08, 2200);
     gateCamera = new GateMenuCamera();
@@ -450,6 +470,8 @@ $('reset-button').addEventListener('click', () => { resetPlayer(); play(); });
 $('inspection-button').addEventListener('click', toggleInspection);
 $('labels-button').addEventListener('click', toggleLabels);
 $('place-search-button').addEventListener('click', togglePlaceSearch);
+$('lighting-season').addEventListener('change', applyLighting);
+$('lighting-sky').addEventListener('change', applyLighting);
 $('alignment-button').addEventListener('click', toggleAlignment);
 function saveAudioPreferences() { try { localStorage.setItem('iu-reaction-audio', JSON.stringify({ muted: reactions.muted, volume: reactions.volume })); } catch { /* Storage is optional. */ } }
 function toggleSound() { if (!reactions) return; reactions.setMuted(!reactions.muted); if (!reactions.muted) reactions.unlock(); saveAudioPreferences(); }
