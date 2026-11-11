@@ -1,6 +1,6 @@
 # Realism implementation status — 11 November 2026
 
-The research was merged as PR1. Twenty implementation/evidence changes are separately committed and opened for review (tasks1-19 are PR2-20; task20 follows). Review in dependency order: each implementation PR targets the preceding task branch, beginning with task1 against main. No automatic merge or deployment was performed. A PR existing or passing tests does not mean all survey/visual acceptance is fulfilled.
+The research was merged as PR1. Twenty implementation/evidence changes are separately committed and opened for review (tasks1-20 are PR2-21). The final [task20 PR](https://github.com/saakiiiib/gta-islamic-university/pull/21) contains the full accumulated implementation for browsing; each stacked diff isolates one task. Review in dependency order: each implementation PR targets the preceding task branch, beginning with task1 against main. No automatic merge or deployment was performed. A PR existing or passing tests does not mean all survey/visual acceptance is fulfilled.
 
 | Task | Delivered | Remaining acceptance |
 |---|---|---|
