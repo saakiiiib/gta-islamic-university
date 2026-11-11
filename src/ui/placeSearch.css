@@ -11,6 +11,12 @@
 .place-search-status { margin:8px 0 0; font-size:12px; color:#d5e2ce; }
 .place-label b { font:11px/1.45 "Nirmala UI","Noto Sans Bengali",Vrinda,Arial,sans-serif; white-space:pre-line; }
 .location h2 { font-family:"Nirmala UI","Noto Sans Bengali",Vrinda,Georgia,serif; }
+.lighting-controls { position:relative; font:12px/1.5 "Nirmala UI",Arial,sans-serif; color:#f5efd9; }
+.lighting-controls summary { cursor:pointer; min-height:34px; padding:7px 12px; background:#17362fe6; border:1px solid #e2e9d144; border-radius:3px; }
+.lighting-options { position:absolute; right:0; top:100%; width:210px; padding:12px; background:#14392ff5; border:1px solid #d4dfc5; border-radius:3px; }
+.lighting-options label { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; }
+.lighting-options select { min-height:44px; font:inherit; color:#17362f; background:#faf8e9; }
+.lighting-options small { display:block; }
 @media(max-width:1000px) { .place-search { right:80px; top:92px; width:min(330px,calc(100vw - 100px)); } }
 @media(max-width:600px) { .place-search { left:12px; right:auto; top:74px; width:calc(100vw - 88px); padding:10px; } .place-search-results { max-height:42vh; } }
 @media(max-height:500px) { .place-search { top:64px; } .place-search-results { max-height:32vh; } }

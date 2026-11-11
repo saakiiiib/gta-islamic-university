@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { campusSourceFingerprint } from './source-fingerprint.mjs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { parseOsm, buildMapData } from '../src/map/index.js';
@@ -15,18 +16,12 @@ import { PREPARATION_VERSION, preparationMapKey } from '../src/world/prepared.js
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const sha256 = value => createHash('sha256').update(value).digest('hex');
 const mapBytes = await readFile(resolve(root, 'public/data/map.osm'));
-const mapSha256 = sha256(mapBytes), sourceHash = createHash('sha256');
+const mapSha256 = sha256(mapBytes);
 await mkdir(resolve(root, 'src/generated'), { recursive: true });
 await writeFile(resolve(root, 'src/generated/campus-source.js'), `// Generated from the unchanged supplied map.\nexport const CAMPUS_MAP_SHA256 = '${mapSha256}';\nexport const CAMPUS_MAP_BYTES = ${mapBytes.byteLength};\n`);
 // A source fingerprint avoids regenerating on every preview/build while never
 // retaining stale placement or navigation when its implementation changes.
-for (const directory of ['src/map', 'src/world', 'src/navigation', 'src/activity', 'src/vehicle', 'src/data']) {
-  for (const name of (await readdir(resolve(root, directory))).filter(n => n.endsWith('.js')).sort()) {
-    sourceHash.update(`${directory}/${name}`); sourceHash.update(await readFile(resolve(root, directory, name)));
-  }
-}
-sourceHash.update(await readFile(fileURLToPath(import.meta.url)));
-const generatorSha256 = sourceHash.digest('hex'), target = resolve(root, 'src/generated/campus-prepared.json');
+const generatorSha256 = await campusSourceFingerprint(root), target = resolve(root, 'src/generated/campus-prepared.json');
 try {
   const old = JSON.parse(await readFile(target, 'utf8'));
   if (old.version === PREPARATION_VERSION && old.mapSha256 === mapSha256 && old.generatorSha256 === generatorSha256 && old.payloadSha256 === sha256(JSON.stringify(old.data))) {
